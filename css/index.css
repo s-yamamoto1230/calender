@@ -1,0 +1,58 @@
+body{
+  text-align: center;
+  /*  zz  */
+  background:url("images/background.JPG") #333;
+  background-attachment:fixed;
+  background-size:cover;
+  position:relative;
+}
+
+video {
+  display:block;
+  opacity: 0.4;
+}
+ 
+#bg-video {
+  position:fixed;
+  right:0;
+  bottom:0;
+  min-width:100%;
+  min-height:100%;
+  width:auto;
+  height:auto;
+  z-index:-1;
+}
+
+h1{
+  margin-top: 150px;
+  color: #fff;
+  font-size: 80px;
+}
+
+table{
+  margin-right: auto;
+  margin-left : auto;
+}
+
+table td{
+  color: #fff;
+}
+
+input{
+  text-align: center;
+  font-size: 15px;
+}
+
+a{
+  color: #f39800;
+  text-decoration: none;
+}
+
+a:hover{
+  color: #ddc59b;
+  text-decoration: underline;
+}
+
+a:active{
+  color: #bbdbf3;
+}

@@ -1,0 +1,67 @@
+@charaset "utf-8";
+
+body{
+  text-align: center;
+}
+
+table{
+  margin-right: auto;
+  margin-left : auto;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+table tr{
+  border: 2px solid;
+
+}
+
+table tr td{
+  border: 2px solid;
+  padding: 10px 20px;
+}
+
+table tr.no-line{
+  border-style:none;
+}
+
+table tr td#button{
+  padding-top: 30px;
+}
+
+table tr td.title{
+  background-color: #c0c0c0;
+}
+
+table tr td.no-line{
+  border-style:none;
+}
+
+table tr td.check{
+  padding: 0 100px;
+}
+
+input{
+  text-align: center;
+  padding: 0 30px;
+  font-size: 20px;
+}
+
+select{
+  width: 60px;
+  font-size: 15px;
+}
+
+p.alert{
+  margin: 10px 0 0 0;
+}
+
+p#link{
+  padding: 20px;
+}
+
+button#correction{
+  margin-left: 50px;
+  padding: 0 40px;
+  font-size: 20px;
+}
