@@ -15,9 +15,9 @@
     calendar.setTime(today);
     //年、月、日の取得
     int year = calendar.get(Calendar.YEAR);
-    int month = calendar.get(Calendar.MONTH)+1;
+    int month = calendar.get(Calendar.MONTH);
     int day = calendar.get(Calendar.DATE);
-    calendar.set(2019,11,1);
+    calendar.set(year,month,1);
     int ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
     //うるう年
     int a = year;
@@ -29,7 +29,7 @@
     }else{
       leap =28;
     int tuki_max;
-    
+
     if(month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12){
       tuki_max =31;
     }else if(month==4 || month==6 || month==9 || month==11){
@@ -86,7 +86,7 @@
                 <button>前月</button>
               </div>
               <div class="tuki">
-                <h1><%= year %>年<%= month %>月</h1>
+                <h1><%= year %>年<%= month+1 %>月</h1>
               </div>
               <div class="tuki">
                <button>翌月</button>
