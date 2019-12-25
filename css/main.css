@@ -25,7 +25,7 @@ ul#nav{
   list-style: none;
   overflow: hidden;
 }
- 
+
 #nav li {
   width: 150px;
   height: 70px;
@@ -35,7 +35,7 @@ ul#nav{
   line-height: 50px;
   margin-right: 2px;
 }
- 
+
 #nav li a {
   text-decoration: none;
   color: #fff;
@@ -54,7 +54,7 @@ table#cal{
 }
 
 h1 {
-    font-size: 30px;
+    font-size: 40px;
 }
 
 h1.title{
