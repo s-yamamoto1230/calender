@@ -15,7 +15,7 @@
 
     <meta charset="utf-8">
 
-    <title>Agenda作成</title>
+    <title>予定作成</title>
 
     <link rel="stylesheet" type="text/css" href="./css/info.css">
 
@@ -23,7 +23,7 @@
 
   <body>
 
-    <h1 class="title">Agenda新規作成</h1>
+    <h1 class="title">予定新規作成</h1>
 
 
     <table>
@@ -33,65 +33,69 @@
 
       <tr>
         <td class="title">
-          <p>ID</p>
+          <p>時間</p>
+          <td colspan="2">
+            開始：
+            <select name="hour">
+              <script>
+                var i;
+                for(i=0; i<24; i+=1){
+                document.write('<option value="'+i+'">'+i+'時</option>');
+                }
+              </script>
+            </select>
+            <select name="min">
+              <script>
+                var i;
+                for(i=0; i<60; i+=10){
+                document.write('<option value="'+i+'">'+i+'分</option>');
+                }
+              </script>
+            </select>
+            &emsp;～&emsp;終了：
+            <select name="hour">
+              <script>
+                var i;
+                for(i=0; i<24; i+=1){
+                document.write('<option value="'+i+'">'+i+'時</option>');
+                }
+              </script>
+            </select>
+            <select name="min">
+              <script>
+                var i;
+                for(i=0; i<60; i+=10){
+                document.write('<option value="'+i+'">'+i+'分</option>');
+                }
+              </script>
+            </select>
+          </td>
+        </tr>
+      <tr>
+        <td class="title">
+          <p>場所</p>
         </td>
         <td>
-          <p><input type="text" name="id" id="id" pattern="^[0-9a-z]+$" size="25" required></p>
-          <p id="notice-input-text-0" style="display: none; color: red;"></p>
-          <p class="alert">※半角英数字15文字以下</p>
+          <input type="text" name="title" size="25">
         </td>
       </tr>
       <tr>
         <td class="title">
-          <p>タイトル</p>
+          <p>詳細</p>
         </td>
         <td>
-          <input type="text" name="title" size="25" required>
+          <textarea maxlength="200"></textarea>
         </td>
       </tr>
       <tr>
         <td class="title">
-          <p>公開設定</p>
+          <p>重要</p>
         </td>
         <td>
-          <label><input type="radio" name="open" value="1">全員に公開</label>
-          <label><input type="radio" name="open" value="2">特定の人にのみ公開</label>
+          <label><input type="checkbox">※この予定は重要です</label>
         </td>
       </tr>
-      <div class="form-group">
-      <tr>
-        <td class="title">
-          <p>パスワード</p>
-        </td>
-        <td>
-          <br><div class="form-group">
-            <p><input type="password" class="form-control" id="password" name="password" size="25" pattern="^[0-9a-z]+$" > </p>
-          </div>
-          <p id="notice-input-text-1" style="display: none; color: red;"></p>
-          <p class="alert">※半角英数字6文字以上20字以内</p>
-        </td>
-      </tr>
-      <tr>
-        <td class="title">
-          パスワード（確認）
-        </td>
-        <td>
-          <div class="form-group">
-            <p><input type="password" class="form-control" id="confirm" name="confirm" size="25" oninput="CheckPassword(this)" ></p>
-          </div>
-        </td>
-      </tr>
-    </div>
-      <tr>
-        <td class="title">
-          <p>他人の書き込み</p>
-        </td>
-        <td>
-          <label><input type="radio" name="permission" value="1">許可</label>
-          <label><input type="radio" name="permission" value="2">禁止</label>
-        </td>
-      </tr>
-      
+
 
       <tr class="no-line">
         <td class="no-line" id="button" colspan="2">
