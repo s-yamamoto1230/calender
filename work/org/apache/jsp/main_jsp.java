@@ -73,9 +73,9 @@ public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
     calendar.setTime(today);
     //年、月、日の取得
     int year = calendar.get(Calendar.YEAR);
-    int month = calendar.get(Calendar.MONTH)+1;
+    int month = calendar.get(Calendar.MONTH);
     int day = calendar.get(Calendar.DATE);
-    calendar.set(2019,11,1);
+    calendar.set(year,month,1);
     int ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
     //うるう年
     int a = year;
@@ -87,7 +87,7 @@ public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
     }else{
       leap =28;
     int tuki_max;
-    
+
     if(month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12){
       tuki_max =31;
     }else if(month==4 || month==6 || month==9 || month==11){
@@ -148,7 +148,7 @@ public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                <h1>");
       out.print( year );
       out.write('年');
-      out.print( month );
+      out.print( month+1 );
       out.write("月</h1>\r\n");
       out.write("              </div>\r\n");
       out.write("              <div class=\"tuki\">\r\n");
@@ -1114,7 +1114,7 @@ public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("\r\n");
       out.write("  </body>\r\n");
-      out.write("</html>");
+      out.write("</html>\r\n");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

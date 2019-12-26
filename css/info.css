@@ -65,3 +65,10 @@ button#correction{
   padding: 0 40px;
   font-size: 20px;
 }
+
+textarea {
+  resize: none;
+  width:400px;
+  height:150px;
+  font-size: 20px;
+}
