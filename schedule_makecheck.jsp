@@ -4,6 +4,7 @@
 <%
 
   String kaiin_idStr = request.getParameter("kaiin_id");
+  String dayStr = request.getParameter("day");
   String s_hourStr = request.getParameter("s_hour");
   String s_minStr = request.getParameter("s_min");
   String f_hourStr = request.getParameter("f_hour");
@@ -11,6 +12,7 @@
   String placeStr = request.getParameter("place");
   String detailsStr = request.getParameter("details");
   String importanceStr = request.getParameter("importance");
+
 
   if (importanceStr == null) {
     importanceStr ="0";
@@ -34,13 +36,14 @@
   <body>
 
 
-    <h1>Agenda新規作成（確認）</h1>
+    <h1>予定新規追加（確認）</h1>
     <h2>以下の内容で登録しますか？</h2>
 
     <table>
-    <form action="./agenda_makecomplete.jsp" method="post">
+    <form action="./schedule_makecomplete.jsp" method="post">
 
       <input type="hidden" name="kaiin_id" value="<%= kaiin_idStr %>">
+      <input type="hidden" name="day" value="<%= dayStr %>">
       <input type="hidden" name="s_hour" value="<%= s_hourStr %>">
       <input type="hidden" name="s_min" value="<%= s_minStr %>">
       <input type="hidden" name="f_hour" value="<%= f_hourStr %>">

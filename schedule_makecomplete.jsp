@@ -6,7 +6,8 @@
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idSt = request.getParameter("kaiin_id");
+  String kaiin_idStr = request.getParameter("kaiin_id");
+  String dayStr = request.getParameter("day");
   String s_hourStr = request.getParameter("s_hour");
   String s_minStr = request.getParameter("s_min");
   String f_hourStr = request.getParameter("f_hour");
@@ -14,6 +15,9 @@
   String placeStr = request.getParameter("place");
   String detailsStr = request.getParameter("details");
   String importanceStr = request.getParameter("importance");
+
+  String s_timeStr = s_hourStr + s_minStr;
+  String f_timeStr = f_hourStr + f_minStr;
 
 
 
@@ -59,9 +63,14 @@
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select * from open_tbl where yotei_id = '");
-    SQL.append(idStr);
+    SQL.append("select * from yotei_tbl where kaiin_id = '");
+    SQL.append(kaiin_idStr);
+    SQL.append("' and day ='");
+    SQL.append(dayStr);
+    SQL.append("' and s_time ='");
+    SQL.append(s_timeStr);
     SQL.append("'");
+
       System.out.println(SQL.toString());
 
     //SQL文の実行（選択クエリ）
@@ -78,19 +87,21 @@
     SQL=new StringBuffer();
 
     //SQL文の構築
-    SQL.append("insert into open_tbl(yotei_id,yotei_name,open_set,yotei_pass,yotei_writing,kaiin_id)");
+    SQL.append("insert into yotei_tbl(kaiin_id,day,s_time,f_time,place,details,importance)");
     SQL.append("values('");
-    SQL.append(idStr);
-    SQL.append("','");
-    SQL.append(titleStr);
-    SQL.append("','");
-    SQL.append(openStr);
-    SQL.append("','");
-    SQL.append(passStr);
-    SQL.append("','");
-    SQL.append(permissionStr);
-    SQL.append("','");
     SQL.append(kaiin_idStr);
+    SQL.append("','");
+    SQL.append(dayStr);
+    SQL.append("','");
+    SQL.append(s_timeStr);
+    SQL.append("','");
+    SQL.append(f_timeStr);
+    SQL.append("','");
+    SQL.append(placeStr);
+    SQL.append("','");
+    SQL.append(detailsStr);
+    SQL.append("','");
+    SQL.append(importanceStr);
     SQL.append("')");
     }
 
@@ -152,7 +163,7 @@
 %>
 追加NG<br>
 <%= "登録が失敗しました" %>
-
+<%= s_timeStr %>
 <%
   }else{  //認証OK
 %>

@@ -120,7 +120,7 @@
                   <h2><%= num[0] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[0] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -146,7 +146,7 @@
                 <h2><%= num[1] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[1] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -172,7 +172,7 @@
                 <h2><%= num[2] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[2] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -198,7 +198,7 @@
                 <h2><%= num[3] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[3] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -224,7 +224,7 @@
                 <h2><%= num[4] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[4] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -250,7 +250,7 @@
                 <h2><%= num[5] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[5] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -269,7 +269,7 @@
                 <h2><%= num[6] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[6] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -287,7 +287,7 @@
                 <h2><%= num[7] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[7] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -303,7 +303,7 @@
                 <h2><%= num[8] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[8] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -319,7 +319,7 @@
                 <h2><%= num[9] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[9] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -335,7 +335,7 @@
                 <h2><%= num[10] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[10] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -351,7 +351,7 @@
                 <h2><%= num[11] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[11] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -367,7 +367,7 @@
                 <h2><%= num[12] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[12] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -383,7 +383,7 @@
                 <h2><%= num[13] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[13] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -400,7 +400,7 @@
                 <h2><%= num[14] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[14] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -416,7 +416,7 @@
                 <h2><%= num[15] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[15] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -432,7 +432,7 @@
                 <h2><%= num[16] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[16] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -448,7 +448,7 @@
                 <h2><%= num[17] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[17] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -464,7 +464,7 @@
                 <h2><%= num[18] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[18] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -480,7 +480,7 @@
                 <h2><%= num[19] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[19] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -496,7 +496,7 @@
                 <h2><%= num[20] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[20] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -514,7 +514,7 @@
                 <h2><%= num[21] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[21] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -530,7 +530,7 @@
                 <h2><%= num[22] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[22] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -546,7 +546,7 @@
                 <h2><%= num[23] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[23] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -562,7 +562,7 @@
                 <h2><%= num[24] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[24] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -578,7 +578,7 @@
                 <h2><%= num[25] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[25] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -594,7 +594,7 @@
                 <h2><%= num[26] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[26] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -610,7 +610,7 @@
                 <h2><%= num[27] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[27] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -628,7 +628,7 @@
                 <h2><%= num[28] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[28] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -644,7 +644,7 @@
                 <h2><%= num[29] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[29] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -660,7 +660,7 @@
                 <h2><%= num[30] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[30] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -683,7 +683,7 @@
                 <h2><%= num[31] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[31] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -709,7 +709,7 @@
                 <h2><%= num[32] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[32] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -735,7 +735,7 @@
                 <h2><%= num[33] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[33] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -761,7 +761,7 @@
                 <h2><%= num[34] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[34] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
               </div>
             </td>
@@ -788,7 +788,7 @@
                 <h2><%= num[35] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[35] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -814,7 +814,7 @@
                 <h2><%= num[36] %>日の予定</h2>
                   <p>学校</p>
                   <p>バイト</p>
-                  <a href="./schedule_make.jsp"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[36] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>

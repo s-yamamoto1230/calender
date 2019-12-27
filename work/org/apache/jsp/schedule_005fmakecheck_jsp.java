@@ -58,7 +58,8 @@ public final class schedule_005fmakecheck_jsp extends org.apache.jasper.runtime.
       out.write('\n');
 
 
-String kaiin_idStr = request.getParameter("kaiin_id");
+  String kaiin_idStr = request.getParameter("kaiin_id");
+  String dayStr = request.getParameter("day");
   String s_hourStr = request.getParameter("s_hour");
   String s_minStr = request.getParameter("s_min");
   String f_hourStr = request.getParameter("f_hour");
@@ -66,6 +67,7 @@ String kaiin_idStr = request.getParameter("kaiin_id");
   String placeStr = request.getParameter("place");
   String detailsStr = request.getParameter("details");
   String importanceStr = request.getParameter("importance");
+
 
   if (importanceStr == null) {
     importanceStr ="0";
@@ -90,14 +92,17 @@ String kaiin_idStr = request.getParameter("kaiin_id");
       out.write("  <body>\r\n");
       out.write("\r\n");
       out.write("\r\n");
-      out.write("    <h1>Agenda新規作成（確認）</h1>\r\n");
+      out.write("    <h1>予定新規追加（確認）</h1>\r\n");
       out.write("    <h2>以下の内容で登録しますか？</h2>\r\n");
       out.write("\r\n");
       out.write("    <table>\r\n");
-      out.write("    <form action=\"./agenda_makecomplete.jsp\" method=\"post\">\r\n");
+      out.write("    <form action=\"./schedule_makecomplete.jsp\" method=\"post\">\r\n");
       out.write("\r\n");
       out.write("      <input type=\"hidden\" name=\"kaiin_id\" value=\"");
       out.print( kaiin_idStr );
+      out.write("\">\r\n");
+      out.write("      <input type=\"hidden\" name=\"day\" value=\"");
+      out.print( dayStr );
       out.write("\">\r\n");
       out.write("      <input type=\"hidden\" name=\"s_hour\" value=\"");
       out.print( s_hourStr );
