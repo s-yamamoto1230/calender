@@ -7,6 +7,11 @@
 <%@ page import="java.util.ArrayList" %>
 <%
 
+    request.setCharacterEncoding("UTF-8");
+    response.setCharacterEncoding("UTF-8");
+
+    String kaiin_idStr = request.getParameter("kaiin_id");
+
     //現在の日付取得
     Date today = new Date();
     //Calendarクラスのオブジェクト生成
@@ -55,6 +60,108 @@
         num[j] = blank;
       }
     }
+
+
+//--データベース--
+
+//データベースに接続するために使用する変数宣言
+Connection con = null;
+Statement stmt = null;
+StringBuffer SQL = null;
+ResultSet rs = null;
+
+//ローカルのMySQLに接続する設定
+/*	String USER ="root";
+String PASSWORD = "";
+String URL ="jdbc:mysql://localhost/nhs90345db";*/
+
+//サーバーのMySQLに接続する設定
+String USER = "nhs90345";
+String PASSWORD = "b19931230";
+String URL ="jdbc:mysql://192.168.121.16/nhs90345db";
+
+String DRIVER = "com.mysql.jdbc.Driver";
+
+//確認メッセージ
+StringBuffer ERMSG = null;
+
+//HashMap（1件分のデータを格納する連想配列）
+HashMap<String,String> map = null;
+
+//ArrayList（すべての件数を格納する配列）
+ArrayList<HashMap> list = null;
+list = new ArrayList<HashMap>();
+
+try{	// ロードに失敗したときのための例外処理
+  // JDBCドライバのロード
+  Class.forName(DRIVER).newInstance();
+
+  // Connectionオブジェクトの作成
+  con = DriverManager.getConnection(URL,USER,PASSWORD);
+
+  //Statementオブジェクトの作成
+  stmt = con.createStatement();
+
+    //SQLステートメントの作成（選択クエリ）
+    SQL = new StringBuffer();
+
+  //SQL文の発行（選択クエリ）
+  SQL.append("select kaiin_id,day,s_time,f_time,place,details,importance from yotei_tbl where kaiin_id = '");
+  SQL.append(kaiin_idStr);
+  SQL.append("'");
+
+  //SQL文の発行（選択クエリ）
+  rs = stmt.executeQuery(SQL.toString());
+
+  //抽出したデータを繰り返し処理で表示する。
+  while(rs.next()){
+      //DBのデータをHashMapへ格納する
+    map = new HashMap<String,String>();
+    map.put("kaiin_id",rs.getString("kaiin_id"));
+    map.put("day",rs.getString("day"));
+    map.put("s_time",rs.getString("s_time"));
+    map.put("f_time",rs.getString("f_time"));
+    map.put("place",rs.getString("place"));
+    map.put("details",rs.getString("details"));
+    map.put("importance",rs.getString("importance"));
+
+    map.put("",rs.getString(""));
+
+    //1件分のデータ(HashMap)をArrayListへ追加
+    list.add(map);
+  }
+}	//tryブロック終了
+catch(ClassNotFoundException e){
+  ERMSG = new StringBuffer();
+  ERMSG.append(e.getMessage());
+}
+catch(SQLException e){
+  ERMSG = new StringBuffer();
+  ERMSG.append(e.getMessage());
+}
+catch(Exception e){
+  ERMSG = new StringBuffer();
+  ERMSG.append(e.getMessage());
+}
+
+finally{
+  //各種オブジェクトクローズ
+    try{
+      if(rs != null){
+        rs.close();
+      }
+      if(stmt != null){
+        stmt.close();
+    }
+      if(con != null){
+        con.close();
+    }
+    }
+  catch(SQLException e){
+  ERMSG = new StringBuffer();
+  ERMSG.append(e.getMessage());
+  }
+}
 %>
 
 <!DOCTYPE html>
@@ -77,7 +184,6 @@
     <li><a href="./agenda_make.jsp?">Agenda作成</a></li>
     <li><a href="./ag_search.html">Agenda検索</a></li>
   </ul>
-
   <table id="cal">
 
         <tr border="0" cellspacing="1" cellpadding="1" bgcolor="#CCCCCC" style="font: 12px; color: #666666;">
@@ -118,8 +224,15 @@
                 <div class="modal-window">
                   <div class="modal-content">
                   <h2><%= num[0] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                  <%
+                    for(int j = 0; j < list.size(); i++){
+                  %>
+                  <%
+                    if (<%= year %>+<%= month %>+<%= num[0].equals(<%= list.get(j).get("day")) %>) {
+                  %>
+                  <%= list.get(j).get("place")) %>
+                  <%= list.get(j).get("details")) %>
+                  <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[0] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -812,8 +925,7 @@
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[36] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[36] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
