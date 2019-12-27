@@ -4,14 +4,16 @@
   //文字コードの指定
   request.setCharacterEncoding("UTF-8");
   response.setCharacterEncoding("UTF-8");
-  
+
   //入力データ受信
-  String idStr = request.getParameter("id");
-  String titleStr = request.getParameter("title");
-  String openStr = request.getParameter("open");
-  String passStr = request.getParameter("pass");
-  String permissionStr = request.getParameter("permission");
-  String kaiin_idStr = request.getParameter("kaiin_id");
+  String kaiin_idSt = request.getParameter("kaiin_id");
+  String s_hourStr = request.getParameter("s_hour");
+  String s_minStr = request.getParameter("s_min");
+  String f_hourStr = request.getParameter("f_hour");
+  String f_minStr = request.getParameter("f_min");
+  String placeStr = request.getParameter("place");
+  String detailsStr = request.getParameter("details");
+  String importanceStr = request.getParameter("importance");
 
 
 
@@ -36,13 +38,13 @@
 
   //確認メッセージ
   StringBuffer ERMSG = null;
-  
+
   //ヒットフラグ
   int hit_flag = 0;
-  
+
   //追加件数
   int ins_count=0;
-   
+
   try{  // ロードに失敗したときのための例外処理
     // JDBCドライバのロード
     Class.forName(DRIVER).newInstance();

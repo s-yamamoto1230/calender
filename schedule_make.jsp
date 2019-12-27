@@ -27,7 +27,7 @@
 
 
     <table>
-      <form  name="form" action="./agenda_makecheck.jsp" method="post" action="#" onsubmit="return formCheck()">
+      <form  name="form" action="./schedule_makecheck.jsp" method="post" action="#" onsubmit="return formCheck()">
 
         <input type="hidden" name="kaiin_id" value="<%= kaiin_idStr %>">
 
@@ -36,7 +36,7 @@
           <p>時間</p>
           <td colspan="2">
             開始：
-            <select name="hour">
+            <select name="s_hour">
               <script>
                 var i;
                 for(i=0; i<24; i+=1){
@@ -44,7 +44,7 @@
                 }
               </script>
             </select>
-            <select name="min">
+            <select name="s_min">
               <script>
                 var i;
                 for(i=0; i<60; i+=10){
@@ -53,7 +53,7 @@
               </script>
             </select>
             &emsp;～&emsp;終了：
-            <select name="hour">
+            <select name="f_hour">
               <script>
                 var i;
                 for(i=0; i<24; i+=1){
@@ -61,7 +61,7 @@
                 }
               </script>
             </select>
-            <select name="min">
+            <select name="f_min">
               <script>
                 var i;
                 for(i=0; i<60; i+=10){
@@ -76,7 +76,7 @@
           <p>場所</p>
         </td>
         <td>
-          <input type="text" name="title" size="25">
+          <input type="text" name="place" size="25" placeholder="25文字まで">
         </td>
       </tr>
       <tr>
@@ -84,7 +84,7 @@
           <p>詳細</p>
         </td>
         <td>
-          <textarea maxlength="200"></textarea>
+          <textarea name="details" maxlength="200" placeholder="200文字まで"></textarea>
         </td>
       </tr>
       <tr>
@@ -92,7 +92,7 @@
           <p>重要</p>
         </td>
         <td>
-          <label><input type="checkbox">※この予定は重要です</label>
+          <label><input type="checkbox" name="importance">※この予定は重要です</label>
         </td>
       </tr>
 

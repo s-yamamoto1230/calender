@@ -2,21 +2,21 @@
 <%@ page import="java.sql.*" %>
 <% request.setCharacterEncoding("UTF-8"); %>
 <%
-  
-  String idStr = request.getParameter("id");
-  String titleStr = request.getParameter("title");
-  String openStr = request.getParameter("open");
-  String passStr = request.getParameter("password");
-  String permissionStr = request.getParameter("permission");
+
   String kaiin_idStr = request.getParameter("kaiin_id");
+  String s_hourStr = request.getParameter("s_hour");
+  String s_minStr = request.getParameter("s_min");
+  String f_hourStr = request.getParameter("f_hour");
+  String f_minStr = request.getParameter("f_min");
+  String placeStr = request.getParameter("place");
+  String detailsStr = request.getParameter("details");
+  String importanceStr = request.getParameter("importance");
 
-//   String message = passStr;
-//   int num = message.length();
-//   String password="";
-//   for (int i=1; i<=num; i++) {
-//       password=password+"*";
-//   }
-
+  if (importanceStr == null) {
+    importanceStr ="0";
+  }else {
+    importanceStr ="1";
+  }
 %>
 
 <html>
@@ -25,7 +25,7 @@
 
     <meta charset="utf-8">
 
-    <title>新規登録(確認)</title>
+    <title>予定登録(確認)</title>
 
     <link rel="stylesheet" type="text/css" href="./css/info.css">
 
@@ -40,62 +40,53 @@
     <table>
     <form action="./agenda_makecomplete.jsp" method="post">
 
-      <input type="hidden" name="id" value="<%= idStr %>">
-      <input type="hidden" name="title" value="<%= titleStr %>">
-      <input type="hidden" name="open" value="<%= openStr %>">
-      <input type="hidden" name="pass" value="<%= passStr %>">
-      <input type="hidden" name="permission" value="<%= permissionStr %>">
       <input type="hidden" name="kaiin_id" value="<%= kaiin_idStr %>">
-
+      <input type="hidden" name="s_hour" value="<%= s_hourStr %>">
+      <input type="hidden" name="s_min" value="<%= s_minStr %>">
+      <input type="hidden" name="f_hour" value="<%= f_hourStr %>">
+      <input type="hidden" name="f_min" value="<%= f_minStr %>">
+      <input type="hidden" name="place" value="<%= placeStr %>">
+      <input type="hidden" name="details" value="<%= detailsStr %>">
+      <input type="hidden" name="importance" value="<%= importanceStr %>">
 
       <tr>
         <td>
-          <p>ID</p>
+          <p>時間</p>
         </td>
         <td class="check">
-          <%= idStr %>
+        <%= s_hourStr %>：<%= s_minStr %>～<%= f_hourStr %>：<%= f_minStr %>　
         </td>
       </tr>
       <tr>
         <td>
-          <p>タイトル</p>
+          <p>場所</p>
         </td>
         <td class="check">
-          <%= titleStr %>
+          <%= placeStr %>
         </td>
       </tr>
       <tr>
         <td>
-          <p>公開設定</p>
+          <p>詳細</p>
         </td>
         <td class="check">
-          <% if(openStr.equals("1")) { %>
-          全員に公開
+          <%= detailsStr %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>重要</p>
+        </td>
+        <td class="check">
+          <% if(importanceStr.equals("1")) { %>
+          めちゃくちゃ重要です。
           <%}else{%>
-          特定の人にのみ公開
+          そこまで重要ではありません。
           <% } %>
         </td>
       </tr>
-      <tr>
-        <td>
-          <p>パスワード</p>
-        </td>
-        <td class="check">
-          <%= "入力されたパスワード" %>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p>書き込み設定</p>
-        </td>
-        <td class="check">
-          <% if(permissionStr.equals("1")) { %>
-          許可
-          <%}else{%>
-          禁止
-          <% } %>
-        </td>
-      </tr>
+
+
 
       <tr class="no-line">
         <td  id="button" class="no-line" colspan="2">
