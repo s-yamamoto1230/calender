@@ -129,14 +129,14 @@ StringBuffer SQL = null;
 ResultSet rs = null;
 
 //ローカルのMySQLに接続する設定
-/*	String USER ="root";
+String USER ="root";
 String PASSWORD = "";
-String URL ="jdbc:mysql://localhost/nhs90345db";*/
+String URL ="jdbc:mysql://localhost/agenda";
 
 //サーバーのMySQLに接続する設定
-String USER = "nhs90345";
+/*String USER = "nhs90345";
 String PASSWORD = "b19931230";
-String URL ="jdbc:mysql://192.168.121.16/nhs90345db";
+String URL ="jdbc:mysql://192.168.121.16/nhs90345db";*/
 
 String DRIVER = "com.mysql.jdbc.Driver";
 
@@ -182,8 +182,6 @@ try{	// ロードに失敗したときのための例外処理
     map.put("place",rs.getString("place"));
     map.put("details",rs.getString("details"));
     map.put("importance",rs.getString("importance"));
-
-    map.put("",rs.getString(""));
 
     //1件分のデータ(HashMap)をArrayListへ追加
     list.add(map);
@@ -243,6 +241,8 @@ finally{
       out.write("    <li><a href=\"./agenda_make.jsp?\">Agenda作成</a></li>\r\n");
       out.write("    <li><a href=\"./ag_search.html\">Agenda検索</a></li>\r\n");
       out.write("  </ul>\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
       out.write("  <table id=\"cal\">\r\n");
       out.write("\r\n");
       out.write("        <tr border=\"0\" cellspacing=\"1\" cellpadding=\"1\" bgcolor=\"#CCCCCC\" style=\"font: 12px; color: #666666;\">\r\n");
@@ -297,24 +297,35 @@ finally{
       out.write("日の予定</h2>\r\n");
       out.write("                  ");
 
-                    for(int j = 0; j < list.size(); i++){
+                    String year0 = String.valueOf(year);
+                    String month0 = String.valueOf(month+1);
+                    String num0 = String.valueOf(num[0]);
+                    String day0 = year0+month0+num0;
+                    for(int j = 0; j < list.size(); j++){
                   
       out.write("\r\n");
       out.write("                  ");
 
-                    if (<%= year 
-      out.write('+');
-      out.print( month );
-      out.write('+');
-      out.print( num[0].equals(<%= list.get(j).get("day")) );
-      out.write(") {\r\n");
-      out.write("                  %>\r\n");
-      out.write("                  ");
-      out.print( list.get(j).get("place")) );
+                    if (day0.equals(list.get(j).get("day"))) {
+                  
       out.write("\r\n");
+      out.write("                  <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day0 );
+      out.write("&s_time=");
+      out.print( list.get(j).get("s_time") );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
       out.write("                  ");
-      out.print( list.get(j).get("details")) );
+      out.print( list.get(j).get("s_time") );
+      out.write("～\r\n");
+      out.write("                  ");
+      out.print( list.get(j).get("place") );
       out.write("\r\n");
+      out.write("                  <br>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
       out.write("                  ");
  }} 
       out.write("\r\n");

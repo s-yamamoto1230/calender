@@ -71,14 +71,14 @@ StringBuffer SQL = null;
 ResultSet rs = null;
 
 //ローカルのMySQLに接続する設定
-/*	String USER ="root";
+String USER ="root";
 String PASSWORD = "";
-String URL ="jdbc:mysql://localhost/nhs90345db";*/
+String URL ="jdbc:mysql://localhost/agenda";
 
 //サーバーのMySQLに接続する設定
-String USER = "nhs90345";
+/*String USER = "nhs90345";
 String PASSWORD = "b19931230";
-String URL ="jdbc:mysql://192.168.121.16/nhs90345db";
+String URL ="jdbc:mysql://192.168.121.16/nhs90345db";*/
 
 String DRIVER = "com.mysql.jdbc.Driver";
 
@@ -124,8 +124,6 @@ try{	// ロードに失敗したときのための例外処理
     map.put("place",rs.getString("place"));
     map.put("details",rs.getString("details"));
     map.put("importance",rs.getString("importance"));
-
-    map.put("",rs.getString(""));
 
     //1件分のデータ(HashMap)をArrayListへ追加
     list.add(map);
@@ -184,6 +182,8 @@ finally{
     <li><a href="./agenda_make.jsp?">Agenda作成</a></li>
     <li><a href="./ag_search.html">Agenda検索</a></li>
   </ul>
+
+
   <table id="cal">
 
         <tr border="0" cellspacing="1" cellpadding="1" bgcolor="#CCCCCC" style="font: 12px; color: #666666;">
@@ -225,13 +225,22 @@ finally{
                   <div class="modal-content">
                   <h2><%= num[0] %>日の予定</h2>
                   <%
-                    for(int j = 0; j < list.size(); i++){
+                    String year0 = String.valueOf(year);
+                    String month0 = String.valueOf(month+1);
+                    String num0 = String.valueOf(num[0]);
+                    String day0 = year0+month0+num0;
+                    for(int j = 0; j < list.size(); j++){
                   %>
                   <%
-                    if (<%= year %>+<%= month %>+<%= num[0].equals(<%= list.get(j).get("day")) %>) {
+                    if (day0.equals(list.get(j).get("day"))) {
                   %>
-                  <%= list.get(j).get("place")) %>
-                  <%= list.get(j).get("details")) %>
+                  <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day0 %>&s_time=<%= list.get(j).get("s_time") %>">
+                  <div class="yotei">
+                  <%= list.get(j).get("s_time") %>～
+                  <%= list.get(j).get("place") %>
+                  <br>
+                  </div>
+                </a>
                   <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[0] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>

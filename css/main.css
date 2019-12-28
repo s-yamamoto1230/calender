@@ -94,6 +94,10 @@ button{
   font-size: 15px;
 }
 
+.yotei{
+  font-size: 30px;
+}
+
 .modal-wrapper {
   z-index: 999;
   position: fixed;

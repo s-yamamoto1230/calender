@@ -4,8 +4,10 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.ArrayList;
 
-public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -53,26 +55,17 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
 
       out.write("\r\n");
       out.write("\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
 
   //文字コードの指定
   request.setCharacterEncoding("UTF-8");
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idStr = request.getParameter("kaiin_id");
-  String dayStr = request.getParameter("day");
-  String s_hourStr = request.getParameter("s_hour");
-  String s_minStr = request.getParameter("s_min");
-  String f_hourStr = request.getParameter("f_hour");
-  String f_minStr = request.getParameter("f_min");
-  String placeStr = request.getParameter("place");
-  String detailsStr = request.getParameter("details");
-  String importanceStr = request.getParameter("importance");
-
-  String s_timeStr = s_hourStr + s_minStr;
-  String f_timeStr = f_hourStr + f_minStr;
-
-
+  String kaiin_idStr  = request.getParameter("kaiin_id");
+  String dayStr  = request.getParameter("day");
+  String s_timeStr  = request.getParameter("s_time");
 
   //データベースに接続するために使用する変数宣言
   Connection con = null;
@@ -86,10 +79,9 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
   String URL ="jdbc:mysql://localhost/agenda";
 
   //サーバーのMySQLに接続する設定
-/*  String USER = "nhsxxxxx";
-  String PASSWORD = "byyyymmdd";
-  String URL ="jdbc:mysql://192.168.121.16/nhs90345db";
-*/
+/*  String USER = "nhs90345";
+  String PASSWORD = "b19931230";
+  String URL ="jdbc:mysql://192.168.121.16/agenda";*/
 
   String DRIVER = "com.mysql.jdbc.Driver";
 
@@ -99,8 +91,12 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
   //ヒットフラグ
   int hit_flag = 0;
 
-  //追加件数
-  int ins_count=0;
+  //HashMap（1件分のデータを格納する連想配列）
+  HashMap<String,String> map = null;
+
+  //ArrayList（すべての件数を格納する配列）
+  ArrayList<HashMap> list = null;
+  list = new ArrayList<HashMap>();
 
   try{  // ロードに失敗したときのための例外処理
     // JDBCドライバのロード
@@ -123,8 +119,7 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
     SQL.append("' and s_time ='");
     SQL.append(s_timeStr);
     SQL.append("'");
-
-      System.out.println(SQL.toString());
+//      System.out.println(SQL.toString());
 
     //SQL文の実行（選択クエリ）
     rs = stmt.executeQuery(SQL.toString());
@@ -133,36 +128,23 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
     if(rs.next()){  //存在する
       //ヒットフラグON
       hit_flag = 1;
-    }else{  //存在しない(追加OK)
+
+        //検索データをHashMapへ格納する
+        map = new HashMap<String,String>();
+      map.put("kaiin_id",rs.getString("kaiin_id"));
+      map.put("day",rs.getString("day"));
+      map.put("s_time",rs.getString("s_time"));
+      map.put("f_time",rs.getString("f_time"));
+      map.put("place",rs.getString("place"));
+      map.put("details",rs.getString("details"));
+      map.put("importance",rs.getString("importance"));
+
+      //1件分のデータ(HashMap)をArrayListへ追加
+      list.add(map);
+    }else{  //存在しない
       //ヒットフラグOFF
       hit_flag = 0;
-    //SQLステートメントの作成（選択クエリ）
-    SQL=new StringBuffer();
-
-    //SQL文の構築
-    SQL.append("insert into yotei_tbl(kaiin_id,day,s_time,f_time,place,details,importance)");
-    SQL.append("values('");
-    SQL.append(kaiin_idStr);
-    SQL.append("','");
-    SQL.append(dayStr);
-    SQL.append("','");
-    SQL.append(s_timeStr);
-    SQL.append("','");
-    SQL.append(f_timeStr);
-    SQL.append("','");
-    SQL.append(placeStr);
-    SQL.append("','");
-    SQL.append(detailsStr);
-    SQL.append("','");
-    SQL.append(importanceStr);
-    SQL.append("')");
     }
-
-    //System.out.println(SQL.toString)
-
-    //SQL文の実行(DB追加)
-    ins_count=stmt.executeUpdate(SQL.toString());
-
   } //tryブロック終了
   catch(ClassNotFoundException e){
     ERMSG = new StringBuffer();
@@ -197,63 +179,74 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
   }
 
       out.write("\r\n");
-      out.write("\r\n");
-      out.write("<!DOCTYPE html>\r\n");
       out.write("<html>\r\n");
-      out.write("<head>\r\n");
-      out.write("  <meta charset=\"utf-8\">\r\n");
-      out.write("  <title>登録完了</title>\r\n");
-      out.write("  <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/info.css\">\r\n");
-      out.write("</head>\r\n");
-      out.write("<body>\r\n");
       out.write("\r\n");
-
-  if(hit_flag == 1){  //認証NG
-
+      out.write("  <head>\r\n");
       out.write("\r\n");
-      out.write("追加NG<br>\r\n");
-      out.print( "入力された予定時刻は既に存在しています" );
-      out.write('\r');
-      out.write('\n');
-
-}else if(ins_count==0){//追加処理失敗
-
+      out.write("    <meta charset=\"utf-8\">\r\n");
       out.write("\r\n");
-      out.write("追加NG<br>\r\n");
-      out.print( "登録が失敗しました" );
-      out.write('\r');
-      out.write('\n');
-      out.print( s_timeStr );
-      out.write('\r');
-      out.write('\n');
-
-  }else{  //認証OK
-
+      out.write("    <title>予定確認</title>\r\n");
       out.write("\r\n");
-      out.write("    <h1>新規登録完了</h1><br>\r\n");
-      out.write("    ");
-      out.print( ins_count + "件登録が完了しました" );
-      out.write('\r');
-      out.write('\n');
-
-  }
-
+      out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/info.css\">\r\n");
       out.write("\r\n");
-      out.write("<br><br>\r\n");
- if(ERMSG != null){ 
+      out.write("  </head>\r\n");
       out.write("\r\n");
-      out.write("予期せぬエラーが発生しました<br />\r\n");
-      out.print( ERMSG );
-      out.write('\r');
-      out.write('\n');
- }else{ 
+      out.write("  <body>\r\n");
       out.write("\r\n");
-      out.write("※エラーは発生しませんでした<br/>\r\n");
+      out.write("<table border=\"1\">\r\n");
+      out.write("  <tr>\r\n");
+      out.write("    <td>\r\n");
+      out.write("      <p>時間</p>\r\n");
+      out.write("    </td>\r\n");
+      out.write("    <td class=\"check\">\r\n");
+      out.write("      ");
+      out.print( list.get(0).get("s_time") );
+      out.write('～');
+      out.print( list.get(0).get("f_time") );
+      out.write("\r\n");
+      out.write("    </td>\r\n");
+      out.write("  </tr>\r\n");
+      out.write("  <tr>\r\n");
+      out.write("    <td>\r\n");
+      out.write("      <p>場所</p>\r\n");
+      out.write("    </td>\r\n");
+      out.write("    <td class=\"check\">\r\n");
+      out.write("      ");
+      out.print( list.get(0).get("place") );
+      out.write("\r\n");
+      out.write("    </td>\r\n");
+      out.write("  </tr>\r\n");
+      out.write("  <tr>\r\n");
+      out.write("    <td>\r\n");
+      out.write("      <p>詳細</p>\r\n");
+      out.write("    </td>\r\n");
+      out.write("    <td class=\"check\">\r\n");
+      out.write("      ");
+      out.print( list.get(0).get("details") );
+      out.write("\r\n");
+      out.write("    </td>\r\n");
+      out.write("  </tr>\r\n");
+      out.write("  <tr>\r\n");
+      out.write("    <td>\r\n");
+      out.write("      <p>重要</p>\r\n");
+      out.write("    </td>\r\n");
+      out.write("    <td class=\"check\">\r\n");
+      out.write("      ");
+ if(list.get(0).get("importance").equals("1")) { 
+      out.write("\r\n");
+      out.write("      めちゃくちゃ重要です。\r\n");
+      out.write("      ");
+}else{
+      out.write("\r\n");
+      out.write("      そこまで重要ではありません。\r\n");
+      out.write("      ");
  } 
       out.write("\r\n");
+      out.write("    </td>\r\n");
+      out.write("  </tr>\r\n");
       out.write("\r\n");
-      out.write("\r\n");
-      out.write("  <p><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("</table>\r\n");
+      out.write("<br>\r\n");
       out.write("\r\n");
       out.write("</body>\r\n");
       out.write("</html>\r\n");
