@@ -234,7 +234,7 @@ finally{
                   <%
                     if (day0.equals(list.get(j).get("day"))) {
                   %>
-                  <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day0 %>&s_time=<%= list.get(j).get("s_time") %>">
+                  <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day0 %>&s_time=<%= list.get(j).get("s_time") %>&num=<%= num0 %>">
                   <div class="yotei">
                   <%= list.get(j).get("s_time") %>～
                   <%= list.get(j).get("place") %>

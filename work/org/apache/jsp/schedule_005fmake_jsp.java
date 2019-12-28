@@ -167,7 +167,8 @@ public final class schedule_005fmake_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("              <option value=\"30\">30</option>\r\n");
       out.write("              <option value=\"40\">40</option>\r\n");
       out.write("              <option value=\"50\">50</option>\r\n");
-      out.write("          </td>分\r\n");
+      out.write("            </select>分\r\n");
+      out.write("          </td>\r\n");
       out.write("        </tr>\r\n");
       out.write("      <tr>\r\n");
       out.write("        <td class=\"title\">\r\n");

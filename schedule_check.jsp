@@ -11,6 +11,7 @@
   String kaiin_idStr  = request.getParameter("kaiin_id");
   String dayStr  = request.getParameter("day");
   String s_timeStr  = request.getParameter("s_time");
+  String numStr  = request.getParameter("num");
 
   //データベースに接続するために使用する変数宣言
   Connection con = null;
@@ -137,7 +138,18 @@
 
   <body>
 
-<table border="1">
+    <form action="./schedule_update.jsp" method="post">
+
+      <input type="hidden" name="kaiin_id" value="<%= list.get(0).get("kaiin_id") %>">
+      <input type="hidden" name="day" value="<%= list.get(0).get("day") %>">
+      <input type="hidden" name="s_time" value="<%= list.get(0).get("s_time") %>">
+      <input type="hidden" name="f_time" value="<%= list.get(0).get("f_time") %>">
+      <input type="hidden" name="place" value="<%= list.get(0).get("place") %>">
+      <input type="hidden" name="details" value="<%= list.get(0).get("details") %>">
+      <input type="hidden" name="importance" value="<%= list.get(0).get("importance") %>">
+
+<%= numStr %>日の予定
+<table>
   <tr>
     <td>
       <p>時間</p>
@@ -174,6 +186,21 @@
       <% } %>
     </td>
   </tr>
+  <tr class="no-line">
+    <td class="no-line" id="button" colspan="2">
+        <p>
+          <input type="submit" id="submit" value="編集">
+        </p>
+    </td>
+  </form>
+  </tr>
+
+    <tr class="no-line">
+      <td class="no-line" colspan="2">
+        <p><a href="./main.jsp">メイン画面に戻る</a></p>
+      </td>
+
+    </tr>
 
 </table>
 <br>

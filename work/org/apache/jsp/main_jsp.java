@@ -315,6 +315,8 @@ finally{
       out.print( day0 );
       out.write("&s_time=");
       out.print( list.get(j).get("s_time") );
+      out.write("&num=");
+      out.print( num0 );
       out.write("\">\r\n");
       out.write("                  <div class=\"yotei\">\r\n");
       out.write("                  ");
