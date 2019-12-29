@@ -164,7 +164,7 @@ try{	// ロードに失敗したときのための例外処理
     SQL = new StringBuffer();
 
   //SQL文の発行（選択クエリ）
-  SQL.append("select kaiin_id,day,s_time,f_time,place,details,importance from yotei_tbl where kaiin_id = '");
+  SQL.append("select kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance from yotei_tbl where kaiin_id = '");
   SQL.append(kaiin_idStr);
   SQL.append("'");
 
@@ -177,8 +177,10 @@ try{	// ロードに失敗したときのための例外処理
     map = new HashMap<String,String>();
     map.put("kaiin_id",rs.getString("kaiin_id"));
     map.put("day",rs.getString("day"));
-    map.put("s_time",rs.getString("s_time"));
-    map.put("f_time",rs.getString("f_time"));
+    map.put("s_hour",rs.getString("s_hour"));
+    map.put("s_mine",rs.getString("s_mine"));
+    map.put("f_hour",rs.getString("f_hour"));
+    map.put("f_mine",rs.getString("f_mine"));
     map.put("place",rs.getString("place"));
     map.put("details",rs.getString("details"));
     map.put("importance",rs.getString("importance"));
@@ -313,15 +315,19 @@ finally{
       out.print( list.get(j).get("kaiin_id") );
       out.write("&day=");
       out.print( day0 );
-      out.write("&s_time=");
-      out.print( list.get(j).get("s_time") );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
       out.write("&num=");
       out.print( num0 );
       out.write("\">\r\n");
       out.write("                  <div class=\"yotei\">\r\n");
       out.write("                  ");
-      out.print( list.get(j).get("s_time") );
-      out.write("～\r\n");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
       out.write("                  ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
@@ -369,8 +375,46 @@ finally{
       out.write("                <h2>");
       out.print( num[1] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year1 = String.valueOf(year);
+                  String month1 = String.valueOf(month+1);
+                  String num1 = String.valueOf(num[1]);
+                  String day1 = year1+month1+num1;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day1.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day1 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num1 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -409,8 +453,46 @@ finally{
       out.write("                <h2>");
       out.print( num[2] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year2 = String.valueOf(year);
+                  String month2 = String.valueOf(month+1);
+                  String num2 = String.valueOf(num[2]);
+                  String day2 = year2+month2+num2;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day2.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day2 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num2 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -449,8 +531,46 @@ finally{
       out.write("                <h2>");
       out.print( num[3] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year3 = String.valueOf(year);
+                  String month3 = String.valueOf(month+1);
+                  String num3 = String.valueOf(num[3]);
+                  String day3 = year3+month3+num3;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day3.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day3 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num3 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -489,8 +609,46 @@ finally{
       out.write("                <h2>");
       out.print( num[4] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year4 = String.valueOf(year);
+                  String month4 = String.valueOf(month+1);
+                  String num4 = String.valueOf(num[4]);
+                  String day4 = year4+month4+num4;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day4.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day4 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num4 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -529,8 +687,46 @@ finally{
       out.write("                <h2>");
       out.print( num[5] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year5 = String.valueOf(year);
+                  String month5 = String.valueOf(month+1);
+                  String num5 = String.valueOf(num[5]);
+                  String day5 = year5+month5+num5;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day5.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day5 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num5 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -558,8 +754,46 @@ finally{
       out.write("                <h2>");
       out.print( num[6] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year6 = String.valueOf(year);
+                  String month6 = String.valueOf(month+1);
+                  String num6 = String.valueOf(num[6]);
+                  String day6 = year6+month6+num6;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day6.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day6 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num6 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -584,8 +818,46 @@ finally{
       out.write("                <h2>");
       out.print( num[7] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year7 = String.valueOf(year);
+                  String month7 = String.valueOf(month+1);
+                  String num7 = String.valueOf(num[7]);
+                  String day7 = year7+month7+num7;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day7.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day7 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num7 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -608,8 +880,46 @@ finally{
       out.write("                <h2>");
       out.print( num[8] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year8 = String.valueOf(year);
+                  String month8 = String.valueOf(month+1);
+                  String num8 = String.valueOf(num[8]);
+                  String day8 = year8+month8+num8;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day8.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day8 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num8 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -632,8 +942,46 @@ finally{
       out.write("                <h2>");
       out.print( num[9] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year9 = String.valueOf(year);
+                  String month9 = String.valueOf(month+1);
+                  String num9 = String.valueOf(num[9]);
+                  String day9 = year9+month9+num9;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day9.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day9 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num9 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -656,8 +1004,46 @@ finally{
       out.write("                <h2>");
       out.print( num[10] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year10 = String.valueOf(year);
+                  String month10 = String.valueOf(month+1);
+                  String num10 = String.valueOf(num[10]);
+                  String day10 = year10+month10+num10;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day10.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day10 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num10 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -680,8 +1066,46 @@ finally{
       out.write("                <h2>");
       out.print( num[11] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year11 = String.valueOf(year);
+                  String month11 = String.valueOf(month+1);
+                  String num11 = String.valueOf(num[11]);
+                  String day11 = year11+month11+num11;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day11.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day11 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num11 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -704,8 +1128,46 @@ finally{
       out.write("                <h2>");
       out.print( num[12] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year12 = String.valueOf(year);
+                  String month12 = String.valueOf(month+1);
+                  String num12 = String.valueOf(num[12]);
+                  String day12 = year12+month12+num12;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day12.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day12 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num12 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -728,8 +1190,46 @@ finally{
       out.write("                <h2>");
       out.print( num[13] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year13 = String.valueOf(year);
+                  String month13 = String.valueOf(month+1);
+                  String num13 = String.valueOf(num[13]);
+                  String day13 = year13+month13+num13;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day13.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day13 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num13 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -753,8 +1253,46 @@ finally{
       out.write("                <h2>");
       out.print( num[14] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year14 = String.valueOf(year);
+                  String month14 = String.valueOf(month+1);
+                  String num14 = String.valueOf(num[14]);
+                  String day14 = year14+month14+num14;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day14.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day14 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num14 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -777,8 +1315,46 @@ finally{
       out.write("                <h2>");
       out.print( num[15] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year15 = String.valueOf(year);
+                  String month15 = String.valueOf(month+1);
+                  String num15 = String.valueOf(num[15]);
+                  String day15 = year15+month15+num15;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day15.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day15 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num15 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -801,8 +1377,46 @@ finally{
       out.write("                <h2>");
       out.print( num[16] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year16 = String.valueOf(year);
+                  String month16 = String.valueOf(month+1);
+                  String num16 = String.valueOf(num[16]);
+                  String day16 = year16+month16+num16;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day16.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day16 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num16 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -825,8 +1439,46 @@ finally{
       out.write("                <h2>");
       out.print( num[17] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year17 = String.valueOf(year);
+                  String month17 = String.valueOf(month+1);
+                  String num17 = String.valueOf(num[17]);
+                  String day17 = year17+month17+num17;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day17.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day17 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num17 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -849,8 +1501,46 @@ finally{
       out.write("                <h2>");
       out.print( num[18] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year18 = String.valueOf(year);
+                  String month18 = String.valueOf(month+1);
+                  String num18 = String.valueOf(num[18]);
+                  String day18 = year18+month18+num18;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day18.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day18 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num18 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -873,8 +1563,46 @@ finally{
       out.write("                <h2>");
       out.print( num[19] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year19 = String.valueOf(year);
+                  String month19 = String.valueOf(month+1);
+                  String num19 = String.valueOf(num[19]);
+                  String day19 = year19+month19+num19;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day19.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day19 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num19 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -897,8 +1625,46 @@ finally{
       out.write("                <h2>");
       out.print( num[20] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year20 = String.valueOf(year);
+                  String month20 = String.valueOf(month+1);
+                  String num20 = String.valueOf(num[20]);
+                  String day20 = year20+month20+num20;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day20.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day20 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num20 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -923,8 +1689,46 @@ finally{
       out.write("                <h2>");
       out.print( num[21] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year21 = String.valueOf(year);
+                  String month21 = String.valueOf(month+1);
+                  String num21 = String.valueOf(num[21]);
+                  String day21 = year21+month21+num21;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day21.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day21 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num21 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -947,8 +1751,46 @@ finally{
       out.write("                <h2>");
       out.print( num[22] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year22 = String.valueOf(year);
+                  String month22 = String.valueOf(month+1);
+                  String num22 = String.valueOf(num[22]);
+                  String day22 = year22+month22+num22;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day22.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day22 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num22 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -971,8 +1813,46 @@ finally{
       out.write("                <h2>");
       out.print( num[23] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year23 = String.valueOf(year);
+                  String month23 = String.valueOf(month+1);
+                  String num23 = String.valueOf(num[23]);
+                  String day23 = year23+month23+num23;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day23.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day23 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num23 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -995,8 +1875,46 @@ finally{
       out.write("                <h2>");
       out.print( num[24] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year24 = String.valueOf(year);
+                  String month24 = String.valueOf(month+1);
+                  String num24 = String.valueOf(num[24]);
+                  String day24 = year24+month24+num24;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day24.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day24 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num24 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -1019,8 +1937,46 @@ finally{
       out.write("                <h2>");
       out.print( num[25] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year25 = String.valueOf(year);
+                  String month25 = String.valueOf(month+1);
+                  String num25 = String.valueOf(num[25]);
+                  String day25 = year25+month25+num25;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day25.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day25 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num25 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -1043,8 +1999,46 @@ finally{
       out.write("                <h2>");
       out.print( num[26] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year26 = String.valueOf(year);
+                  String month26 = String.valueOf(month+1);
+                  String num26 = String.valueOf(num[26]);
+                  String day26 = year26+month26+num26;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day26.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day26 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num26 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -1067,8 +2061,46 @@ finally{
       out.write("                <h2>");
       out.print( num[27] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year27 = String.valueOf(year);
+                  String month27 = String.valueOf(month+1);
+                  String num27 = String.valueOf(num[27]);
+                  String day27 = year27+month27+num27;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day27.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day27 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num27 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -1093,8 +2125,46 @@ finally{
       out.write("                <h2>");
       out.print( num[28] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year28 = String.valueOf(year);
+                  String month28 = String.valueOf(month+1);
+                  String num28 = String.valueOf(num[28]);
+                  String day28 = year28+month28+num28;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day28.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day28 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num28 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -1117,8 +2187,46 @@ finally{
       out.write("                <h2>");
       out.print( num[29] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year29 = String.valueOf(year);
+                  String month29 = String.valueOf(month+1);
+                  String num29 = String.valueOf(num[29]);
+                  String day29 = year29+month29+num29;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day29.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day29 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num29 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -1141,8 +2249,46 @@ finally{
       out.write("                <h2>");
       out.print( num[30] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year30 = String.valueOf(year);
+                  String month30 = String.valueOf(month+1);
+                  String num30 = String.valueOf(num[30]);
+                  String day30 = year30+month30+num30;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day30.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day30 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num30 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -1176,8 +2322,46 @@ finally{
       out.write("                <h2>");
       out.print( num[31] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year31 = String.valueOf(year);
+                  String month31 = String.valueOf(month+1);
+                  String num31 = String.valueOf(num[31]);
+                  String day31 = year31+month31+num31;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day31.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day31 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num31 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -1216,8 +2400,46 @@ finally{
       out.write("                <h2>");
       out.print( num[32] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year32 = String.valueOf(year);
+                  String month32 = String.valueOf(month+1);
+                  String num32 = String.valueOf(num[32]);
+                  String day32 = year32+month32+num32;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day32.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day32 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num32 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -1256,8 +2478,46 @@ finally{
       out.write("                <h2>");
       out.print( num[33] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year33 = String.valueOf(year);
+                  String month33 = String.valueOf(month+1);
+                  String num33 = String.valueOf(num[33]);
+                  String day33 = year33+month33+num33;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day33.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day33 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num33 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -1296,8 +2556,46 @@ finally{
       out.write("                <h2>");
       out.print( num[34] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year34 = String.valueOf(year);
+                  String month34 = String.valueOf(month+1);
+                  String num34 = String.valueOf(num[34]);
+                  String day34 = year34+month34+num34;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day34.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day34 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num34 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -1337,8 +2635,46 @@ finally{
       out.write("                <h2>");
       out.print( num[35] );
       out.write("日の予定</h2>\r\n");
-      out.write("                  <p>学校</p>\r\n");
-      out.write("                  <p>バイト</p>\r\n");
+      out.write("                ");
+
+                  String year35 = String.valueOf(year);
+                  String month35 = String.valueOf(month+1);
+                  String num35 = String.valueOf(num[35]);
+                  String day35 = year35+month35+num35;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day35.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day35 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num35 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
+      out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
@@ -1377,6 +2713,45 @@ finally{
       out.write("                <h2>");
       out.print( num[36] );
       out.write("日の予定</h2>\r\n");
+      out.write("                ");
+
+                  String year36 = String.valueOf(year);
+                  String month36 = String.valueOf(month+1);
+                  String num36 = String.valueOf(num[36]);
+                  String day36 = year36+month36+num36;
+                  for(int j = 0; j < list.size(); j++){
+                
+      out.write("\r\n");
+      out.write("                ");
+
+                  if (day36.equals(list.get(j).get("day"))) {
+                
+      out.write("\r\n");
+      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
+      out.print( list.get(j).get("kaiin_id") );
+      out.write("&day=");
+      out.print( day36 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num36 );
+      out.write("\">\r\n");
+      out.write("                <div class=\"yotei\">\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                <br>\r\n");
+      out.write("                </div>\r\n");
+      out.write("              </a>\r\n");
+      out.write("                ");
+ }} 
       out.write("\r\n");
       out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );

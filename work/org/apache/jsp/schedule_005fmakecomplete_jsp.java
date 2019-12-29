@@ -69,9 +69,6 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
   String detailsStr = request.getParameter("details");
   String importanceStr = request.getParameter("importance");
 
-  String s_timeStr = s_hourStr + s_minStr;
-  String f_timeStr = f_hourStr + f_minStr;
-
 
 
   //データベースに接続するために使用する変数宣言
@@ -120,8 +117,10 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
     SQL.append(kaiin_idStr);
     SQL.append("' and day ='");
     SQL.append(dayStr);
-    SQL.append("' and s_time ='");
-    SQL.append(s_timeStr);
+    SQL.append("' and s_hour ='");
+    SQL.append(s_hourStr);
+    SQL.append("' and s_mine ='");
+    SQL.append(s_minStr);
     SQL.append("'");
 
       System.out.println(SQL.toString());
@@ -140,15 +139,19 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
     SQL=new StringBuffer();
 
     //SQL文の構築
-    SQL.append("insert into yotei_tbl(kaiin_id,day,s_time,f_time,place,details,importance)");
+    SQL.append("insert into yotei_tbl(kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance)");
     SQL.append("values('");
     SQL.append(kaiin_idStr);
     SQL.append("','");
     SQL.append(dayStr);
     SQL.append("','");
-    SQL.append(s_timeStr);
+    SQL.append(s_hourStr);
     SQL.append("','");
-    SQL.append(f_timeStr);
+    SQL.append(s_minStr);
+    SQL.append("','");
+    SQL.append(f_hourStr);
+    SQL.append("','");
+    SQL.append(f_minStr);
     SQL.append("','");
     SQL.append(placeStr);
     SQL.append("','");
@@ -212,7 +215,7 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
 
       out.write("\r\n");
       out.write("追加NG<br>\r\n");
-      out.print( "入力された予定時刻は既に存在しています" );
+      out.print( "入力された予定時刻は既に登録してあります" );
       out.write('\r');
       out.write('\n');
 
@@ -221,9 +224,6 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
       out.write("\r\n");
       out.write("追加NG<br>\r\n");
       out.print( "登録が失敗しました" );
-      out.write('\r');
-      out.write('\n');
-      out.print( s_timeStr );
       out.write('\r');
       out.write('\n');
 

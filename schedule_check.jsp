@@ -10,7 +10,8 @@
   //入力データ受信
   String kaiin_idStr  = request.getParameter("kaiin_id");
   String dayStr  = request.getParameter("day");
-  String s_timeStr  = request.getParameter("s_time");
+  String s_hourStr  = request.getParameter("s_hour");
+  String s_mineStr  = request.getParameter("s_mine");
   String numStr  = request.getParameter("num");
 
   //データベースに接続するために使用する変数宣言
@@ -62,8 +63,10 @@
     SQL.append(kaiin_idStr);
     SQL.append("' and day ='");
     SQL.append(dayStr);
-    SQL.append("' and s_time ='");
-    SQL.append(s_timeStr);
+    SQL.append("' and s_hour ='");
+    SQL.append(s_hourStr);
+    SQL.append("' and s_mine ='");
+    SQL.append(s_mineStr);
     SQL.append("'");
 //      System.out.println(SQL.toString());
 
@@ -79,8 +82,10 @@
         map = new HashMap<String,String>();
       map.put("kaiin_id",rs.getString("kaiin_id"));
       map.put("day",rs.getString("day"));
-      map.put("s_time",rs.getString("s_time"));
-      map.put("f_time",rs.getString("f_time"));
+      map.put("s_hour",rs.getString("s_hour"));
+      map.put("s_mine",rs.getString("s_mine"));
+      map.put("f_hour",rs.getString("f_hour"));
+      map.put("f_mine",rs.getString("f_mine"));
       map.put("place",rs.getString("place"));
       map.put("details",rs.getString("details"));
       map.put("importance",rs.getString("importance"));
@@ -142,20 +147,24 @@
 
       <input type="hidden" name="kaiin_id" value="<%= list.get(0).get("kaiin_id") %>">
       <input type="hidden" name="day" value="<%= list.get(0).get("day") %>">
-      <input type="hidden" name="s_time" value="<%= list.get(0).get("s_time") %>">
-      <input type="hidden" name="f_time" value="<%= list.get(0).get("f_time") %>">
+      <input type="hidden" name="s_hour" value="<%= list.get(0).get("s_hour") %>">
+      <input type="hidden" name="s_mine" value="<%= list.get(0).get("s_mine") %>">
+      <input type="hidden" name="f_hour" value="<%= list.get(0).get("f_hour") %>">
+      <input type="hidden" name="f_mine" value="<%= list.get(0).get("f_mine") %>">
       <input type="hidden" name="place" value="<%= list.get(0).get("place") %>">
       <input type="hidden" name="details" value="<%= list.get(0).get("details") %>">
       <input type="hidden" name="importance" value="<%= list.get(0).get("importance") %>">
 
-<%= numStr %>日の予定
+<h1>
+<%= numStr %>日の<%= list.get(0).get("s_hour") %>時<%= list.get(0).get("s_mine") %>分からの予定詳細
+</h1>
 <table>
   <tr>
     <td>
       <p>時間</p>
     </td>
     <td class="check">
-      <%= list.get(0).get("s_time") %>～<%= list.get(0).get("f_time") %>
+      <%= list.get(0).get("s_hour") %>時<%= list.get(0).get("s_mine") %>分～<%= list.get(0).get("f_hour") %>時<%= list.get(0).get("f_mine") %>分
     </td>
   </tr>
   <tr>

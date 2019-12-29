@@ -65,7 +65,8 @@ public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.Http
   //入力データ受信
   String kaiin_idStr  = request.getParameter("kaiin_id");
   String dayStr  = request.getParameter("day");
-  String s_timeStr  = request.getParameter("s_time");
+  String s_hourStr  = request.getParameter("s_hour");
+  String s_mineStr  = request.getParameter("s_mine");
   String numStr  = request.getParameter("num");
 
   //データベースに接続するために使用する変数宣言
@@ -117,8 +118,10 @@ public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.Http
     SQL.append(kaiin_idStr);
     SQL.append("' and day ='");
     SQL.append(dayStr);
-    SQL.append("' and s_time ='");
-    SQL.append(s_timeStr);
+    SQL.append("' and s_hour ='");
+    SQL.append(s_hourStr);
+    SQL.append("' and s_mine ='");
+    SQL.append(s_mineStr);
     SQL.append("'");
 //      System.out.println(SQL.toString());
 
@@ -134,8 +137,10 @@ public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.Http
         map = new HashMap<String,String>();
       map.put("kaiin_id",rs.getString("kaiin_id"));
       map.put("day",rs.getString("day"));
-      map.put("s_time",rs.getString("s_time"));
-      map.put("f_time",rs.getString("f_time"));
+      map.put("s_hour",rs.getString("s_hour"));
+      map.put("s_mine",rs.getString("s_mine"));
+      map.put("f_hour",rs.getString("f_hour"));
+      map.put("f_mine",rs.getString("f_mine"));
       map.put("place",rs.getString("place"));
       map.put("details",rs.getString("details"));
       map.put("importance",rs.getString("importance"));
@@ -202,11 +207,17 @@ public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.Http
       out.write("      <input type=\"hidden\" name=\"day\" value=\"");
       out.print( list.get(0).get("day") );
       out.write("\">\r\n");
-      out.write("      <input type=\"hidden\" name=\"s_time\" value=\"");
-      out.print( list.get(0).get("s_time") );
+      out.write("      <input type=\"hidden\" name=\"s_hour\" value=\"");
+      out.print( list.get(0).get("s_hour") );
       out.write("\">\r\n");
-      out.write("      <input type=\"hidden\" name=\"f_time\" value=\"");
-      out.print( list.get(0).get("f_time") );
+      out.write("      <input type=\"hidden\" name=\"s_mine\" value=\"");
+      out.print( list.get(0).get("s_mine") );
+      out.write("\">\r\n");
+      out.write("      <input type=\"hidden\" name=\"f_hour\" value=\"");
+      out.print( list.get(0).get("f_hour") );
+      out.write("\">\r\n");
+      out.write("      <input type=\"hidden\" name=\"f_mine\" value=\"");
+      out.print( list.get(0).get("f_mine") );
       out.write("\">\r\n");
       out.write("      <input type=\"hidden\" name=\"place\" value=\"");
       out.print( list.get(0).get("place") );
@@ -218,8 +229,15 @@ public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.Http
       out.print( list.get(0).get("importance") );
       out.write("\">\r\n");
       out.write("\r\n");
+      out.write("<h1>\r\n");
       out.print( numStr );
-      out.write("日の予定\r\n");
+      out.write('日');
+      out.write('の');
+      out.print( list.get(0).get("s_hour") );
+      out.write('時');
+      out.print( list.get(0).get("s_mine") );
+      out.write("分からの予定詳細\r\n");
+      out.write("</h1>\r\n");
       out.write("<table>\r\n");
       out.write("  <tr>\r\n");
       out.write("    <td>\r\n");
@@ -227,10 +245,15 @@ public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.Http
       out.write("    </td>\r\n");
       out.write("    <td class=\"check\">\r\n");
       out.write("      ");
-      out.print( list.get(0).get("s_time") );
+      out.print( list.get(0).get("s_hour") );
+      out.write('時');
+      out.print( list.get(0).get("s_mine") );
+      out.write('分');
       out.write('～');
-      out.print( list.get(0).get("f_time") );
-      out.write("\r\n");
+      out.print( list.get(0).get("f_hour") );
+      out.write('時');
+      out.print( list.get(0).get("f_mine") );
+      out.write("分\r\n");
       out.write("    </td>\r\n");
       out.write("  </tr>\r\n");
       out.write("  <tr>\r\n");

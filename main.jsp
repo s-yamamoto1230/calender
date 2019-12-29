@@ -106,7 +106,7 @@ try{	// ロードに失敗したときのための例外処理
     SQL = new StringBuffer();
 
   //SQL文の発行（選択クエリ）
-  SQL.append("select kaiin_id,day,s_time,f_time,place,details,importance from yotei_tbl where kaiin_id = '");
+  SQL.append("select kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance from yotei_tbl where kaiin_id = '");
   SQL.append(kaiin_idStr);
   SQL.append("'");
 
@@ -119,8 +119,10 @@ try{	// ロードに失敗したときのための例外処理
     map = new HashMap<String,String>();
     map.put("kaiin_id",rs.getString("kaiin_id"));
     map.put("day",rs.getString("day"));
-    map.put("s_time",rs.getString("s_time"));
-    map.put("f_time",rs.getString("f_time"));
+    map.put("s_hour",rs.getString("s_hour"));
+    map.put("s_mine",rs.getString("s_mine"));
+    map.put("f_hour",rs.getString("f_hour"));
+    map.put("f_mine",rs.getString("f_mine"));
     map.put("place",rs.getString("place"));
     map.put("details",rs.getString("details"));
     map.put("importance",rs.getString("importance"));
@@ -234,9 +236,9 @@ finally{
                   <%
                     if (day0.equals(list.get(j).get("day"))) {
                   %>
-                  <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day0 %>&s_time=<%= list.get(j).get("s_time") %>&num=<%= num0 %>">
+                  <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day0 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num0 %>">
                   <div class="yotei">
-                  <%= list.get(j).get("s_time") %>～
+                  <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                   <%= list.get(j).get("place") %>
                   <br>
                   </div>
@@ -266,8 +268,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[1] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year1 = String.valueOf(year);
+                  String month1 = String.valueOf(month+1);
+                  String num1 = String.valueOf(num[1]);
+                  String day1 = year1+month1+num1;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day1.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day1 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num1 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[1] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -292,8 +310,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[2] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year2 = String.valueOf(year);
+                  String month2 = String.valueOf(month+1);
+                  String num2 = String.valueOf(num[2]);
+                  String day2 = year2+month2+num2;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day2.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day2 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num2 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[2] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -318,8 +352,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[3] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year3 = String.valueOf(year);
+                  String month3 = String.valueOf(month+1);
+                  String num3 = String.valueOf(num[3]);
+                  String day3 = year3+month3+num3;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day3.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day3 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num3 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[3] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -344,8 +394,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[4] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year4 = String.valueOf(year);
+                  String month4 = String.valueOf(month+1);
+                  String num4 = String.valueOf(num[4]);
+                  String day4 = year4+month4+num4;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day4.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day4 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num4 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[4] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -370,8 +436,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[5] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year5 = String.valueOf(year);
+                  String month5 = String.valueOf(month+1);
+                  String num5 = String.valueOf(num[5]);
+                  String day5 = year5+month5+num5;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day5.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day5 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num5 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[5] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -389,8 +471,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[6] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year6 = String.valueOf(year);
+                  String month6 = String.valueOf(month+1);
+                  String num6 = String.valueOf(num[6]);
+                  String day6 = year6+month6+num6;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day6.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day6 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num6 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[6] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -407,8 +505,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[7] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year7 = String.valueOf(year);
+                  String month7 = String.valueOf(month+1);
+                  String num7 = String.valueOf(num[7]);
+                  String day7 = year7+month7+num7;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day7.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day7 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num7 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[7] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -423,8 +537,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[8] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year8 = String.valueOf(year);
+                  String month8 = String.valueOf(month+1);
+                  String num8 = String.valueOf(num[8]);
+                  String day8 = year8+month8+num8;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day8.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day8 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num8 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[8] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -439,8 +569,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[9] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year9 = String.valueOf(year);
+                  String month9 = String.valueOf(month+1);
+                  String num9 = String.valueOf(num[9]);
+                  String day9 = year9+month9+num9;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day9.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day9 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num9 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[9] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -455,8 +601,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[10] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year10 = String.valueOf(year);
+                  String month10 = String.valueOf(month+1);
+                  String num10 = String.valueOf(num[10]);
+                  String day10 = year10+month10+num10;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day10.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day10 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num10 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[10] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -471,8 +633,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[11] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year11 = String.valueOf(year);
+                  String month11 = String.valueOf(month+1);
+                  String num11 = String.valueOf(num[11]);
+                  String day11 = year11+month11+num11;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day11.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day11 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num11 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[11] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -487,8 +665,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[12] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year12 = String.valueOf(year);
+                  String month12 = String.valueOf(month+1);
+                  String num12 = String.valueOf(num[12]);
+                  String day12 = year12+month12+num12;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day12.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day12 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num12 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[12] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -503,8 +697,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[13] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year13 = String.valueOf(year);
+                  String month13 = String.valueOf(month+1);
+                  String num13 = String.valueOf(num[13]);
+                  String day13 = year13+month13+num13;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day13.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day13 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num13 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[13] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -520,8 +730,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[14] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year14 = String.valueOf(year);
+                  String month14 = String.valueOf(month+1);
+                  String num14 = String.valueOf(num[14]);
+                  String day14 = year14+month14+num14;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day14.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day14 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num14 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[14] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -536,8 +762,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[15] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year15 = String.valueOf(year);
+                  String month15 = String.valueOf(month+1);
+                  String num15 = String.valueOf(num[15]);
+                  String day15 = year15+month15+num15;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day15.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day15 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num15 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[15] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -552,8 +794,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[16] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year16 = String.valueOf(year);
+                  String month16 = String.valueOf(month+1);
+                  String num16 = String.valueOf(num[16]);
+                  String day16 = year16+month16+num16;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day16.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day16 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num16 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[16] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -568,8 +826,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[17] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year17 = String.valueOf(year);
+                  String month17 = String.valueOf(month+1);
+                  String num17 = String.valueOf(num[17]);
+                  String day17 = year17+month17+num17;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day17.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day17 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num17 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[17] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -584,8 +858,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[18] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year18 = String.valueOf(year);
+                  String month18 = String.valueOf(month+1);
+                  String num18 = String.valueOf(num[18]);
+                  String day18 = year18+month18+num18;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day18.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day18 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num18 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[18] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -600,8 +890,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[19] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year19 = String.valueOf(year);
+                  String month19 = String.valueOf(month+1);
+                  String num19 = String.valueOf(num[19]);
+                  String day19 = year19+month19+num19;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day19.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day19 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num19 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[19] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -616,8 +922,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[20] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year20 = String.valueOf(year);
+                  String month20 = String.valueOf(month+1);
+                  String num20 = String.valueOf(num[20]);
+                  String day20 = year20+month20+num20;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day20.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day20 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num20 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[20] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -634,8 +956,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[21] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year21 = String.valueOf(year);
+                  String month21 = String.valueOf(month+1);
+                  String num21 = String.valueOf(num[21]);
+                  String day21 = year21+month21+num21;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day21.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day21 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num21 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[21] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -650,8 +988,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[22] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year22 = String.valueOf(year);
+                  String month22 = String.valueOf(month+1);
+                  String num22 = String.valueOf(num[22]);
+                  String day22 = year22+month22+num22;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day22.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day22 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num22 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[22] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -666,8 +1020,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[23] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year23 = String.valueOf(year);
+                  String month23 = String.valueOf(month+1);
+                  String num23 = String.valueOf(num[23]);
+                  String day23 = year23+month23+num23;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day23.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day23 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num23 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[23] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -682,8 +1052,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[24] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year24 = String.valueOf(year);
+                  String month24 = String.valueOf(month+1);
+                  String num24 = String.valueOf(num[24]);
+                  String day24 = year24+month24+num24;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day24.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day24 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num24 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[24] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -698,8 +1084,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[25] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year25 = String.valueOf(year);
+                  String month25 = String.valueOf(month+1);
+                  String num25 = String.valueOf(num[25]);
+                  String day25 = year25+month25+num25;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day25.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day25 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num25 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[25] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -714,8 +1116,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[26] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year26 = String.valueOf(year);
+                  String month26 = String.valueOf(month+1);
+                  String num26 = String.valueOf(num[26]);
+                  String day26 = year26+month26+num26;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day26.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day26 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num26 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[26] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -730,8 +1148,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[27] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year27 = String.valueOf(year);
+                  String month27 = String.valueOf(month+1);
+                  String num27 = String.valueOf(num[27]);
+                  String day27 = year27+month27+num27;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day27.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day27 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num27 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[27] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -748,8 +1182,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[28] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year28 = String.valueOf(year);
+                  String month28 = String.valueOf(month+1);
+                  String num28 = String.valueOf(num[28]);
+                  String day28 = year28+month28+num28;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day28.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day28 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num28 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[28] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -764,8 +1214,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[29] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year29 = String.valueOf(year);
+                  String month29 = String.valueOf(month+1);
+                  String num29 = String.valueOf(num[29]);
+                  String day29 = year29+month29+num29;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day29.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day29 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num29 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[29] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -780,8 +1246,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[30] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year30 = String.valueOf(year);
+                  String month30 = String.valueOf(month+1);
+                  String num30 = String.valueOf(num[30]);
+                  String day30 = year30+month30+num30;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day30.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day30 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num30 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[30] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -803,8 +1285,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[31] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year31 = String.valueOf(year);
+                  String month31 = String.valueOf(month+1);
+                  String num31 = String.valueOf(num[31]);
+                  String day31 = year31+month31+num31;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day31.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day31 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num31 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[31] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -829,8 +1327,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[32] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year32 = String.valueOf(year);
+                  String month32 = String.valueOf(month+1);
+                  String num32 = String.valueOf(num[32]);
+                  String day32 = year32+month32+num32;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day32.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day32 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num32 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[32] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -855,8 +1369,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[33] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year33 = String.valueOf(year);
+                  String month33 = String.valueOf(month+1);
+                  String num33 = String.valueOf(num[33]);
+                  String day33 = year33+month33+num33;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day33.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day33 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num33 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[33] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -881,8 +1411,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[34] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year34 = String.valueOf(year);
+                  String month34 = String.valueOf(month+1);
+                  String num34 = String.valueOf(num[34]);
+                  String day34 = year34+month34+num34;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day34.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day34 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num34 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[34] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
               </div>
@@ -908,8 +1454,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[35] %>日の予定</h2>
-                  <p>学校</p>
-                  <p>バイト</p>
+                <%
+                  String year35 = String.valueOf(year);
+                  String month35 = String.valueOf(month+1);
+                  String num35 = String.valueOf(num[35]);
+                  String day35 = year35+month35+num35;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day35.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day35 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num35 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[35] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
@@ -934,7 +1496,24 @@ finally{
                 <div class="modal-window">
                   <div class="modal-content">
                 <h2><%= num[36] %>日の予定</h2>
-
+                <%
+                  String year36 = String.valueOf(year);
+                  String month36 = String.valueOf(month+1);
+                  String num36 = String.valueOf(num[36]);
+                  String day36 = year36+month36+num36;
+                  for(int j = 0; j < list.size(); j++){
+                %>
+                <%
+                  if (day36.equals(list.get(j).get("day"))) {
+                %>
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day36 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num36 %>">
+                <div class="yotei">
+                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                <%= list.get(j).get("place") %>
+                <br>
+                </div>
+              </a>
+                <% }} %>
                   <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[36] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
