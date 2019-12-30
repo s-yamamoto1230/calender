@@ -15,6 +15,8 @@
   String placeStr = request.getParameter("place");
   String detailsStr = request.getParameter("details");
   String importanceStr = request.getParameter("importance");
+  String year = request.getParameter("year");
+  String month = request.getParameter("month");
 
 
 
@@ -183,7 +185,7 @@
 <% } %>
 
 
-  <p><a href="./main.jsp">メイン画面に戻る</a></p>
+  <p><a href="./logincheck.jsp">メイン画面に戻る</a></p>
 
 </body>
 </html>

@@ -67,6 +67,8 @@ public final class schedule_005fmakecheck_jsp extends org.apache.jasper.runtime.
   String placeStr = request.getParameter("place");
   String detailsStr = request.getParameter("details");
   String importanceStr = request.getParameter("importance");
+  String year = request.getParameter("year");
+  String month = request.getParameter("month");
 
 
   if (importanceStr == null) {
@@ -124,6 +126,12 @@ public final class schedule_005fmakecheck_jsp extends org.apache.jasper.runtime.
       out.write("\">\r\n");
       out.write("      <input type=\"hidden\" name=\"importance\" value=\"");
       out.print( importanceStr );
+      out.write("\">\r\n");
+      out.write("      <input type=\"hidden\" name=\"year\" value=\"");
+      out.print( year );
+      out.write("\">\r\n");
+      out.write("      <input type=\"hidden\" name=\"month\" value=\"");
+      out.print( month );
       out.write("\">\r\n");
       out.write("\r\n");
       out.write("      <tr>\r\n");

@@ -3,6 +3,8 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import java.util.Date;
+import java.util.Calendar;
 import java.sql.*;
 import java.util.*;
 import java.util.HashMap;
@@ -59,15 +61,30 @@ public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("\r\n");
       out.write("\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
 
   //文字コードの指定
   request.setCharacterEncoding("UTF-8");
   response.setCharacterEncoding("UTF-8");
-  
+
+  //現在の日付取得
+  Date today = new Date();
+  //Calendarクラスのオブジェクト生成
+  Calendar calendar = Calendar.getInstance();
+  //現在の日付設定
+  calendar.setTime(today);
+  //年、月、日の取得
+  int year = calendar.get(Calendar.YEAR);
+  int month = calendar.get(Calendar.MONTH);
+  int day = calendar.get(Calendar.DATE);
+  calendar.set(year,month,1);
+  int ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
+
+
   //入力データ受信
   String idStr  = request.getParameter("id");
   String passStr = request.getParameter("pass");
-
 
 
   //データベースに接続するために使用する変数宣言
@@ -90,17 +107,17 @@ public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
 
   //確認メッセージ
   StringBuffer ERMSG = null;
-  
+
   //ヒットフラグ
   int hit_flag = 0;
-  
+
   //HashMap（1件分のデータを格納する連想配列）
   HashMap<String,String> map = null;
-   
+
   //ArrayList（すべての件数を格納する配列）
   ArrayList<HashMap> list = null;
   list = new ArrayList<HashMap>();
-   
+
   try{  // ロードに失敗したときのための例外処理
     // JDBCドライバのロード
     Class.forName(DRIVER).newInstance();
@@ -137,7 +154,7 @@ public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
     }
 
     if(hit_flag==2){
-      
+
         //検索データをHashMapへ格納する
         map = new HashMap<String,String>();
       map.put("kaiin_id",rs.getString("kaiin_id"));
@@ -146,7 +163,7 @@ public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
       map.put("kaiin_pass",rs.getString("kaiin_pass"));
       map.put("kaiin_bday",rs.getString("kaiin_bday"));
 
-      
+
       //1件分のデータ(HashMap)をArrayListへ追加
       list.add(map);
 
@@ -158,7 +175,7 @@ public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
       //ヒットフラグOFF
       hit_flag = 0;
     }
-    
+
 
   } //tryブロック終了
   catch(ClassNotFoundException e){
@@ -208,7 +225,11 @@ public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
 
       out.write("\r\n");
       out.write("\r\n");
-      out.write("<meta http-equiv=\"refresh\" content=\"0; URL='./main.jsp'\" />\r\n");
+      out.write("<meta http-equiv=\"refresh\" content=\"0; URL='./main.jsp?year=");
+      out.print( year );
+      out.write("&month=");
+      out.print( month );
+      out.write("'\" />\r\n");
       out.write("\r\n");
       out.write("  </head>\r\n");
       out.write("\r\n");
@@ -241,7 +262,7 @@ public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("\r\n");
       out.write("  </body>\r\n");
-      out.write("</html>");
+      out.write("</html>\r\n");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

@@ -82,6 +82,28 @@ public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
     int day = calendar.get(Calendar.DATE);
     calendar.set(year,month,1);
     int ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
+
+    if (!(request.getParameter("month").equals(month))) {
+      year = Integer.valueOf(request.getParameter("year"));
+      month = Integer.valueOf(request.getParameter("month"));
+
+      if (month>11) {
+        year = year+1;
+        month = 0;
+        calendar.set(year,month,1);
+        ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
+      }else if(month<0){
+        year = year-1;
+        month = 11;
+        calendar.set(year,month,1);
+        ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
+      }else{
+      month = month;
+      calendar.set(year,month,1);
+      ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
+      }
+    }
+
     //うるう年
     int a = year;
     int b = year;
@@ -237,11 +259,14 @@ finally{
       out.write("\r\n");
       out.write("  <ul id=\"nav\">\r\n");
       out.write("    <li><a href=\"#\" onclick=\"ShowAlert();\">ログアウト </a></li>\r\n");
-      out.write("    <li><a href=\"addresscange.html\">メールアドレス変更</a></li>\r\n");
-      out.write("    <li><a href=\"./ad_favodel.html\">お気に入り削除</a></li>\r\n");
-      out.write("    <li><a href=\"./ad_del.html\">Agenda削除</a></li>\r\n");
-      out.write("    <li><a href=\"./agenda_make.jsp?\">Agenda作成</a></li>\r\n");
-      out.write("    <li><a href=\"./ag_search.html\">Agenda検索</a></li>\r\n");
+      out.write("    <li><a href=\"addresscange.jsp\">メールアドレス変更</a></li>\r\n");
+      out.write("    <li><a href=\"./ad_favodel.jsp\">お気に入り削除</a></li>\r\n");
+      out.write("    <li><a href=\"./ad_del.jsp\">Agenda削除</a></li>\r\n");
+      out.write("    <li><a href=\"./agenda_make.jsp\">Agenda作成</a></li>\r\n");
+      out.write("    <li><a href=\"./ag_search.jsp\">Agenda検索</a></li>\r\n");
+      out.write("    <li><a href=\"./myag.jsp?kaiin_id=");
+      out.print( kaiin_idStr );
+      out.write("\">作成したAgenda</a></li>\r\n");
       out.write("  </ul>\r\n");
       out.write("\r\n");
       out.write("\r\n");
@@ -250,7 +275,13 @@ finally{
       out.write("        <tr border=\"0\" cellspacing=\"1\" cellpadding=\"1\" bgcolor=\"#CCCCCC\" style=\"font: 12px; color: #666666;\">\r\n");
       out.write("            <td align=\"center\" colspan=\"7\" bgcolor=\"#EEEEEE\" height=\"30\" style=\"color: #666666;\">\r\n");
       out.write("              <div class=\"tuki\">\r\n");
-      out.write("                <button>前月</button>\r\n");
+      out.write("                <a href=\"./main.jsp?year=");
+      out.print( year );
+      out.write("&month=");
+      out.print( month-1 );
+      out.write("\">\r\n");
+      out.write("                  <button>前月</button>\r\n");
+      out.write("                </a>\r\n");
       out.write("              </div>\r\n");
       out.write("              <div class=\"tuki\">\r\n");
       out.write("                <h1>");
@@ -260,17 +291,23 @@ finally{
       out.write("月</h1>\r\n");
       out.write("              </div>\r\n");
       out.write("              <div class=\"tuki\">\r\n");
-      out.write("               <button>翌月</button>\r\n");
+      out.write("                <a href=\"./main.jsp?year=");
+      out.print( year );
+      out.write("&month=");
+      out.print( month+1 );
+      out.write("\">\r\n");
+      out.write("                  <button>翌月</button>\r\n");
+      out.write("                </a>\r\n");
       out.write("             </div>\r\n");
-      out.write("            </div>\r\n");
       out.write("          </tr>\r\n");
-      out.write("            <td align=\"center\" width=\"60\" height=\"30\" bgcolor=\"#FF3300\" style=\"color: #FFFFFF;\">日</td>\r\n");
-      out.write("            <td align=\"center\" width=\"60\" bgcolor=\"#ffe4e1\" style=\"color: #666666;\">月</td>\r\n");
-      out.write("            <td align=\"center\" width=\"60\" bgcolor=\"#ffe4e1\" style=\"color: #666666;\">火</td>\r\n");
-      out.write("            <td align=\"center\" width=\"60\" bgcolor=\"#ffe4e1\" style=\"color: #666666;\">水</td>\r\n");
-      out.write("            <td align=\"center\" width=\"60\" bgcolor=\"#ffe4e1\" style=\"color: #666666;\">木</td>\r\n");
-      out.write("            <td align=\"center\" width=\"60\" bgcolor=\"#ffe4e1\" style=\"color: #666666;\">金</td>\r\n");
-      out.write("            <td align=\"center\" width=\"60\" bgcolor=\"#00a1e9\" style=\"color: #666666;\">土</td>\r\n");
+      out.write("          <tr>\r\n");
+      out.write("              <td align=\"center\" width=\"60\" height=\"30\" bgcolor=\"#FF3300\" style=\"font-size: 30px; font-weight: bold; color: #FFFFFF;\">日</td>\r\n");
+      out.write("              <td align=\"center\" width=\"60\" bgcolor=\"#ffe4e1\" style=\"font-size: 20px; font-weight: bold; color: #666666;\">月</td>\r\n");
+      out.write("              <td align=\"center\" width=\"60\" bgcolor=\"#ffe4e1\" style=\"font-size: 20px; font-weight: bold; color: #666666;\">火</td>\r\n");
+      out.write("              <td align=\"center\" width=\"60\" bgcolor=\"#ffe4e1\" style=\"font-size: 20px; font-weight: bold; color: #666666;\">水</td>\r\n");
+      out.write("              <td align=\"center\" width=\"60\" bgcolor=\"#ffe4e1\" style=\"font-size: 20px; font-weight: bold; color: #666666;\">木</td>\r\n");
+      out.write("              <td align=\"center\" width=\"60\" bgcolor=\"#ffe4e1\" style=\"font-size: 20px; font-weight: bold; color: #666666;\">金</td>\r\n");
+      out.write("              <td align=\"center\" width=\"60\" bgcolor=\"#00a1e9\" style=\"font-size: 20px; font-weight: bold; color: #666666;\">土</td>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
       out.write("            ");
@@ -321,6 +358,10 @@ finally{
       out.print( list.get(j).get("s_mine") );
       out.write("&num=");
       out.print( num0 );
+      out.write("&year=");
+      out.print( year );
+      out.write("&month=");
+      out.print( month );
       out.write("\">\r\n");
       out.write("                  <div class=\"yotei\">\r\n");
       out.write("                  ");
@@ -399,6 +440,10 @@ finally{
       out.print( list.get(j).get("s_mine") );
       out.write("&num=");
       out.print( num1 );
+      out.write("&year=");
+      out.print( year );
+      out.write("&month=");
+      out.print( month );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
       out.write("                ");
@@ -477,6 +522,10 @@ finally{
       out.print( list.get(j).get("s_mine") );
       out.write("&num=");
       out.print( num2 );
+      out.write("&year=");
+      out.print( year );
+      out.write("&month=");
+      out.print( month );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
       out.write("                ");
@@ -555,6 +604,10 @@ finally{
       out.print( list.get(j).get("s_mine") );
       out.write("&num=");
       out.print( num3 );
+      out.write("&year=");
+      out.print( year );
+      out.write("&month=");
+      out.print( month );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
       out.write("                ");

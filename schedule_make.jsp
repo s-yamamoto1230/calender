@@ -7,6 +7,8 @@
 
   String kaiin_idStr = request.getParameter("kaiin_id");
   String dayStr = request.getParameter("day");
+  String year = request.getParameter("year");
+  String month = request.getParameter("month");
 
 %>
 
@@ -32,6 +34,8 @@
 
         <input type="hidden" name="kaiin_id" value="<%= kaiin_idStr %>">
         <input type="hidden" name="day" value="<%= dayStr %>">
+        <input type="hidden" name="year" value="<%= year %>">
+        <input type="hidden" name="month" value="<%= month %>">
 
       <tr>
         <td class="title">

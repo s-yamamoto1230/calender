@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.Date" %>
-<%@ page import="java.util.Calendar" %>
 <%@ page import="java.sql.*" %>
-<%@ page import="java.util.*" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.ArrayList" %>
 <%
@@ -10,24 +7,8 @@
   request.setCharacterEncoding("UTF-8");
   response.setCharacterEncoding("UTF-8");
 
-  //現在の日付取得
-  Date today = new Date();
-  //Calendarクラスのオブジェクト生成
-  Calendar calendar = Calendar.getInstance();
-  //現在の日付設定
-  calendar.setTime(today);
-  //年、月、日の取得
-  int year = calendar.get(Calendar.YEAR);
-  int month = calendar.get(Calendar.MONTH);
-  int day = calendar.get(Calendar.DATE);
-  calendar.set(year,month,1);
-  int ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
-
-
   //入力データ受信
-  String idStr  = request.getParameter("id");
-  String passStr = request.getParameter("pass");
-
+  String kaiin_idStr  = request.getParameter("kaiin_id");
 
   //データベースに接続するために使用する変数宣言
   Connection con = null;
@@ -41,9 +22,9 @@
   String URL ="jdbc:mysql://localhost/agenda";
 
   //サーバーのMySQLに接続する設定
-//  String USER = "nhs90345";
-//  String PASSWORD = "b19931230";
-//  String URL ="jdbc:mysql://192.168.121.16/nhsagenda";
+/*  String USER = "nhs90345";
+  String PASSWORD = "b19931230";
+  String URL ="jdbc:mysql://192.168.121.16/agenda";*/
 
   String DRIVER = "com.mysql.jdbc.Driver";
 
@@ -74,51 +55,37 @@
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select * from kaiin_tbl where kaiin_id = '");
-    SQL.append(idStr);
-//    SQL.append("' and cus_pas = '");
-//    SQL.append(cus_pasStr);
+    SQL.append("select * from open_tbl where kaiin_id = '");
+    SQL.append(kaiin_idStr);
     SQL.append("'");
-      System.out.println(SQL.toString());
+//      System.out.println(SQL.toString());
 
     //SQL文の実行（選択クエリ）
     rs = stmt.executeQuery(SQL.toString());
-
-//    String id =rs.getString("kaiin_id");
 
     //入力したデータがデータベースに存在するか調べる
     if(rs.next()){  //存在する
       //ヒットフラグON
       hit_flag = 1;
-    if(passStr.equals(rs.getString("kaiin_pass"))){
-      //ヒットフラグON
-      hit_flag = hit_flag+1;
-    }
-
-    if(hit_flag==2){
 
         //検索データをHashMapへ格納する
-        map = new HashMap<String,String>();
-      map.put("kaiin_id",rs.getString("kaiin_id"));
-      map.put("kaiin_name",rs.getString("kaiin_name"));
-      map.put("kaiin_add",rs.getString("kaiin_add"));
-      map.put("kaiin_pass",rs.getString("kaiin_pass"));
-      map.put("kaiin_bday",rs.getString("kaiin_bday"));
+        while(rs.next()){
+      //DBのデータをHashMapへ格納する
+          map = new HashMap<String,String>();
+          map.put("yotei_id",rs.getString("yotei_id"));
+          map.put("yotei_name",rs.getString("yotei_name"));
+          map.put("open_set",rs.getString("open_set"));
+          map.put("yotei_pass",rs.getString("yotei_pass"));
+          map.put("yotei_writing",rs.getString("yotei_writing"));
+          map.put("kaiin_id",rs.getString("kaiin_id"));
 
-
-      //1件分のデータ(HashMap)をArrayListへ追加
-      list.add(map);
-
-      session.setAttribute("login", "login");
-      session.setAttribute("id", "kaiin_id");
-    }
-
+          //1件分のデータ(HashMap)をArrayListへ追加
+          list.add(map);
+        }
     }else{  //存在しない
       //ヒットフラグOFF
       hit_flag = 0;
     }
-
-
   } //tryブロック終了
   catch(ClassNotFoundException e){
     ERMSG = new StringBuffer();
@@ -151,42 +118,29 @@
     ERMSG.append(e.getMessage());
     }
   }
-
 %>
-
-<!DOCTYPE html>
 <html>
-  <meta charset="utf-8">
 
   <head>
-    <title>メインページ</title>
 
-<%
-  if((String)session.getAttribute("login") == "login"){  //認証OK
-%>
+    <meta charset="utf-8">
 
-<meta http-equiv="refresh" content="0; URL='./main.jsp?year=<%= year %>&month=<%= month %>'" />
+    <title>Agenda一覧</title>
+
+    <link rel="stylesheet" type="text/css" href="./css/info.css">
 
   </head>
 
-  <link rel="stylesheet" type="text/css" href="./css/main.css">
-
   <body>
 
-  <%
-  }else{  //認証NG
-%>
-  認証NG<br>
-    <%= "顧客IDまたはパスワードが誤っています" %>
-    <p><a href="./index.jsp">ログインに戻る</a></p>
-<%
-  }
-%>
-<br><br>
-<% if(ERMSG != null){ %>
-予期せぬエラーが発生しました<br />
-<%= ERMSG %>
-<% }%>
+    <form action="./schedule_update.jsp" method="post">
 
-  </body>
+<h1>
+<%= kaiin_idStr %>さんの作成したAgenda一覧
+<table>
+
+</table>
+<br>
+
+</body>
 </html>

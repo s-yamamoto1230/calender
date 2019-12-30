@@ -24,6 +24,28 @@
     int day = calendar.get(Calendar.DATE);
     calendar.set(year,month,1);
     int ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
+
+    if (!(request.getParameter("month").equals(month))) {
+      year = Integer.valueOf(request.getParameter("year"));
+      month = Integer.valueOf(request.getParameter("month"));
+
+      if (month>11) {
+        year = year+1;
+        month = 0;
+        calendar.set(year,month,1);
+        ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
+      }else if(month<0){
+        year = year-1;
+        month = 11;
+        calendar.set(year,month,1);
+        ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
+      }else{
+      month = month;
+      calendar.set(year,month,1);
+      ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
+      }
+    }
+
     //うるう年
     int a = year;
     int b = year;
@@ -178,11 +200,12 @@ finally{
 
   <ul id="nav">
     <li><a href="#" onclick="ShowAlert();">ログアウト </a></li>
-    <li><a href="addresscange.html">メールアドレス変更</a></li>
-    <li><a href="./ad_favodel.html">お気に入り削除</a></li>
-    <li><a href="./ad_del.html">Agenda削除</a></li>
-    <li><a href="./agenda_make.jsp?">Agenda作成</a></li>
-    <li><a href="./ag_search.html">Agenda検索</a></li>
+    <li><a href="addresscange.jsp">メールアドレス変更</a></li>
+    <li><a href="./ad_favodel.jsp">お気に入り削除</a></li>
+    <li><a href="./ad_del.jsp">Agenda削除</a></li>
+    <li><a href="./agenda_make.jsp">Agenda作成</a></li>
+    <li><a href="./ag_search.jsp">Agenda検索</a></li>
+    <li><a href="./myag.jsp?kaiin_id=<%= kaiin_idStr %>">作成したAgenda</a></li>
   </ul>
 
 
@@ -191,23 +214,27 @@ finally{
         <tr border="0" cellspacing="1" cellpadding="1" bgcolor="#CCCCCC" style="font: 12px; color: #666666;">
             <td align="center" colspan="7" bgcolor="#EEEEEE" height="30" style="color: #666666;">
               <div class="tuki">
-                <button>前月</button>
+                <a href="./main.jsp?year=<%= year %>&month=<%= month-1 %>">
+                  <button>前月</button>
+                </a>
               </div>
               <div class="tuki">
                 <h1><%= year %>年<%= month+1 %>月</h1>
               </div>
               <div class="tuki">
-               <button>翌月</button>
+                <a href="./main.jsp?year=<%= year %>&month=<%= month+1 %>">
+                  <button>翌月</button>
+                </a>
              </div>
-            </div>
           </tr>
-            <td align="center" width="60" height="30" bgcolor="#FF3300" style="color: #FFFFFF;">日</td>
-            <td align="center" width="60" bgcolor="#ffe4e1" style="color: #666666;">月</td>
-            <td align="center" width="60" bgcolor="#ffe4e1" style="color: #666666;">火</td>
-            <td align="center" width="60" bgcolor="#ffe4e1" style="color: #666666;">水</td>
-            <td align="center" width="60" bgcolor="#ffe4e1" style="color: #666666;">木</td>
-            <td align="center" width="60" bgcolor="#ffe4e1" style="color: #666666;">金</td>
-            <td align="center" width="60" bgcolor="#00a1e9" style="color: #666666;">土</td>
+          <tr>
+              <td align="center" width="60" height="30" bgcolor="#FF3300" style="font-size: 20px; font-weight: bold; color: #FFFFFF;">日</td>
+              <td align="center" width="60" bgcolor="#ffe4e1" style="font-size: 20px; font-weight: bold; color: #666666;">月</td>
+              <td align="center" width="60" bgcolor="#ffe4e1" style="font-size: 20px; font-weight: bold; color: #666666;">火</td>
+              <td align="center" width="60" bgcolor="#ffe4e1" style="font-size: 20px; font-weight: bold; color: #666666;">水</td>
+              <td align="center" width="60" bgcolor="#ffe4e1" style="font-size: 20px; font-weight: bold; color: #666666;">木</td>
+              <td align="center" width="60" bgcolor="#ffe4e1" style="font-size: 20px; font-weight: bold; color: #666666;">金</td>
+              <td align="center" width="60" bgcolor="#00a1e9" style="font-size: 20px; font-weight: bold; color: #666666;">土</td>
           </tr>
           <tr>
             <%
@@ -236,7 +263,7 @@ finally{
                   <%
                     if (day0.equals(list.get(j).get("day"))) {
                   %>
-                  <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day0 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num0 %>">
+                  <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day0 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num0 %>&year=<%= year %>&month=<%= month %>">
                   <div class="yotei">
                   <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                   <%= list.get(j).get("place") %>
@@ -278,7 +305,7 @@ finally{
                 <%
                   if (day1.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day1 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num1 %>">
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day1 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num1 %>&year=<%= year %>&month=<%= month %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -320,7 +347,7 @@ finally{
                 <%
                   if (day2.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day2 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num2 %>">
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day2 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num2 %>&year=<%= year %>&month=<%= month %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -362,7 +389,7 @@ finally{
                 <%
                   if (day3.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day3 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num3 %>">
+                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day3 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num3 %>&year=<%= year %>&month=<%= month %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>

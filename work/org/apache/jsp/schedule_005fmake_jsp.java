@@ -59,6 +59,8 @@ public final class schedule_005fmake_jsp extends org.apache.jasper.runtime.HttpJ
 
   String kaiin_idStr = request.getParameter("kaiin_id");
   String dayStr = request.getParameter("day");
+  String year = request.getParameter("year");
+  String month = request.getParameter("month");
 
 
       out.write("\r\n");
@@ -88,6 +90,12 @@ public final class schedule_005fmake_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("\">\r\n");
       out.write("        <input type=\"hidden\" name=\"day\" value=\"");
       out.print( dayStr );
+      out.write("\">\r\n");
+      out.write("        <input type=\"hidden\" name=\"year\" value=\"");
+      out.print( year );
+      out.write("\">\r\n");
+      out.write("        <input type=\"hidden\" name=\"month\" value=\"");
+      out.print( month );
       out.write("\">\r\n");
       out.write("\r\n");
       out.write("      <tr>\r\n");

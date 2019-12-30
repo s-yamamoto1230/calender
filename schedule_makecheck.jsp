@@ -12,6 +12,8 @@
   String placeStr = request.getParameter("place");
   String detailsStr = request.getParameter("details");
   String importanceStr = request.getParameter("importance");
+  String year = request.getParameter("year");
+  String month = request.getParameter("month");
 
 
   if (importanceStr == null) {
@@ -51,6 +53,8 @@
       <input type="hidden" name="place" value="<%= placeStr %>">
       <input type="hidden" name="details" value="<%= detailsStr %>">
       <input type="hidden" name="importance" value="<%= importanceStr %>">
+      <input type="hidden" name="year" value="<%= year %>">
+      <input type="hidden" name="month" value="<%= month %>">
 
       <tr>
         <td>
