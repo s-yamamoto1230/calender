@@ -202,7 +202,7 @@ finally{
     <li><a href="#" onclick="ShowAlert();">ログアウト </a></li>
     <li><a href="addresscange.jsp">メールアドレス変更</a></li>
     <li><a href="./ad_favodel.jsp">お気に入り削除</a></li>
-    <li><a href="./ad_del.jsp">Agenda削除</a></li>
+    <li><a href="./agenda_delete.jsp">Agenda削除</a></li>
     <li><a href="./agenda_make.jsp">Agenda作成</a></li>
     <li><a href="./ag_search.jsp">Agenda検索</a></li>
     <li><a href="./myag.jsp?kaiin_id=<%= kaiin_idStr %>">作成したAgenda</a></li>

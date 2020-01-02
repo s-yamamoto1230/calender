@@ -261,7 +261,7 @@ finally{
       out.write("    <li><a href=\"#\" onclick=\"ShowAlert();\">ログアウト </a></li>\r\n");
       out.write("    <li><a href=\"addresscange.jsp\">メールアドレス変更</a></li>\r\n");
       out.write("    <li><a href=\"./ad_favodel.jsp\">お気に入り削除</a></li>\r\n");
-      out.write("    <li><a href=\"./ad_del.jsp\">Agenda削除</a></li>\r\n");
+      out.write("    <li><a href=\"./agenda_delete.jsp\">Agenda削除</a></li>\r\n");
       out.write("    <li><a href=\"./agenda_make.jsp\">Agenda作成</a></li>\r\n");
       out.write("    <li><a href=\"./ag_search.jsp\">Agenda検索</a></li>\r\n");
       out.write("    <li><a href=\"./myag.jsp?kaiin_id=");
@@ -301,7 +301,7 @@ finally{
       out.write("             </div>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
-      out.write("              <td align=\"center\" width=\"60\" height=\"30\" bgcolor=\"#FF3300\" style=\"font-size: 30px; font-weight: bold; color: #FFFFFF;\">日</td>\r\n");
+      out.write("              <td align=\"center\" width=\"60\" height=\"30\" bgcolor=\"#FF3300\" style=\"font-size: 20px; font-weight: bold; color: #FFFFFF;\">日</td>\r\n");
       out.write("              <td align=\"center\" width=\"60\" bgcolor=\"#ffe4e1\" style=\"font-size: 20px; font-weight: bold; color: #666666;\">月</td>\r\n");
       out.write("              <td align=\"center\" width=\"60\" bgcolor=\"#ffe4e1\" style=\"font-size: 20px; font-weight: bold; color: #666666;\">火</td>\r\n");
       out.write("              <td align=\"center\" width=\"60\" bgcolor=\"#ffe4e1\" style=\"font-size: 20px; font-weight: bold; color: #666666;\">水</td>\r\n");

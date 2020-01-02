@@ -4,7 +4,7 @@
   //文字コードの指定
   request.setCharacterEncoding("UTF-8");
   response.setCharacterEncoding("UTF-8");
-  
+
   //入力データ受信
   String idStr = request.getParameter("id");
   String titleStr = request.getParameter("title");
@@ -36,13 +36,13 @@
 
   //確認メッセージ
   StringBuffer ERMSG = null;
-  
+
   //ヒットフラグ
   int hit_flag = 0;
-  
+
   //追加件数
   int ins_count=0;
-   
+
   try{  // ロードに失敗したときのための例外処理
     // JDBCドライバのロード
     Class.forName(DRIVER).newInstance();
@@ -168,7 +168,7 @@
 <% } %>
 
 
-  <p><a href="./main.jsp">メイン画面に戻る</a></p>
+  <p><a href="./logincheck.jsp">メイン画面に戻る</a></p>
 
 </body>
 </html>

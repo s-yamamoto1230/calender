@@ -133,14 +133,40 @@
 
   <body>
 
-    <form action="./schedule_update.jsp" method="post">
-
-<h1>
-<%= kaiin_idStr %>さんの作成したAgenda一覧
-<table>
-
-</table>
-<br>
-
+    <h1>
+    <%= kaiin_idStr %>さんの作成したAgenda一覧
+    <table id="list">
+      <tr class="no-line">
+        <th class="no-line" style="padding: 20px;">AgendaID</td>
+        <th class="no-line" style="padding: 20px;">Agenda名</td>
+        <th class="no-line" style="padding: 20px;">公開設定</td>
+        <th class="no-line" style="padding: 20px;">パスワード</td>
+        <th class="no-line" style="padding: 20px;">他人の書き込み設定</td>
+      </tr>
+    <%
+      for(int i = 0; i < list.size(); i++){
+    %>
+          <tr class="no-line">
+              <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;"><a href="#">・<%= list.get(i).get("yotei_id") %></a></td>
+            <td class="no-line"><%= list.get(i).get("yotei_name") %></td>
+            <td class="no-line">
+              <%if (list.get(i).get("open_set").equals("1")) { %>
+                全員に公開
+                <%}else{%>
+                特定の人にのみ公開
+              <%}%>
+            </td>
+            <td class="no-line"><%= list.get(i).get("yotei_pass") %></td>
+            <td class="no-line">
+              <% if(list.get(i).get("yotei_writing").equals("1")) { %>
+              許可
+              <%}else{%>
+              禁止
+              <% } %>
+            </td>
+          </tr>
+    <%}%>
+  </table>
+    <p id="back"><a href="./logincheck.jsp">メイン画面に戻る</a></p>
 </body>
 </html>

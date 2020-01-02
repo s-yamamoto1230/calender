@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class agenda_005fdelete_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -189,7 +189,7 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("  <body>\r\n");
       out.write("\r\n");
-      out.write("    <form action=\"./schedule_update.jsp\" method=\"post\">\r\n");
+      out.write("  <form action=\"./agenda_deletecheck.jsp\" method=\"post\">\r\n");
       out.write("\r\n");
       out.write("    <h1>\r\n");
       out.write("    ");
@@ -197,6 +197,7 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("さんの作成したAgenda一覧\r\n");
       out.write("    <table id=\"list\">\r\n");
       out.write("      <tr class=\"no-line\">\r\n");
+      out.write("        <th></th>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">AgendaID</td>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">Agenda名</td>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">公開設定</td>\r\n");
@@ -209,9 +210,12 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
     
       out.write("\r\n");
       out.write("          <tr class=\"no-line\">\r\n");
-      out.write("              <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\"><a href=\"#\">・");
+      out.write("            <td class=\"no-line\"><input type=\"checkbox\" name=\"yotei_id\" value=\"");
       out.print( list.get(i).get("yotei_id") );
-      out.write("</a></td>\r\n");
+      out.write("\"></td>\r\n");
+      out.write("              <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\">・");
+      out.print( list.get(i).get("yotei_id") );
+      out.write("</td>\r\n");
       out.write("            <td class=\"no-line\">");
       out.print( list.get(i).get("yotei_name") );
       out.write("</td>\r\n");
@@ -245,10 +249,12 @@ if (list.get(i).get("open_set").equals("1")) {
       out.write("\r\n");
       out.write("            </td>\r\n");
       out.write("          </tr>\r\n");
-      out.write("    ");
+      out.write("        ");
 }
       out.write("\r\n");
-      out.write("  </table>\r\n");
+      out.write("    </table>\r\n");
+      out.write("    <input type=\"submit\" value=\"削除\">\r\n");
+      out.write("</form>\r\n");
       out.write("    <p id=\"back\"><a href=\"./logincheck.jsp\">メイン画面に戻る</a></p>\r\n");
       out.write("</body>\r\n");
       out.write("</html>\r\n");
