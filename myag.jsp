@@ -135,6 +135,7 @@
 
     <h1>
     <%= kaiin_idStr %>さんの作成したAgenda一覧
+  </h1>
     <table id="list">
       <tr class="no-line">
         <th class="no-line" style="padding: 20px;">AgendaID</td>

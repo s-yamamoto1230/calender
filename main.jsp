@@ -66,7 +66,7 @@
     }
   }
 
-    int[] num = new int[37];
+    int num[] = new int[37];
     Integer blank = 0;
 
     //配列へデータを入力
@@ -200,7 +200,7 @@ finally{
 
   <ul id="nav">
     <li><a href="#" onclick="ShowAlert();">ログアウト </a></li>
-    <li><a href="addresscange.jsp">メールアドレス変更</a></li>
+    <li><a href="add_change.jsp">会員情報変更</a></li>
     <li><a href="./ad_favodel.jsp">お気に入り削除</a></li>
     <li><a href="./agenda_delete.jsp">Agenda削除</a></li>
     <li><a href="./agenda_make.jsp">Agenda作成</a></li>

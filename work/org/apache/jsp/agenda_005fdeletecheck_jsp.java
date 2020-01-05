@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class agenda_005fdeletecheck_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -63,7 +63,8 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idStr  = request.getParameter("kaiin_id");
+    String yotei_idStr[] =request.getParameterValues("yotei_id");
+
 
   //データベースに接続するために使用する変数宣言
   Connection con = null;
@@ -110,11 +111,12 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select * from open_tbl where kaiin_id = '");
-    SQL.append(kaiin_idStr);
-    SQL.append("'");
+    for(int i = 0; i < yotei_idStr.length; i++){
+      SQL = new StringBuffer();
+      SQL.append("select * from open_tbl where yotei_id = '");
+      SQL.append(yotei_idStr[i]);
+      SQL.append("'");
 //      System.out.println(SQL.toString());
-
     //SQL文の実行（選択クエリ）
     rs = stmt.executeQuery(SQL.toString());
 
@@ -137,10 +139,12 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
         }
+
     }else{  //存在しない
       //ヒットフラグOFF
       hit_flag = 0;
     }
+  }
   } //tryブロック終了
   catch(ClassNotFoundException e){
     ERMSG = new StringBuffer();
@@ -181,7 +185,7 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("    <meta charset=\"utf-8\">\r\n");
       out.write("\r\n");
-      out.write("    <title>Agenda一覧</title>\r\n");
+      out.write("    <title>Agenda削除</title>\r\n");
       out.write("\r\n");
       out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/info.css\">\r\n");
       out.write("\r\n");
@@ -190,10 +194,8 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("  <body>\r\n");
       out.write("\r\n");
       out.write("    <h1>\r\n");
-      out.write("    ");
-      out.print( kaiin_idStr );
-      out.write("さんの作成したAgenda一覧\r\n");
-      out.write("  </h1>\r\n");
+      out.write("      以下のAgendaを削除しますか？\r\n");
+      out.write("    </h1>\r\n");
       out.write("    <table id=\"list\">\r\n");
       out.write("      <tr class=\"no-line\">\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">AgendaID</td>\r\n");
@@ -206,6 +208,9 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
 
       for(int i = 0; i < list.size(); i++){
     
+      out.write("\r\n");
+      out.write("    ");
+      out.print( yotei_idStr[i] );
       out.write("\r\n");
       out.write("          <tr class=\"no-line\">\r\n");
       out.write("              <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\"><a href=\"#\">・");
