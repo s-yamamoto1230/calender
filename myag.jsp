@@ -148,7 +148,7 @@
       for(int i = 0; i < list.size(); i++){
     %>
           <tr class="no-line">
-              <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;"><a href="#">・<%= list.get(i).get("yotei_id") %></a></td>
+              <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;"><a href="monthcheck.jsp?yotei_id=<%= list.get(i).get("yotei_id") %>">・<%= list.get(i).get("yotei_id") %></a></td>
             <td class="no-line"><%= list.get(i).get("yotei_name") %></td>
             <td class="no-line">
               <%if (list.get(i).get("open_set").equals("1")) { %>

@@ -10,7 +10,7 @@
     request.setCharacterEncoding("UTF-8");
     response.setCharacterEncoding("UTF-8");
 
-    String kaiin_idStr = request.getParameter("kaiin_id");
+    String yotei_idStr = request.getParameter("yotei_id");
 
     //現在の日付取得
     Date today = new Date();
@@ -129,8 +129,8 @@ try{	// ロードに失敗したときのための例外処理
     SQL = new StringBuffer();
 
   //SQL文の発行（選択クエリ）
-  SQL.append("select kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance from yotei_tbl where kaiin_id = '");
-  SQL.append(kaiin_idStr);
+  SQL.append("select yotei_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance from openyotei_tbl where yotei_id = '");
+  SQL.append(yotei_idStr);
   SQL.append("'");
 
   //SQL文の発行（選択クエリ）
@@ -140,7 +140,7 @@ try{	// ロードに失敗したときのための例外処理
   while(rs.next()){
       //DBのデータをHashMapへ格納する
     map = new HashMap<String,String>();
-    map.put("kaiin_id",rs.getString("kaiin_id"));
+    map.put("yotei_id",rs.getString("yotei_id"));
     map.put("day",rs.getString("day"));
     map.put("s_hour",rs.getString("s_hour"));
     map.put("s_mine",rs.getString("s_mine"));
@@ -206,10 +206,14 @@ finally{
     <li><a href="./agenda_delete.jsp">Agenda削除</a></li>
     <li><a href="./agenda_make.jsp">Agenda作成</a></li>
     <li><a href="./ag_search.jsp">Agenda検索</a></li>
-    <li><a href="./myag.jsp?kaiin_id=<%= kaiin_idStr %>">作成したAgenda</a></li>
   </ul>
 
   <table id="cal">
+        <tr>
+          <td colspan="7">
+          <%= yotei_idStr %>
+        </td>
+        </tr>
 
         <tr border="0" cellspacing="1" cellpadding="1" bgcolor="#CCCCCC" style="font: 12px; color: #666666;">
             <td align="center" colspan="7" bgcolor="#EEEEEE" height="30" style="color: #666666;">
@@ -263,7 +267,7 @@ finally{
                   <%
                     if (day0.equals(list.get(j).get("day"))) {
                   %>
-                  <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day0 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num0 %>&year=<%= year %>&month=<%= month %>">
+                  <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day0 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num0 %>&year=<%= year %>&month=<%= month %>">
                   <div class="yotei">
                   <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                   <%= list.get(j).get("place") %>
@@ -271,7 +275,7 @@ finally{
                   </div>
                 </a>
                   <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[0] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[0] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -305,7 +309,7 @@ finally{
                 <%
                   if (day1.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day1 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num1 %>&year=<%= year %>&month=<%= month %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day1 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num1 %>&year=<%= year %>&month=<%= month %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -313,7 +317,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[1] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[1] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -347,7 +351,7 @@ finally{
                 <%
                   if (day2.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day2 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num2 %>&year=<%= year %>&month=<%= month %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day2 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num2 %>&year=<%= year %>&month=<%= month %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -355,7 +359,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[2] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[2] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -389,7 +393,7 @@ finally{
                 <%
                   if (day3.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day3 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num3 %>&year=<%= year %>&month=<%= month %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day3 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num3 %>&year=<%= year %>&month=<%= month %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -397,7 +401,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[3] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[3] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -431,7 +435,7 @@ finally{
                 <%
                   if (day4.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day4 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num4 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day4 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num4 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -439,7 +443,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[4] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[4] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -473,7 +477,7 @@ finally{
                 <%
                   if (day5.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day5 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num5 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day5 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num5 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -481,7 +485,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[5] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[5] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -508,7 +512,7 @@ finally{
                 <%
                   if (day6.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day6 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num6 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day6 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num6 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -516,7 +520,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[6] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp.jsp?day=<%= year %><%= month+1 %><%= num[6] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -542,7 +546,7 @@ finally{
                 <%
                   if (day7.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day7 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num7 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day7 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num7 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -550,7 +554,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[7] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[7] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -574,7 +578,7 @@ finally{
                 <%
                   if (day8.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day8 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num8 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day8 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num8 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -582,7 +586,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[8] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[8] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -606,7 +610,7 @@ finally{
                 <%
                   if (day9.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day9 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num9 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day9 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num9 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -614,7 +618,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[9] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[9] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -638,7 +642,7 @@ finally{
                 <%
                   if (day10.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day10 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num10 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day10 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num10 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -646,7 +650,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[10] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[10] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -670,7 +674,7 @@ finally{
                 <%
                   if (day11.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day11 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num11 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day11 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num11 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -678,7 +682,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[11] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[11] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -702,7 +706,7 @@ finally{
                 <%
                   if (day12.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day12 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num12 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day12 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num12 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -710,7 +714,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[12] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[12] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -734,7 +738,7 @@ finally{
                 <%
                   if (day13.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day13 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num13 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day13 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num13 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -742,7 +746,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[13] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp.jsp?day=<%= year %><%= month+1 %><%= num[13] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -767,7 +771,7 @@ finally{
                 <%
                   if (day14.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day14 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num14 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day14 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num14 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -775,7 +779,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[14] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[14] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -799,7 +803,7 @@ finally{
                 <%
                   if (day15.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day15 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num15 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day15 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num15 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -807,7 +811,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[15] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[15] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -831,7 +835,7 @@ finally{
                 <%
                   if (day16.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day16 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num16 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day16 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num16 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -839,7 +843,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[16] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[16] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -863,7 +867,7 @@ finally{
                 <%
                   if (day17.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day17 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num17 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day17 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num17 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -871,7 +875,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[17] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[17] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -895,7 +899,7 @@ finally{
                 <%
                   if (day18.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day18 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num18 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day18 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num18 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -903,7 +907,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[18] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[18] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -927,7 +931,7 @@ finally{
                 <%
                   if (day19.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day19 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num19 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day19 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num19 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -935,7 +939,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[19] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[19] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -959,7 +963,7 @@ finally{
                 <%
                   if (day20.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day20 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num20 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day20 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num20 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -967,7 +971,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[20] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[20] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -993,7 +997,7 @@ finally{
                 <%
                   if (day21.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day21 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num21 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day21 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num21 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1001,7 +1005,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[21] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[21] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1025,7 +1029,7 @@ finally{
                 <%
                   if (day22.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day22 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num22 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day22 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num22 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1033,7 +1037,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[22] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[22] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1057,7 +1061,7 @@ finally{
                 <%
                   if (day23.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day23 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num23 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day23 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num23 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1065,7 +1069,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[23] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[23] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1089,7 +1093,7 @@ finally{
                 <%
                   if (day24.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day24 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num24 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day24 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num24 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1097,7 +1101,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[24] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[24] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1121,7 +1125,7 @@ finally{
                 <%
                   if (day25.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day25 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num25 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day25 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num25 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1129,7 +1133,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[25] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp.jsp?day=<%= year %><%= month+1 %><%= num[25] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1153,7 +1157,7 @@ finally{
                 <%
                   if (day26.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day26 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num26 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day26 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num26 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1161,7 +1165,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[26] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp.jsp?day=<%= year %><%= month+1 %><%= num[26] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1185,7 +1189,7 @@ finally{
                 <%
                   if (day27.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day27 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num27 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day27 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num27 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1193,7 +1197,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[27] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[27] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1226,7 +1230,7 @@ finally{
                 <%
                   if (day28.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day28 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num28 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day28 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num28 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1234,7 +1238,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[28] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[28] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1268,7 +1272,7 @@ finally{
                 <%
                   if (day29.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day29 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num29 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day29 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num29 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1276,7 +1280,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[29] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[29] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1310,7 +1314,7 @@ finally{
                 <%
                   if (day30.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day30 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num30 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day30 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num30 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1318,7 +1322,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[30] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[30] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1352,7 +1356,7 @@ finally{
                 <%
                   if (day31.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day31 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num31 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day31 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num31 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1360,7 +1364,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[31] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp.jsp?day=<%= year %><%= month+1 %><%= num[31] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1394,7 +1398,7 @@ finally{
                 <%
                   if (day32.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day32 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num32 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day32 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num32 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1402,7 +1406,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[32] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp.jsp?day=<%= year %><%= month+1 %><%= num[32] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1436,7 +1440,7 @@ finally{
                 <%
                   if (day33.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day33 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num33 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day33 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num33 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1444,7 +1448,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[33] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[33] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1478,7 +1482,7 @@ finally{
                 <%
                   if (day34.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day34 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num34 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day34 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num34 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1486,7 +1490,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[34] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[34] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
               </div>
             </td>
@@ -1521,7 +1525,7 @@ finally{
                 <%
                   if (day35.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day35 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num35 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day35 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num35 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1529,7 +1533,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[35] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[35] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>
@@ -1563,7 +1567,7 @@ finally{
                 <%
                   if (day36.equals(list.get(j).get("day"))) {
                 %>
-                <a href="schedule_check.jsp?kaiin_id=<%= list.get(j).get("kaiin_id") %>&day=<%= day36 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num36 %>">
+                <a href="openschedule_check.jsp?yotei_id=<%= list.get(j).get("yotei_id") %>&day=<%= day36 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num36 %>">
                 <div class="yotei">
                 <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
                 <%= list.get(j).get("place") %>
@@ -1571,7 +1575,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[36] %>"><button>追加</button></a>
+                  <a href="./openschedule_make.jsp?day=<%= year %><%= month+1 %><%= num[36] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>

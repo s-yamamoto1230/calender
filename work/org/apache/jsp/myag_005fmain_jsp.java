@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class myag_005fmain_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -68,7 +68,7 @@ public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
     request.setCharacterEncoding("UTF-8");
     response.setCharacterEncoding("UTF-8");
 
-    String kaiin_idStr = request.getParameter("kaiin_id");
+    String yotei_idStr = request.getParameter("yotei_id");
 
     //現在の日付取得
     Date today = new Date();
@@ -187,8 +187,8 @@ try{	// ロードに失敗したときのための例外処理
     SQL = new StringBuffer();
 
   //SQL文の発行（選択クエリ）
-  SQL.append("select kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance from yotei_tbl where kaiin_id = '");
-  SQL.append(kaiin_idStr);
+  SQL.append("select yotei_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance from openyotei_tbl where yotei_id = '");
+  SQL.append(yotei_idStr);
   SQL.append("'");
 
   //SQL文の発行（選択クエリ）
@@ -198,7 +198,7 @@ try{	// ロードに失敗したときのための例外処理
   while(rs.next()){
       //DBのデータをHashMapへ格納する
     map = new HashMap<String,String>();
-    map.put("kaiin_id",rs.getString("kaiin_id"));
+    map.put("yotei_id",rs.getString("yotei_id"));
     map.put("day",rs.getString("day"));
     map.put("s_hour",rs.getString("s_hour"));
     map.put("s_mine",rs.getString("s_mine"));
@@ -265,12 +265,16 @@ finally{
       out.write("    <li><a href=\"./agenda_delete.jsp\">Agenda削除</a></li>\r\n");
       out.write("    <li><a href=\"./agenda_make.jsp\">Agenda作成</a></li>\r\n");
       out.write("    <li><a href=\"./ag_search.jsp\">Agenda検索</a></li>\r\n");
-      out.write("    <li><a href=\"./myag.jsp?kaiin_id=");
-      out.print( kaiin_idStr );
-      out.write("\">作成したAgenda</a></li>\r\n");
       out.write("  </ul>\r\n");
       out.write("\r\n");
       out.write("  <table id=\"cal\">\r\n");
+      out.write("        <tr>\r\n");
+      out.write("          <td colspan=\"7\">\r\n");
+      out.write("          ");
+      out.print( yotei_idStr );
+      out.write("\r\n");
+      out.write("        </td>\r\n");
+      out.write("        </tr>\r\n");
       out.write("\r\n");
       out.write("        <tr border=\"0\" cellspacing=\"1\" cellpadding=\"1\" bgcolor=\"#CCCCCC\" style=\"font: 12px; color: #666666;\">\r\n");
       out.write("            <td align=\"center\" colspan=\"7\" bgcolor=\"#EEEEEE\" height=\"30\" style=\"color: #666666;\">\r\n");
@@ -348,8 +352,8 @@ finally{
                     if (day0.equals(list.get(j).get("day"))) {
                   
       out.write("\r\n");
-      out.write("                  <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                  <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day0 );
       out.write("&s_hour=");
@@ -378,7 +382,7 @@ finally{
       out.write("                  ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[0] );
@@ -430,8 +434,8 @@ finally{
                   if (day1.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day1 );
       out.write("&s_hour=");
@@ -460,7 +464,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[1] );
@@ -512,8 +516,8 @@ finally{
                   if (day2.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day2 );
       out.write("&s_hour=");
@@ -542,7 +546,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[2] );
@@ -594,8 +598,8 @@ finally{
                   if (day3.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day3 );
       out.write("&s_hour=");
@@ -624,7 +628,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[3] );
@@ -676,8 +680,8 @@ finally{
                   if (day4.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day4 );
       out.write("&s_hour=");
@@ -702,7 +706,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[4] );
@@ -754,8 +758,8 @@ finally{
                   if (day5.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day5 );
       out.write("&s_hour=");
@@ -780,7 +784,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[5] );
@@ -821,8 +825,8 @@ finally{
                   if (day6.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day6 );
       out.write("&s_hour=");
@@ -847,7 +851,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[6] );
@@ -885,8 +889,8 @@ finally{
                   if (day7.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day7 );
       out.write("&s_hour=");
@@ -911,7 +915,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[7] );
@@ -947,8 +951,8 @@ finally{
                   if (day8.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day8 );
       out.write("&s_hour=");
@@ -973,7 +977,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[8] );
@@ -1009,8 +1013,8 @@ finally{
                   if (day9.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day9 );
       out.write("&s_hour=");
@@ -1035,7 +1039,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[9] );
@@ -1071,8 +1075,8 @@ finally{
                   if (day10.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day10 );
       out.write("&s_hour=");
@@ -1097,7 +1101,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[10] );
@@ -1133,8 +1137,8 @@ finally{
                   if (day11.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day11 );
       out.write("&s_hour=");
@@ -1159,7 +1163,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[11] );
@@ -1195,8 +1199,8 @@ finally{
                   if (day12.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day12 );
       out.write("&s_hour=");
@@ -1221,7 +1225,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[12] );
@@ -1257,8 +1261,8 @@ finally{
                   if (day13.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day13 );
       out.write("&s_hour=");
@@ -1283,7 +1287,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[13] );
@@ -1320,8 +1324,8 @@ finally{
                   if (day14.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day14 );
       out.write("&s_hour=");
@@ -1346,7 +1350,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[14] );
@@ -1382,8 +1386,8 @@ finally{
                   if (day15.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day15 );
       out.write("&s_hour=");
@@ -1408,7 +1412,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[15] );
@@ -1444,8 +1448,8 @@ finally{
                   if (day16.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day16 );
       out.write("&s_hour=");
@@ -1470,7 +1474,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[16] );
@@ -1506,8 +1510,8 @@ finally{
                   if (day17.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day17 );
       out.write("&s_hour=");
@@ -1532,7 +1536,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[17] );
@@ -1568,8 +1572,8 @@ finally{
                   if (day18.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day18 );
       out.write("&s_hour=");
@@ -1594,7 +1598,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[18] );
@@ -1630,8 +1634,8 @@ finally{
                   if (day19.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day19 );
       out.write("&s_hour=");
@@ -1656,7 +1660,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[19] );
@@ -1692,8 +1696,8 @@ finally{
                   if (day20.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day20 );
       out.write("&s_hour=");
@@ -1718,7 +1722,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[20] );
@@ -1756,8 +1760,8 @@ finally{
                   if (day21.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day21 );
       out.write("&s_hour=");
@@ -1782,7 +1786,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[21] );
@@ -1818,8 +1822,8 @@ finally{
                   if (day22.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day22 );
       out.write("&s_hour=");
@@ -1844,7 +1848,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[22] );
@@ -1880,8 +1884,8 @@ finally{
                   if (day23.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day23 );
       out.write("&s_hour=");
@@ -1906,7 +1910,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[23] );
@@ -1942,8 +1946,8 @@ finally{
                   if (day24.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day24 );
       out.write("&s_hour=");
@@ -1968,7 +1972,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[24] );
@@ -2004,8 +2008,8 @@ finally{
                   if (day25.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day25 );
       out.write("&s_hour=");
@@ -2030,7 +2034,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[25] );
@@ -2066,8 +2070,8 @@ finally{
                   if (day26.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day26 );
       out.write("&s_hour=");
@@ -2092,7 +2096,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[26] );
@@ -2128,8 +2132,8 @@ finally{
                   if (day27.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day27 );
       out.write("&s_hour=");
@@ -2154,7 +2158,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[27] );
@@ -2165,17 +2169,6 @@ finally{
       out.write("            </td>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
-      out.write("            ");
-
-            if (num[28]==0 || tuki_max < num[28]) {
-              
-      out.write("\r\n");
-      out.write("              </tr>\r\n");
-      out.write("              ");
-
-              }else{
-              
-      out.write("\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFCC99\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-29\">\r\n");
       out.write("                ");
@@ -2203,8 +2196,8 @@ finally{
                   if (day28.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day28 );
       out.write("&s_hour=");
@@ -2229,7 +2222,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[28] );
@@ -2238,22 +2231,6 @@ finally{
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
       out.write("            </td>\r\n");
-      out.write("            ");
-
-            }
-            
-      out.write("\r\n");
-      out.write("            ");
-
-            if (num[29]==0 || tuki_max < num[29]) {
-            
-      out.write("\r\n");
-      out.write("            <td></td>\r\n");
-      out.write("            ");
-
-            }else{
-            
-      out.write("\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-30\">\r\n");
       out.write("                ");
@@ -2281,8 +2258,8 @@ finally{
                   if (day29.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day29 );
       out.write("&s_hour=");
@@ -2307,7 +2284,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[29] );
@@ -2316,22 +2293,6 @@ finally{
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
       out.write("            </td>\r\n");
-      out.write("            ");
-
-            }
-            
-      out.write("\r\n");
-      out.write("            ");
-
-            if (num[30]==0 || tuki_max < num[30]) {
-            
-      out.write("\r\n");
-      out.write("            <td></td>\r\n");
-      out.write("            ");
-
-            }else{
-            
-      out.write("\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-31\">\r\n");
       out.write("                ");
@@ -2359,8 +2320,8 @@ finally{
                   if (day30.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day30 );
       out.write("&s_hour=");
@@ -2385,7 +2346,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[30] );
@@ -2394,11 +2355,6 @@ finally{
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
       out.write("            </td>\r\n");
-      out.write("            ");
-
-            }
-            
-      out.write("\r\n");
       out.write("            ");
 
             if (num[31]==0 || tuki_max < num[31]) {
@@ -2437,8 +2393,8 @@ finally{
                   if (day31.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day31 );
       out.write("&s_hour=");
@@ -2463,7 +2419,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[31] );
@@ -2515,8 +2471,8 @@ finally{
                   if (day32.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day32 );
       out.write("&s_hour=");
@@ -2541,7 +2497,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[32] );
@@ -2593,8 +2549,8 @@ finally{
                   if (day33.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day33 );
       out.write("&s_hour=");
@@ -2619,7 +2575,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[33] );
@@ -2671,8 +2627,8 @@ finally{
                   if (day34.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day34 );
       out.write("&s_hour=");
@@ -2697,7 +2653,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[34] );
@@ -2750,8 +2706,8 @@ finally{
                   if (day35.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day35 );
       out.write("&s_hour=");
@@ -2776,7 +2732,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[35] );
@@ -2828,8 +2784,8 @@ finally{
                   if (day36.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
+      out.write("                <a href=\"openschedule_check.jsp?yotei_id=");
+      out.print( list.get(j).get("yotei_id") );
       out.write("&day=");
       out.print( day36 );
       out.write("&s_hour=");
@@ -2854,7 +2810,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <a href=\"./openschedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[36] );
