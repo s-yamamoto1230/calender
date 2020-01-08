@@ -146,7 +146,7 @@ public final class agenda_005fmake_jsp extends org.apache.jasper.runtime.HttpJsp
       out.write("          <label><input type=\"radio\" name=\"permission\" value=\"2\">禁止</label>\r\n");
       out.write("        </td>\r\n");
       out.write("      </tr>\r\n");
-      out.write("      \r\n");
+      out.write("\r\n");
       out.write("\r\n");
       out.write("      <tr class=\"no-line\">\r\n");
       out.write("        <td class=\"no-line\" id=\"button\" colspan=\"2\">\r\n");
@@ -159,7 +159,7 @@ public final class agenda_005fmake_jsp extends org.apache.jasper.runtime.HttpJsp
       out.write("\r\n");
       out.write("        <tr class=\"no-line\">\r\n");
       out.write("          <td class=\"no-line\" colspan=\"2\">\r\n");
-      out.write("            <p><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("            <p><a href=\"./logincheck.jsp\">メイン画面に戻る</a></p>\r\n");
       out.write("          </td>\r\n");
       out.write("\r\n");
       out.write("        </tr>\r\n");

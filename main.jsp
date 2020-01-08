@@ -205,12 +205,16 @@ finally{
     <li><a href="./ad_favodel.jsp">お気に入り削除</a></li>
     <li><a href="./agenda_delete.jsp">Agenda削除</a></li>
     <li><a href="./agenda_make.jsp">Agenda作成</a></li>
-    <li><a href="./ag_search.jsp">Agenda検索</a></li>
+    <li><a href="./agenda_search.jsp">Agenda検索</a></li>
     <li><a href="./myag.jsp?kaiin_id=<%= kaiin_idStr %>">作成したAgenda</a></li>
   </ul>
 
   <table id="cal">
-
+        <tr class="no-line">
+          <td colspan="7" class="no-line">
+            <h1>さんの予定</h1>
+          </td>
+        </tr>
         <tr border="0" cellspacing="1" cellpadding="1" bgcolor="#CCCCCC" style="font: 12px; color: #666666;">
             <td align="center" colspan="7" bgcolor="#EEEEEE" height="30" style="color: #666666;">
               <div class="tuki">
@@ -244,8 +248,8 @@ finally{
             <%
             }else{
             %>
-            <td align="center" bgcolor="#FFCC99" style="color: #666666;">
-              <a href="#modal-01">
+            <td align="center" bgcolor="#FFFFFF" style="color: #FF0000;">
+              <a href="#modal-01" style="color: #FF0000;">
                 <%= num[0] %>
               </a>
               <div class="modal-wrapper" id="modal-01">
@@ -523,8 +527,8 @@ finally{
             </td>
           </tr>
           <tr>
-            <td align="center" bgcolor="#FFCC99" style="color: #666666;">
-              <a href="#modal-08">
+            <td align="center" bgcolor="#FFFFFF" style="color: #FF0000;">
+              <a href="#modal-08" style="color: #FF0000;">
                 <%= num[7] %>
               </a>
               <div class="modal-wrapper" id="modal-08">
@@ -748,8 +752,8 @@ finally{
               </div>
           </tr>
           <tr>
-            <td align="center" bgcolor="#FFCC99" style="color: #666666;">
-              <a href="#modal-15">
+            <td align="center" bgcolor="#FFFFFF" style="color: #FF0000;">
+              <a href="#modal-15" style="color: #FF0000;">
                 <%= num[14] %>
               </a>
               <div class="modal-wrapper" id="modal-15">
@@ -974,8 +978,8 @@ finally{
             </td>
           </tr>
           <tr>
-            <td align="center" bgcolor="#FFCC99" style="color: #666666;">
-              <a href="#modal-22">
+            <td align="center" bgcolor="#FFFFFF" style="color: #FF0000;">
+              <a href="#modal-22" style="color: #FF0000;">
                 <%= num[21] %>
               </a>
               <div class="modal-wrapper" id="modal-22">
@@ -1207,8 +1211,8 @@ finally{
               <%
               }else{
               %>
-            <td align="center" bgcolor="#FFCC99" style="color: #666666;">
-              <a href="#modal-29">
+            <td align="center" bgcolor="#FFFFFF" style="color: #FF0000;">
+              <a href="#modal-29" style="color: #FF0000;">
                 <%= num[28] %>
               </a>
               <div class="modal-wrapper" id="modal-29">
@@ -1502,8 +1506,8 @@ finally{
             <%
             }else{
             %>
-            <td align="center" bgcolor="#FFCC99" style="color: #666666;">
-              <a href="#modal-36">
+            <td align="center" bgcolor="#FFFFFF" style="color: #FF0000;">
+              <a href="#modal-36" style="color: #FF0000;">
                 <%= num[35] %>
               </a>
               <div class="modal-wrapper" id="modal-36">

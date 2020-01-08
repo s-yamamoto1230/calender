@@ -264,14 +264,18 @@ finally{
       out.write("    <li><a href=\"./ad_favodel.jsp\">お気に入り削除</a></li>\r\n");
       out.write("    <li><a href=\"./agenda_delete.jsp\">Agenda削除</a></li>\r\n");
       out.write("    <li><a href=\"./agenda_make.jsp\">Agenda作成</a></li>\r\n");
-      out.write("    <li><a href=\"./ag_search.jsp\">Agenda検索</a></li>\r\n");
+      out.write("    <li><a href=\"./agenda_search.jsp\">Agenda検索</a></li>\r\n");
       out.write("    <li><a href=\"./myag.jsp?kaiin_id=");
       out.print( kaiin_idStr );
       out.write("\">作成したAgenda</a></li>\r\n");
       out.write("  </ul>\r\n");
       out.write("\r\n");
       out.write("  <table id=\"cal\">\r\n");
-      out.write("\r\n");
+      out.write("        <tr class=\"no-line\">\r\n");
+      out.write("          <td colspan=\"7\" class=\"no-line\">\r\n");
+      out.write("            <h1>さんの予定</h1>\r\n");
+      out.write("          </td>\r\n");
+      out.write("        </tr>\r\n");
       out.write("        <tr border=\"0\" cellspacing=\"1\" cellpadding=\"1\" bgcolor=\"#CCCCCC\" style=\"font: 12px; color: #666666;\">\r\n");
       out.write("            <td align=\"center\" colspan=\"7\" bgcolor=\"#EEEEEE\" height=\"30\" style=\"color: #666666;\">\r\n");
       out.write("              <div class=\"tuki\">\r\n");
@@ -321,8 +325,8 @@ finally{
             }else{
             
       out.write("\r\n");
-      out.write("            <td align=\"center\" bgcolor=\"#FFCC99\" style=\"color: #666666;\">\r\n");
-      out.write("              <a href=\"#modal-01\">\r\n");
+      out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #FF0000;\">\r\n");
+      out.write("              <a href=\"#modal-01\" style=\"color: #FF0000;\">\r\n");
       out.write("                ");
       out.print( num[0] );
       out.write("\r\n");
@@ -858,8 +862,8 @@ finally{
       out.write("            </td>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
-      out.write("            <td align=\"center\" bgcolor=\"#FFCC99\" style=\"color: #666666;\">\r\n");
-      out.write("              <a href=\"#modal-08\">\r\n");
+      out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #FF0000;\">\r\n");
+      out.write("              <a href=\"#modal-08\" style=\"color: #FF0000;\">\r\n");
       out.write("                ");
       out.print( num[7] );
       out.write("\r\n");
@@ -1293,8 +1297,8 @@ finally{
       out.write("              </div>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
-      out.write("            <td align=\"center\" bgcolor=\"#FFCC99\" style=\"color: #666666;\">\r\n");
-      out.write("              <a href=\"#modal-15\">\r\n");
+      out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #FF0000;\">\r\n");
+      out.write("              <a href=\"#modal-15\" style=\"color: #FF0000;\">\r\n");
       out.write("                ");
       out.print( num[14] );
       out.write("\r\n");
@@ -1729,8 +1733,8 @@ finally{
       out.write("            </td>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
-      out.write("            <td align=\"center\" bgcolor=\"#FFCC99\" style=\"color: #666666;\">\r\n");
-      out.write("              <a href=\"#modal-22\">\r\n");
+      out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #FF0000;\">\r\n");
+      out.write("              <a href=\"#modal-22\" style=\"color: #FF0000;\">\r\n");
       out.write("                ");
       out.print( num[21] );
       out.write("\r\n");
@@ -2176,8 +2180,8 @@ finally{
               }else{
               
       out.write("\r\n");
-      out.write("            <td align=\"center\" bgcolor=\"#FFCC99\" style=\"color: #666666;\">\r\n");
-      out.write("              <a href=\"#modal-29\">\r\n");
+      out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #FF0000;\">\r\n");
+      out.write("              <a href=\"#modal-29\" style=\"color: #FF0000;\">\r\n");
       out.write("                ");
       out.print( num[28] );
       out.write("\r\n");
@@ -2723,8 +2727,8 @@ finally{
             }else{
             
       out.write("\r\n");
-      out.write("            <td align=\"center\" bgcolor=\"#FFCC99\" style=\"color: #666666;\">\r\n");
-      out.write("              <a href=\"#modal-36\">\r\n");
+      out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #FF0000;\">\r\n");
+      out.write("              <a href=\"#modal-36\" style=\"color: #FF0000;\">\r\n");
       out.write("                ");
       out.print( num[35] );
       out.write("\r\n");

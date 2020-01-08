@@ -45,7 +45,7 @@ ul#nav{
 }
 
 table#cal{
-  margin: 150px auto auto auto;
+  margin: 60px auto auto auto;
 }
 
 .tuki{
@@ -66,18 +66,17 @@ table {
     border-collapse: collapse;
 }
 
+table tr.no-line{
+  border-style:none;
+}
+table tr td.no-line{
+  border-style:none;
+}
+
 td {
     border: 1px solid #ddd;
     padding: 30px 30px;
     text-align: center;
-}
-
-td:first-child {
-    color: red;
-}
-
-td:last-child {
-    color: royalblue;
 }
 
 td.is-disabled {
