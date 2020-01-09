@@ -78,8 +78,11 @@ public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
     calendar.setTime(today);
     //年、月、日の取得
     int year = calendar.get(Calendar.YEAR);
+    int show_year = calendar.get(Calendar.YEAR);
     int month = calendar.get(Calendar.MONTH);
+    int show_month = calendar.get(Calendar.MONTH);
     int day = calendar.get(Calendar.DATE);
+    int show_day = calendar.get(Calendar.DATE);
     calendar.set(year,month,1);
     int ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
 
@@ -258,19 +261,28 @@ finally{
       out.write("\r\n");
       out.write("  <body>\r\n");
       out.write("\r\n");
-      out.write("  <ul id=\"nav\">\r\n");
-      out.write("    <li><a href=\"#\" onclick=\"ShowAlert();\">ログアウト </a></li>\r\n");
-      out.write("    <li><a href=\"add_change.jsp\">会員情報変更</a></li>\r\n");
-      out.write("    <li><a href=\"./ad_favodel.jsp\">お気に入り削除</a></li>\r\n");
-      out.write("    <li><a href=\"./agenda_delete.jsp\">Agenda削除</a></li>\r\n");
-      out.write("    <li><a href=\"./agenda_make.jsp\">Agenda作成</a></li>\r\n");
-      out.write("    <li><a href=\"./agenda_search.jsp\">Agenda検索</a></li>\r\n");
-      out.write("    <li><a href=\"./myag.jsp?kaiin_id=");
+      out.write("    <div id=\"wrap\">\r\n");
+      out.write("      <ul id=\"nav\">\r\n");
+      out.write("        <li><a href=\"#\" onclick=\"ShowAlert();\">ログアウト </a></li>\r\n");
+      out.write("        <li><a href=\"add_change.jsp\">会員情報変更</a></li>\r\n");
+      out.write("        <li><a href=\"./ad_favodel.jsp\">お気に入り削除</a></li>\r\n");
+      out.write("        <li><a href=\"./agenda_delete.jsp\">Agenda削除</a></li>\r\n");
+      out.write("        <li><a href=\"./agenda_make.jsp\">Agenda作成</a></li>\r\n");
+      out.write("        <li><a href=\"./agenda_search.jsp\">Agenda検索</a></li>\r\n");
+      out.write("        <li><a href=\"./myag.jsp?kaiin_id=");
       out.print( kaiin_idStr );
       out.write("\">作成したAgenda</a></li>\r\n");
-      out.write("  </ul>\r\n");
+      out.write("        <li id=\"day\">");
+      out.print( show_year );
+      out.write('/');
+      out.print( show_month+1 );
+      out.write('/');
+      out.print( show_day );
+      out.write("</li>\r\n");
+      out.write("      </ul>\r\n");
+      out.write("    </div>\r\n");
       out.write("\r\n");
-      out.write("  <table id=\"cal\">\r\n");
+      out.write("    <table id=\"cal\">\r\n");
       out.write("        <tr class=\"no-line\">\r\n");
       out.write("          <td colspan=\"7\" class=\"no-line\">\r\n");
       out.write("            <h1>さんの予定</h1>\r\n");
@@ -319,7 +331,7 @@ finally{
             if (num[0]==0) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td bgcolor=\"#FFFFFF\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -401,7 +413,7 @@ finally{
             if (num[1]==0) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td bgcolor=\"#FFFFFF\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -483,7 +495,7 @@ finally{
             if (num[2]==0) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td bgcolor=\"#FFFFFF\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -565,7 +577,7 @@ finally{
             if (num[3]==0) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td bgcolor=\"#FFFFFF\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -647,7 +659,7 @@ finally{
             if (num[4]==0) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td bgcolor=\"#FFFFFF\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -725,7 +737,7 @@ finally{
             if (num[5]==0) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td bgcolor=\"#FFFFFF\"></td>\r\n");
       out.write("            ");
 
             }else{

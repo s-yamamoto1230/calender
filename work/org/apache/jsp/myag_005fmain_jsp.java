@@ -78,8 +78,11 @@ public final class myag_005fmain_jsp extends org.apache.jasper.runtime.HttpJspBa
     calendar.setTime(today);
     //年、月、日の取得
     int year = calendar.get(Calendar.YEAR);
+    int show_year = calendar.get(Calendar.YEAR);
     int month = calendar.get(Calendar.MONTH);
+    int show_month = calendar.get(Calendar.MONTH);
     int day = calendar.get(Calendar.DATE);
+    int show_day = calendar.get(Calendar.DATE);
     calendar.set(year,month,1);
     int ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
 
@@ -259,12 +262,15 @@ finally{
       out.write("  <body>\r\n");
       out.write("\r\n");
       out.write("  <ul id=\"nav\">\r\n");
-      out.write("    <li><a href=\"#\" onclick=\"ShowAlert();\">ログアウト </a></li>\r\n");
-      out.write("    <li><a href=\"add_change.jsp\">会員情報変更</a></li>\r\n");
-      out.write("    <li><a href=\"./ad_favodel.jsp\">お気に入り削除</a></li>\r\n");
-      out.write("    <li><a href=\"./agenda_delete.jsp\">Agenda削除</a></li>\r\n");
-      out.write("    <li><a href=\"./agenda_make.jsp\">Agenda作成</a></li>\r\n");
-      out.write("    <li><a href=\"./ag_search.jsp\">Agenda検索</a></li>\r\n");
+      out.write("    <li><a href=\"./logincheck.jsp\">メインに戻る</a></li>\r\n");
+      out.write("    <li><a href=\"#\" onclick=\"ShowLile();\">お気に入り登録</a></li>\r\n");
+      out.write("    <li id=\"day\">");
+      out.print( show_year );
+      out.write('/');
+      out.print( show_month+1 );
+      out.write('/');
+      out.print( show_day );
+      out.write("</li>\r\n");
       out.write("  </ul>\r\n");
       out.write("\r\n");
       out.write("  <table id=\"cal\">\r\n");
@@ -279,7 +285,7 @@ finally{
       out.write("        <tr border=\"0\" cellspacing=\"1\" cellpadding=\"1\" bgcolor=\"#CCCCCC\" style=\"font: 12px; color: #666666;\">\r\n");
       out.write("            <td align=\"center\" colspan=\"7\" bgcolor=\"#EEEEEE\" height=\"30\" style=\"color: #666666;\">\r\n");
       out.write("              <div class=\"tuki\">\r\n");
-      out.write("                <a href=\"./main.jsp?year=");
+      out.write("                <a href=\"./myag_main.jsp?year=");
       out.print( year );
       out.write("&month=");
       out.print( month-1 );
@@ -295,7 +301,7 @@ finally{
       out.write("月</h1>\r\n");
       out.write("              </div>\r\n");
       out.write("              <div class=\"tuki\">\r\n");
-      out.write("                <a href=\"./main.jsp?year=");
+      out.write("                <a href=\"./myag_main.jsp?year=");
       out.print( year );
       out.write("&month=");
       out.print( month+1 );
@@ -319,7 +325,7 @@ finally{
             if (num[0]==0) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td bgcolor=\"#FFFFFF\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -401,7 +407,7 @@ finally{
             if (num[1]==0) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td bgcolor=\"#FFFFFF\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -483,7 +489,7 @@ finally{
             if (num[2]==0) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td bgcolor=\"#FFFFFF\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -565,7 +571,7 @@ finally{
             if (num[3]==0) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td bgcolor=\"#FFFFFF\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -647,7 +653,7 @@ finally{
             if (num[4]==0) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td bgcolor=\"#FFFFFF\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -725,7 +731,7 @@ finally{
             if (num[5]==0) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td bgcolor=\"#FFFFFF\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -2169,6 +2175,17 @@ finally{
       out.write("            </td>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
+      out.write("            ");
+
+            if (num[28]==0 || tuki_max < num[28]) {
+              
+      out.write("\r\n");
+      out.write("              </tr>\r\n");
+      out.write("              ");
+
+              }else{
+              
+      out.write("\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFCC99\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-29\">\r\n");
       out.write("                ");
@@ -2231,6 +2248,22 @@ finally{
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
       out.write("            </td>\r\n");
+      out.write("            ");
+
+            }
+            
+      out.write("\r\n");
+      out.write("            ");
+
+            if (num[29]==0 || tuki_max < num[29]) {
+            
+      out.write("\r\n");
+      out.write("            <td></td>\r\n");
+      out.write("            ");
+
+            }else{
+            
+      out.write("\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-30\">\r\n");
       out.write("                ");
@@ -2293,6 +2326,22 @@ finally{
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
       out.write("            </td>\r\n");
+      out.write("            ");
+
+            }
+            
+      out.write("\r\n");
+      out.write("            ");
+
+            if (num[30]==0 || tuki_max < num[30]) {
+            
+      out.write("\r\n");
+      out.write("            <td></td>\r\n");
+      out.write("            ");
+
+            }else{
+            
+      out.write("\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-31\">\r\n");
       out.write("                ");
@@ -2355,6 +2404,11 @@ finally{
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
       out.write("            </td>\r\n");
+      out.write("            ");
+
+            }
+            
+      out.write("\r\n");
       out.write("            ");
 
             if (num[31]==0 || tuki_max < num[31]) {

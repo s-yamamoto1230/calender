@@ -20,8 +20,11 @@
     calendar.setTime(today);
     //年、月、日の取得
     int year = calendar.get(Calendar.YEAR);
+    int show_year = calendar.get(Calendar.YEAR);
     int month = calendar.get(Calendar.MONTH);
+    int show_month = calendar.get(Calendar.MONTH);
     int day = calendar.get(Calendar.DATE);
+    int show_day = calendar.get(Calendar.DATE);
     calendar.set(year,month,1);
     int ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
 
@@ -199,17 +202,20 @@ finally{
 
   <body>
 
-  <ul id="nav">
-    <li><a href="#" onclick="ShowAlert();">ログアウト </a></li>
-    <li><a href="add_change.jsp">会員情報変更</a></li>
-    <li><a href="./ad_favodel.jsp">お気に入り削除</a></li>
-    <li><a href="./agenda_delete.jsp">Agenda削除</a></li>
-    <li><a href="./agenda_make.jsp">Agenda作成</a></li>
-    <li><a href="./agenda_search.jsp">Agenda検索</a></li>
-    <li><a href="./myag.jsp?kaiin_id=<%= kaiin_idStr %>">作成したAgenda</a></li>
-  </ul>
+    <div id="wrap">
+      <ul id="nav">
+        <li><a href="#" onclick="ShowAlert();">ログアウト </a></li>
+        <li><a href="add_change.jsp">会員情報変更</a></li>
+        <li><a href="./ad_favodel.jsp">お気に入り削除</a></li>
+        <li><a href="./agenda_delete.jsp">Agenda削除</a></li>
+        <li><a href="./agenda_make.jsp">Agenda作成</a></li>
+        <li><a href="./agenda_search.jsp">Agenda検索</a></li>
+        <li><a href="./myag.jsp?kaiin_id=<%= kaiin_idStr %>">作成したAgenda</a></li>
+        <li id="day"><%= show_year %>/<%= show_month+1 %>/<%= show_day %></li>
+      </ul>
+    </div>
 
-  <table id="cal">
+    <table id="cal">
         <tr class="no-line">
           <td colspan="7" class="no-line">
             <h1>さんの予定</h1>
@@ -244,7 +250,7 @@ finally{
             <%
             if (num[0]==0) {
             %>
-            <td></td>
+            <td bgcolor="#FFFFFF"></td>
             <%
             }else{
             %>
@@ -286,7 +292,7 @@ finally{
             <%
             if (num[1]==0) {
             %>
-            <td></td>
+            <td bgcolor="#FFFFFF"></td>
             <%
             }else{
             %>
@@ -328,7 +334,7 @@ finally{
             <%
             if (num[2]==0) {
             %>
-            <td></td>
+            <td bgcolor="#FFFFFF"></td>
             <%
             }else{
             %>
@@ -370,7 +376,7 @@ finally{
             <%
             if (num[3]==0) {
             %>
-            <td></td>
+            <td bgcolor="#FFFFFF"></td>
             <%
             }else{
             %>
@@ -412,7 +418,7 @@ finally{
             <%
             if (num[4]==0) {
             %>
-            <td></td>
+            <td bgcolor="#FFFFFF"></td>
             <%
             }else{
             %>
@@ -454,7 +460,7 @@ finally{
             <%
             if (num[5]==0) {
             %>
-            <td></td>
+            <td bgcolor="#FFFFFF"></td>
             <%
             }else{
             %>

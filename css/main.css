@@ -6,6 +6,19 @@
 body{
   text-align: center;
   margin-bottom: 100px;
+  background-color: #FFFDE7;
+	background-size: 80px 80px;
+	background-image:
+	 linear-gradient(rgba(215,204,200,.7) 1%, rgba(215,204,200,.7) 1%, transparent 1%,
+	  transparent 99%, rgba(215,204,200,.7) 99%, rgba(215,204,200,.7) 100%),
+	 linear-gradient(90deg, rgba(215,204,200,.7) 1%, rgba(215,204,200,.7) 1%, transparent 1%,
+	  transparent 99%, rgba(215,204,200,.7) 99%, rgba(215,204,200,.7) 100%),
+	 linear-gradient(transparent, transparent 25%, rgba(215,204,200,.4) 25%, rgba(215,204,200,.4) 26%, transparent 26%,
+	  transparent 50%, rgba(215,204,200,.4) 50%, rgba(215,204,200,.4) 51%, transparent 51%,
+	  transparent 75%, rgba(215,204,200,.4) 75%, rgba(215,204,200,.4) 76%, transparent 76%, transparent 100%),
+	 linear-gradient(90deg, transparent, transparent 25%, rgba(215,204,200,.4) 25%, rgba(215,204,200,.4) 26%, transparent 26%,
+	  transparent 50%, rgba(215,204,200,.4) 50%, rgba(215,204,200,.4) 51%, transparent 51%,
+	  transparent 75%, rgba(215,204,200,.4) 75%, rgba(215,204,200,.4) 76%, transparent 76%, transparent 100%);
 }
 
 ul#nav{
@@ -21,27 +34,47 @@ ul#nav{
   z-index: 1;
 }
 
+div#wrap{
+  width: 600px;
+  margin: 0 auto 0 auto;
+}
+
 #nav {
   list-style: none;
   overflow: hidden;
 }
 
 #nav li {
-  width: 150px;
-  height: 70px;
   text-align: center;
   background-color: #333;
   float: right;
-  line-height: 50px;
+  line-height: 70px;
   margin-right: 2px;
+  height: 70px;
 }
 
 #nav li a {
-  text-decoration: none;
-  color: #fff;
+  display: block;
+  width: 150px;
+  height: 0px;
+  padding: 40px 0 40px 0;
+  line-height: 0;
   text-align: center;
-  font-size: 10px;
-  padding: 20px;
+  text-decoration: none;
+  font-size: 12px;
+  color: #fff;
+}
+
+#nav li a:hover{
+  background-color: #777;
+}
+
+#nav li#day{
+  width: 300;
+  float: left;
+  line-height: 75px;
+  padding: 0 20px;
+  background-color: #333;
 }
 
 table#cal{

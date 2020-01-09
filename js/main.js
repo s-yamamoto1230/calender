@@ -129,3 +129,9 @@ showCalendar(year, month)
         location.href="./index.jsp";
       }
     }
+
+    function ShowLile() {
+      if(confirm("お気に入り登録しますか？")){
+        location.href="./index.jsp";
+      }
+    }
