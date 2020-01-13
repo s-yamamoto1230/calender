@@ -5,7 +5,7 @@ import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import java.sql.*;
 
-public final class schedule_005fmakecheck_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class new_005fcheck_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -57,25 +57,22 @@ public final class schedule_005fmakecheck_jsp extends org.apache.jasper.runtime.
       out.write('\r');
       out.write('\n');
 
-
-  String kaiin_idStr = request.getParameter("id");
+  String mailStr = request.getParameter("mail");
+  String idStr = request.getParameter("id");
+  String passStr = request.getParameter("password");
+  String usernameStr = request.getParameter("username");
+  String yearStr = request.getParameter("year");
+  String monthStr = request.getParameter("month");
   String dayStr = request.getParameter("day");
-  String s_hourStr = request.getParameter("s_hour");
-  String s_minStr = request.getParameter("s_min");
-  String f_hourStr = request.getParameter("f_hour");
-  String f_minStr = request.getParameter("f_min");
-  String placeStr = request.getParameter("place");
-  String detailsStr = request.getParameter("details");
-  String importanceStr = request.getParameter("importance");
-  String year = request.getParameter("year");
-  String month = request.getParameter("month");
+  String bday = yearStr+monthStr+dayStr;
 
+//   String message = passStr;
+//   int num = message.length();
+//   String password="";
+//   for (int i=1; i<=num; i++) {
+//       password=password+"*";
+//   }
 
-  if (importanceStr == null) {
-    importanceStr ="0";
-  }else {
-    importanceStr ="1";
-  }
 
       out.write("\r\n");
       out.write("\r\n");
@@ -85,7 +82,7 @@ public final class schedule_005fmakecheck_jsp extends org.apache.jasper.runtime.
       out.write("\r\n");
       out.write("    <meta charset=\"utf-8\">\r\n");
       out.write("\r\n");
-      out.write("    <title>予定登録(確認)</title>\r\n");
+      out.write("    <title>新規登録(確認)</title>\r\n");
       out.write("\r\n");
       out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/info.css\">\r\n");
       out.write("\r\n");
@@ -94,102 +91,75 @@ public final class schedule_005fmakecheck_jsp extends org.apache.jasper.runtime.
       out.write("  <body>\r\n");
       out.write("\r\n");
       out.write("\r\n");
-      out.write("    <h1>予定新規追加（確認）</h1>\r\n");
+      out.write("    <h1>新規登録（確認）</h1>\r\n");
       out.write("    <h2>以下の内容で登録しますか？</h2>\r\n");
       out.write("\r\n");
       out.write("    <table>\r\n");
-      out.write("    <form action=\"./schedule_makecomplete.jsp\" method=\"post\">\r\n");
+      out.write("    <form action=\"./new_complete.jsp\" method=\"post\">\r\n");
       out.write("\r\n");
+      out.write("      <input type=\"hidden\" name=\"mail\" value=\"");
+      out.print( mailStr );
+      out.write("\">\r\n");
       out.write("      <input type=\"hidden\" name=\"id\" value=\"");
-      out.print( kaiin_idStr );
+      out.print( idStr );
       out.write("\">\r\n");
-      out.write("      <input type=\"hidden\" name=\"day\" value=\"");
-      out.print( dayStr );
+      out.write("      <input type=\"hidden\" name=\"pass\" value=\"");
+      out.print( passStr );
       out.write("\">\r\n");
-      out.write("      <input type=\"hidden\" name=\"s_hour\" value=\"");
-      out.print( s_hourStr );
+      out.write("      <input type=\"hidden\" name=\"username\" value=\"");
+      out.print( usernameStr );
       out.write("\">\r\n");
-      out.write("      <input type=\"hidden\" name=\"s_min\" value=\"");
-      out.print( s_minStr );
-      out.write("\">\r\n");
-      out.write("      <input type=\"hidden\" name=\"f_hour\" value=\"");
-      out.print( f_hourStr );
-      out.write("\">\r\n");
-      out.write("      <input type=\"hidden\" name=\"f_min\" value=\"");
-      out.print( f_minStr );
-      out.write("\">\r\n");
-      out.write("      <input type=\"hidden\" name=\"place\" value=\"");
-      out.print( placeStr );
-      out.write("\">\r\n");
-      out.write("      <input type=\"hidden\" name=\"details\" value=\"");
-      out.print( detailsStr );
-      out.write("\">\r\n");
-      out.write("      <input type=\"hidden\" name=\"importance\" value=\"");
-      out.print( importanceStr );
-      out.write("\">\r\n");
-      out.write("      <input type=\"hidden\" name=\"year\" value=\"");
-      out.print( year );
-      out.write("\">\r\n");
-      out.write("      <input type=\"hidden\" name=\"month\" value=\"");
-      out.print( month );
+      out.write("      <input type=\"hidden\" name=\"bday\" value=\"");
+      out.print( bday );
       out.write("\">\r\n");
       out.write("\r\n");
       out.write("      <tr>\r\n");
       out.write("        <td>\r\n");
-      out.write("          <p>時間</p>\r\n");
-      out.write("        </td>\r\n");
-      out.write("        <td class=\"check\">\r\n");
-      out.write("        ");
-      out.print( s_hourStr );
-      out.write('：');
-      out.print( s_minStr );
-      out.write('～');
-      out.print( f_hourStr );
-      out.write('：');
-      out.print( f_minStr );
-      out.write("　\r\n");
-      out.write("        </td>\r\n");
-      out.write("      </tr>\r\n");
-      out.write("      <tr>\r\n");
-      out.write("        <td>\r\n");
-      out.write("          <p>場所</p>\r\n");
+      out.write("          <p>メールアドレス</p>\r\n");
       out.write("        </td>\r\n");
       out.write("        <td class=\"check\">\r\n");
       out.write("          ");
-      out.print( placeStr );
+      out.print( mailStr );
       out.write("\r\n");
       out.write("        </td>\r\n");
       out.write("      </tr>\r\n");
       out.write("      <tr>\r\n");
       out.write("        <td>\r\n");
-      out.write("          <p>詳細</p>\r\n");
+      out.write("          <p>ID</p>\r\n");
       out.write("        </td>\r\n");
       out.write("        <td class=\"check\">\r\n");
       out.write("          ");
-      out.print( detailsStr );
+      out.print( idStr );
+      out.write("\r\n");
+      out.write("        </td>\r\n");
+      out.write("      <tr>\r\n");
+      out.write("        <td>\r\n");
+      out.write("          <p>パスワード</p>\r\n");
+      out.write("        </td>\r\n");
+      out.write("        <td class=\"check\">\r\n");
+      out.write("          ");
+      out.print( "入力されたパスワード" );
       out.write("\r\n");
       out.write("        </td>\r\n");
       out.write("      </tr>\r\n");
       out.write("      <tr>\r\n");
       out.write("        <td>\r\n");
-      out.write("          <p>重要</p>\r\n");
+      out.write("          <p>ユーザー名</p>\r\n");
       out.write("        </td>\r\n");
       out.write("        <td class=\"check\">\r\n");
       out.write("          ");
- if(importanceStr.equals("1")) { 
-      out.write("\r\n");
-      out.write("          めちゃくちゃ重要です。\r\n");
-      out.write("          ");
-}else{
-      out.write("\r\n");
-      out.write("          そこまで重要ではありません。\r\n");
-      out.write("          ");
- } 
+      out.print( usernameStr );
       out.write("\r\n");
       out.write("        </td>\r\n");
-      out.write("      </tr>\r\n");
+      out.write("      <tr>\r\n");
+      out.write("        <td>\r\n");
+      out.write("          <p>生年月日</p>\r\n");
+      out.write("        </td>\r\n");
+      out.write("        <td class=\"check\">\r\n");
+      out.write("          ");
+      out.print( yearStr+"年"+monthStr+"月"+dayStr+"日" );
       out.write("\r\n");
-      out.write("\r\n");
+      out.write("        </td>\r\n");
       out.write("\r\n");
       out.write("      <tr class=\"no-line\">\r\n");
       out.write("        <td  id=\"button\" class=\"no-line\" colspan=\"2\">\r\n");

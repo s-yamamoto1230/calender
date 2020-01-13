@@ -10,7 +10,7 @@
     request.setCharacterEncoding("UTF-8");
     response.setCharacterEncoding("UTF-8");
 
-    String kaiin_idStr = request.getParameter("kaiin_id");
+    String kaiin_idStr = request.getParameter("id");
 
     //現在の日付取得
     Date today = new Date();
@@ -132,7 +132,7 @@ try{	// ロードに失敗したときのための例外処理
     SQL = new StringBuffer();
 
   //SQL文の発行（選択クエリ）
-  SQL.append("select kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance from yotei_tbl where kaiin_id = '");
+  SQL.append("select yotei_tbl.kaiin_id,yotei_tbl.day,yotei_tbl.s_hour,yotei_tbl.s_mine,yotei_tbl.f_hour,yotei_tbl.f_mine,yotei_tbl.place,yotei_tbl.details,yotei_tbl.importance,kaiin_tbl.kaiin_name from yotei_tbl,kaiin_tbl where yotei_tbl.kaiin_id = kaiin_tbl.kaiin_id and yotei_tbl.kaiin_id = '");
   SQL.append(kaiin_idStr);
   SQL.append("'");
 
@@ -152,6 +152,7 @@ try{	// ロードに失敗したときのための例外処理
     map.put("place",rs.getString("place"));
     map.put("details",rs.getString("details"));
     map.put("importance",rs.getString("importance"));
+    map.put("kaiin_name",rs.getString("kaiin_name"));
 
     //1件分のデータ(HashMap)をArrayListへ追加
     list.add(map);
@@ -202,23 +203,21 @@ finally{
 
   <body>
 
-    <div id="wrap">
       <ul id="nav">
-        <li><a href="#" onclick="ShowAlert();">ログアウト </a></li>
-        <li><a href="add_change.jsp">会員情報変更</a></li>
-        <li><a href="./ad_favodel.jsp">お気に入り削除</a></li>
-        <li><a href="./agenda_delete.jsp">Agenda削除</a></li>
-        <li><a href="./agenda_make.jsp">Agenda作成</a></li>
-        <li><a href="./agenda_search.jsp">Agenda検索</a></li>
+        <li id="today"><%= show_year %>/<%= show_month+1 %>/<%= show_day %></li>
+        <li id="info"><a href="./agenda_make.jsp">Agenda作成</a></li>
         <li><a href="./myag.jsp?kaiin_id=<%= kaiin_idStr %>">作成したAgenda</a></li>
-        <li id="day"><%= show_year %>/<%= show_month+1 %>/<%= show_day %></li>
+        <li><a href="./agenda_search.jsp">Agenda検索</a></li>
+        <li><a href="./agenda_delete.jsp">Agenda削除</a></li>
+        <li><a href="./ad_favodel.jsp">お気に入り削除</a></li>
+        <li><a href="add_change.jsp">会員情報変更</a></li>
+        <li><a href="#" onclick="ShowAlert();">ログアウト </a></li>
       </ul>
-    </div>
 
     <table id="cal">
         <tr class="no-line">
           <td colspan="7" class="no-line">
-            <h1>さんの予定</h1>
+            <h1><%= kaiin_idStr %>さんの予定</h1>
           </td>
         </tr>
         <tr border="0" cellspacing="1" cellpadding="1" bgcolor="#CCCCCC" style="font: 12px; color: #666666;">
@@ -407,7 +406,7 @@ finally{
                 </div>
               </a>
                 <% }} %>
-                  <a href="./schedule_make.jsp?day=<%= year %><%= month+1 %><%= num[3] %>"><button>追加</button></a>
+                  <a href="./schedule_make.jsp?id=<%= kaiin_idStr %>&day=<%= year %><%= month+1 %><%= num[3] %>"><button>追加</button></a>
                   <a href="#!" class="modal-close">×</a>
                 </div>
               </div>

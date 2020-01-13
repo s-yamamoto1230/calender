@@ -165,7 +165,7 @@
   if((String)session.getAttribute("login") == "login"){  //認証OK
 %>
 
-<meta http-equiv="refresh" content="0; URL='./main.jsp?year=<%= year %>&month=<%= month %>'" />
+<meta http-equiv="refresh" content="0; URL='./main.jsp?id=<%= idStr %>&year=<%= year %>&month=<%= month %>'" />
 
   </head>
 

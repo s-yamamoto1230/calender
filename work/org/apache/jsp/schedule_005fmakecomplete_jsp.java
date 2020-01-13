@@ -59,7 +59,7 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idStr = request.getParameter("kaiin_id");
+  String kaiin_idStr = request.getParameter("id");
   String dayStr = request.getParameter("day");
   String s_hourStr = request.getParameter("s_hour");
   String s_minStr = request.getParameter("s_min");
@@ -255,7 +255,9 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
       out.write("\r\n");
       out.write("\r\n");
       out.write("\r\n");
-      out.write("  <p><a href=\"./logincheck.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("  <p><a href=\"./logincheck.jsp?id=");
+      out.print( kaiin_idStr );
+      out.write("\">メイン画面に戻る</a></p>\r\n");
       out.write("\r\n");
       out.write("</body>\r\n");
       out.write("</html>\r\n");

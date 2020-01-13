@@ -115,7 +115,7 @@ public final class new_005fmake_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("        </td>\r\n");
       out.write("        <td>\r\n");
       out.write("          <div class=\"form-group\">\r\n");
-      out.write("            <p><input type=\"password\" class=\"form-control\" id=\"confirm\" name=\"confirm\" size=\"25\" oninput=\"CheckPassword(this)\" required /></p>\r\n");
+      out.write("            <p><input type=\"password\" class=\"form-control\" id=\"confirm\" name=\"confirm\" size=\"25\" onChange=\"CheckPassword(this)\" required /></p>\r\n");
       out.write("          </div>\r\n");
       out.write("        </td>\r\n");
       out.write("      </tr>\r\n");

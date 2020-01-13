@@ -225,7 +225,9 @@ public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
 
       out.write("\r\n");
       out.write("\r\n");
-      out.write("<meta http-equiv=\"refresh\" content=\"0; URL='./main.jsp?year=");
+      out.write("<meta http-equiv=\"refresh\" content=\"0; URL='./main.jsp?id=");
+      out.print( idStr );
+      out.write("&year=");
       out.print( year );
       out.write("&month=");
       out.print( month );

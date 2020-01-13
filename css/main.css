@@ -22,7 +22,8 @@ body{
 }
 
 ul#nav{
-  width: 100%;
+  display: flex;
+  width: 100vw;
   padding: 0px 10px 0px 10px;
   font-size: 1.6rem;
   text-align: center;
@@ -34,11 +35,6 @@ ul#nav{
   z-index: 1;
 }
 
-div#wrap{
-  width: 600px;
-  margin: 0 auto 0 auto;
-}
-
 #nav {
   list-style: none;
   overflow: hidden;
@@ -47,10 +43,20 @@ div#wrap{
 #nav li {
   text-align: center;
   background-color: #333;
-  float: right;
   line-height: 70px;
   margin-right: 2px;
   height: 70px;
+}
+
+#nav li#today{
+  font-size: 40px;
+  line-height: 75px;
+  padding: 0 20px;
+  background-color: rgba(0,0,0,0);
+}
+
+#nav li#info{
+  margin-left: auto;
 }
 
 #nav li a {
@@ -67,14 +73,6 @@ div#wrap{
 
 #nav li a:hover{
   background-color: #777;
-}
-
-#nav li#day{
-  width: 300;
-  float: left;
-  line-height: 75px;
-  padding: 0 20px;
-  background-color: #333;
 }
 
 table#cal{

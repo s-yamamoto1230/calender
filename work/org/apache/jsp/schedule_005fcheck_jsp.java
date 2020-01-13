@@ -305,7 +305,9 @@ public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.Http
       out.write("\r\n");
       out.write("    <tr class=\"no-line\">\r\n");
       out.write("      <td class=\"no-line\" colspan=\"2\">\r\n");
-      out.write("        <p><a href=\"./logincheck.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("        <p><a href=\"./logincheck.jsp?id=");
+      out.print( kaiin_idStr );
+      out.write("\">メイン画面に戻る</a></p>\r\n");
       out.write("      </td>\r\n");
       out.write("\r\n");
       out.write("    </tr>\r\n");

@@ -6,7 +6,7 @@
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idStr = request.getParameter("kaiin_id");
+  String kaiin_idStr = request.getParameter("id");
   String dayStr = request.getParameter("day");
   String s_hourStr = request.getParameter("s_hour");
   String s_minStr = request.getParameter("s_min");
@@ -185,7 +185,7 @@
 <% } %>
 
 
-  <p><a href="./logincheck.jsp">メイン画面に戻る</a></p>
+  <p><a href="./logincheck.jsp?id=<%= kaiin_idStr %>">メイン画面に戻る</a></p>
 
 </body>
 </html>
