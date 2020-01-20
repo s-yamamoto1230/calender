@@ -3,7 +3,7 @@
 <% request.setCharacterEncoding("UTF-8"); %>
 <%
 
-  String kaiin_idStr = request.getParameter("id");
+  String session_id = (String)session.getAttribute("login_id");
   String dayStr = request.getParameter("day");
   String s_hourStr = request.getParameter("s_hour");
   String s_minStr = request.getParameter("s_min");
@@ -44,7 +44,6 @@
     <table>
     <form action="./schedule_makecomplete.jsp" method="post">
 
-      <input type="hidden" name="id" value="<%= kaiin_idStr %>">
       <input type="hidden" name="day" value="<%= dayStr %>">
       <input type="hidden" name="s_hour" value="<%= s_hourStr %>">
       <input type="hidden" name="s_min" value="<%= s_minStr %>">

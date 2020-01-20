@@ -57,7 +57,7 @@ public final class schedule_005fmake_jsp extends org.apache.jasper.runtime.HttpJ
   request.setCharacterEncoding("UTF-8");
   response.setCharacterEncoding("UTF-8");
 
-  String kaiin_idStr = request.getParameter("id");
+  String session_id = (String)session.getAttribute("login_id");
   String dayStr = request.getParameter("day");
   String year = request.getParameter("year");
   String month = request.getParameter("month");
@@ -85,9 +85,6 @@ public final class schedule_005fmake_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("    <table>\r\n");
       out.write("      <form  name=\"form\" action=\"./schedule_makecheck.jsp\" method=\"post\" action=\"#\" onsubmit=\"return formCheck()\">\r\n");
       out.write("\r\n");
-      out.write("        <input type=\"hidden\" name=\"id\" value=\"");
-      out.print( kaiin_idStr );
-      out.write("\">\r\n");
       out.write("        <input type=\"hidden\" name=\"day\" value=\"");
       out.print( dayStr );
       out.write("\">\r\n");
@@ -215,9 +212,7 @@ public final class schedule_005fmake_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("\r\n");
       out.write("        <tr class=\"no-line\">\r\n");
       out.write("          <td class=\"no-line\" colspan=\"2\">\r\n");
-      out.write("            <p><a href=\"./logincheck.jsp?id=");
-      out.print( kaiin_idStr );
-      out.write("\">メイン画面に戻る</a></p>\r\n");
+      out.write("            <p><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
       out.write("          </td>\r\n");
       out.write("\r\n");
       out.write("        </tr>\r\n");

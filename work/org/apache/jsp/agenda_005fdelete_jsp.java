@@ -63,7 +63,8 @@ public final class agenda_005fdelete_jsp extends org.apache.jasper.runtime.HttpJ
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idStr  = request.getParameter("kaiin_id");
+  String session_id = (String)session.getAttribute("login_id");
+  String session_name = (String)session.getAttribute("login_name");
 
   //データベースに接続するために使用する変数宣言
   Connection con = null;
@@ -110,8 +111,8 @@ public final class agenda_005fdelete_jsp extends org.apache.jasper.runtime.HttpJ
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select * from open_tbl where kaiin_id = '");
-    SQL.append(kaiin_idStr);
+    SQL.append("select yotei_id,yotei_name,open_set,yotei_pass,yotei_writing from open_tbl where kaiin_id = '");
+    SQL.append(session_id);
     SQL.append("'");
 //      System.out.println(SQL.toString());
 
@@ -132,7 +133,6 @@ public final class agenda_005fdelete_jsp extends org.apache.jasper.runtime.HttpJ
           map.put("open_set",rs.getString("open_set"));
           map.put("yotei_pass",rs.getString("yotei_pass"));
           map.put("yotei_writing",rs.getString("yotei_writing"));
-          map.put("kaiin_id",rs.getString("kaiin_id"));
 
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
@@ -193,8 +193,11 @@ public final class agenda_005fdelete_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("\r\n");
       out.write("    <h1>\r\n");
       out.write("    ");
-      out.print( kaiin_idStr );
+      out.print( session_name );
       out.write("さんの作成したAgenda一覧\r\n");
+      out.write("    ");
+ if (hit_flag == 1) {
+      out.write("\r\n");
       out.write("    <table id=\"list\">\r\n");
       out.write("      <tr class=\"no-line\">\r\n");
       out.write("        <th></th>\r\n");
@@ -254,8 +257,15 @@ if (list.get(i).get("open_set").equals("1")) {
       out.write("\r\n");
       out.write("    </table>\r\n");
       out.write("    <input type=\"submit\" value=\"削除\">\r\n");
-      out.write("</form>\r\n");
-      out.write("    <p id=\"back\"><a href=\"./logincheck.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("  </form>\r\n");
+      out.write("  ");
+ }else if (hit_flag == 0) {
+      out.write("\r\n");
+      out.write("    作成した予定はありません。\r\n");
+      out.write("  ");
+ }
+      out.write("\r\n");
+      out.write("    <p id=\"back\"><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
       out.write("</body>\r\n");
       out.write("</html>\r\n");
     } catch (Throwable t) {

@@ -6,9 +6,9 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.ArrayList" %>
 <%
-  //文字コードの指定
-  request.setCharacterEncoding("UTF-8");
-  response.setCharacterEncoding("UTF-8");
+	//文字コードの指定
+	request.setCharacterEncoding("UTF-8");
+	response.setCharacterEncoding("UTF-8");
 
   //現在の日付取得
   Date today = new Date();
@@ -19,139 +19,107 @@
   //年、月、日の取得
   int year = calendar.get(Calendar.YEAR);
   int month = calendar.get(Calendar.MONTH);
-  int day = calendar.get(Calendar.DATE);
-  calendar.set(year,month,1);
-  int ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
 
+	//入力データ受信
+	String idStr  = request.getParameter("id");
+	String pasStr = request.getParameter("pass");
 
-  //入力データ受信
-  String idStr  = request.getParameter("id");
-  String passStr = request.getParameter("pass");
+	//データベースに接続するために使用する変数宣言
+	Connection con = null;
+	Statement stmt = null;
+	StringBuffer SQL = null;
+	ResultSet rs = null;
 
-
-  //データベースに接続するために使用する変数宣言
-  Connection con = null;
-  Statement stmt = null;
-  StringBuffer SQL = null;
-  ResultSet rs = null;
-
-  //ローカルのMySQLに接続する設定
+	//ローカルのMySQLに接続する設定
   String USER ="root";
-  String PASSWORD = "";
-  String URL ="jdbc:mysql://localhost/agenda";
-
+	String PASSWORD = "";
+	String URL ="";
+	if (USER.equals("root")) {
+		URL ="jdbc:mysql://localhost/agenda";
+	}
   //サーバーのMySQLに接続する設定
-//  String USER = "nhs90345";
-//  String PASSWORD = "b19931230";
-//  String URL ="jdbc:mysql://192.168.121.16/nhsagenda";
+	else{
+		USER ="nhs90345";
+		PASSWORD = "b19931230";
+	 	URL ="jdbc:mysql://192.168.121.16/agenda";
+	}
 
-  String DRIVER = "com.mysql.jdbc.Driver";
+	String DRIVER = "com.mysql.jdbc.Driver";
 
-  //確認メッセージ
-  StringBuffer ERMSG = null;
+	//確認メッセージ
+	StringBuffer ERMSG = null;
 
-  //ヒットフラグ
-  int hit_flag = 0;
+	//確認メッセージ
+	String COMPMSG = null;
+	String COMPPRO = null;
+	boolean flg = true;
 
-  //HashMap（1件分のデータを格納する連想配列）
-  HashMap<String,String> map = null;
+if(idStr != "" && pasStr != ""){
+	try{
+		// JDBCドライバのロード
+		Class.forName(DRIVER).newInstance();
 
-  //ArrayList（すべての件数を格納する配列）
-  ArrayList<HashMap> list = null;
-  list = new ArrayList<HashMap>();
+		// Connectionオブジェクトの作成
+		con = DriverManager.getConnection(URL,USER,PASSWORD);
 
-  try{  // ロードに失敗したときのための例外処理
-    // JDBCドライバのロード
-    Class.forName(DRIVER).newInstance();
+		//Statementオブジェクトの作成
+		stmt = con.createStatement();
 
-    // Connectionオブジェクトの作成
-    con = DriverManager.getConnection(URL,USER,PASSWORD);
+		//SQLステートメントの作成（選択クエリ）
+		SQL = new StringBuffer();
+		//SQL文の構築（選択クエリ）
+		SQL.append("select kaiin_id,kaiin_name from kaiin_tbl where kaiin_id = '" + idStr + "'and kaiin_pass = '" + pasStr +"'");
 
-    //Statementオブジェクトの作成
-    stmt = con.createStatement();
+		//SQL文の実行（選択クエリ）
+		rs = stmt.executeQuery(SQL.toString());
 
-    //SQLステートメントの作成（選択クエリ）
-    SQL = new StringBuffer();
+		//入力したデータがデータベースに存在するか調べる
+		if(rs.next()==true){  //存在する
+						//セッションにバインド
+            session.setAttribute("login_id",rs.getString("kaiin_id"));
+            session.setAttribute("login_name",rs.getString("kaiin_name"));
+            session.setAttribute("year",year);
+						session.setAttribute("month",month);
+						//メインページへ遷移
+						response.sendRedirect("main.jsp");
+		}else{  //ログイン失敗
+			COMPMSG = "顧客IDまたはパスワードが誤っています";
+		}
+	}	//tryブロック終了
+	catch(ClassNotFoundException e){
+		ERMSG = new StringBuffer();
+		ERMSG.append(e.getMessage());
+	}
+	catch(SQLException e){
+		ERMSG = new StringBuffer();
+		ERMSG.append(e.getMessage());
+	}
+	catch(Exception e){
+		ERMSG = new StringBuffer();
+		ERMSG.append(e.getMessage());
+	}
 
-    //SQL文の構築（選択クエリ）
-    SQL.append("select * from kaiin_tbl where kaiin_id = '");
-    SQL.append(idStr);
-//    SQL.append("' and cus_pas = '");
-//    SQL.append(cus_pasStr);
-    SQL.append("'");
-      System.out.println(SQL.toString());
-
-    //SQL文の実行（選択クエリ）
-    rs = stmt.executeQuery(SQL.toString());
-
-//    String id =rs.getString("kaiin_id");
-
-    //入力したデータがデータベースに存在するか調べる
-    if(rs.next()){  //存在する
-      //ヒットフラグON
-      hit_flag = 1;
-    if(passStr.equals(rs.getString("kaiin_pass"))){
-      //ヒットフラグON
-      hit_flag = hit_flag+1;
-    }
-
-    if(hit_flag==2){
-
-        //検索データをHashMapへ格納する
-        map = new HashMap<String,String>();
-      map.put("kaiin_id",rs.getString("kaiin_id"));
-      map.put("kaiin_name",rs.getString("kaiin_name"));
-      map.put("kaiin_add",rs.getString("kaiin_add"));
-      map.put("kaiin_pass",rs.getString("kaiin_pass"));
-      map.put("kaiin_bday",rs.getString("kaiin_bday"));
-
-
-      //1件分のデータ(HashMap)をArrayListへ追加
-      list.add(map);
-
-      session.setAttribute("login", "login");
-      session.setAttribute("id", "kaiin_id");
-    }
-
-    }else{  //存在しない
-      //ヒットフラグOFF
-      hit_flag = 0;
-    }
-
-
-  } //tryブロック終了
-  catch(ClassNotFoundException e){
-    ERMSG = new StringBuffer();
-    ERMSG.append(e.getMessage());
-  }
-  catch(SQLException e){
-    ERMSG = new StringBuffer();
-    ERMSG.append(e.getMessage());
-  }
-  catch(Exception e){
-    ERMSG = new StringBuffer();
-    ERMSG.append(e.getMessage());
-  }
-
-  finally{
-    //各種オブジェクトクローズ
-      try{
-        if(rs != null){
-          rs.close();
-        }
-        if(stmt != null){
-          stmt.close();
-      }
-        if(con != null){
-          con.close();
-      }
-      }
-    catch(SQLException e){
-    ERMSG = new StringBuffer();
-    ERMSG.append(e.getMessage());
-    }
-  }
-
+	finally{
+		//各種オブジェクトクローズ
+	    try{
+	    	if(rs != null){
+	    		rs.close();
+	    	}
+	    	if(stmt != null){
+	    		stmt.close();
+			}
+	    	if(con != null){
+	    		con.close();
+				}
+	    }
+		catch(SQLException e){
+		ERMSG = new StringBuffer();
+		ERMSG.append(e.getMessage());
+		}
+	}
+}else{
+		COMPMSG = "未入力の項目があります。";
+	}
 %>
 
 <!DOCTYPE html>
@@ -159,34 +127,28 @@
   <meta charset="utf-8">
 
   <head>
-    <title>メインページ</title>
-
-<%
-  if((String)session.getAttribute("login") == "login"){  //認証OK
-%>
-
-<meta http-equiv="refresh" content="0; URL='./main.jsp?id=<%= idStr %>&year=<%= year %>&month=<%= month %>'" />
-
+    <title>ログイン認証</title>
   </head>
 
   <link rel="stylesheet" type="text/css" href="./css/main.css">
 
   <body>
 
-  <%
-  }else{  //認証NG
-%>
+    <%
+    	if(ERMSG!=null){
+    %>
+    	予期せぬエラーが発生しました<br>
+    	  <%= ERMSG %>
+    <%
+    	}else{
+    %>
+    	<%= COMPMSG %><br>
+    <%
+        }
+    %>
   認証NG<br>
-    <%= "顧客IDまたはパスワードが誤っています" %>
     <p><a href="./index.jsp">ログインに戻る</a></p>
-<%
-  }
-%>
-<br><br>
-<% if(ERMSG != null){ %>
-予期せぬエラーが発生しました<br />
-<%= ERMSG %>
-<% }%>
+
 
   </body>
 </html>

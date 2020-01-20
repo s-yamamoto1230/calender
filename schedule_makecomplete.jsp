@@ -6,7 +6,7 @@
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idStr = request.getParameter("id");
+  String session_id = (String)session.getAttribute("login_id");
   String dayStr = request.getParameter("day");
   String s_hourStr = request.getParameter("s_hour");
   String s_minStr = request.getParameter("s_min");
@@ -63,7 +63,7 @@
 
     //SQL文の構築（選択クエリ）
     SQL.append("select * from yotei_tbl where kaiin_id = '");
-    SQL.append(kaiin_idStr);
+    SQL.append(session_id);
     SQL.append("' and day ='");
     SQL.append(dayStr);
     SQL.append("' and s_hour ='");
@@ -90,7 +90,7 @@
     //SQL文の構築
     SQL.append("insert into yotei_tbl(kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance)");
     SQL.append("values('");
-    SQL.append(kaiin_idStr);
+    SQL.append(session_id);
     SQL.append("','");
     SQL.append(dayStr);
     SQL.append("','");
@@ -185,7 +185,7 @@
 <% } %>
 
 
-  <p><a href="./logincheck.jsp?id=<%= kaiin_idStr %>">メイン画面に戻る</a></p>
+  <p><a href="./main.jsp">メイン画面に戻る</a></p>
 
 </body>
 </html>

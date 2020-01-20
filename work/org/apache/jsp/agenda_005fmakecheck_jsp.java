@@ -57,13 +57,12 @@ public final class agenda_005fmakecheck_jsp extends org.apache.jasper.runtime.Ht
       out.write('\r');
       out.write('\n');
 
-  
+
   String idStr = request.getParameter("id");
   String titleStr = request.getParameter("title");
   String openStr = request.getParameter("open");
   String passStr = request.getParameter("password");
   String permissionStr = request.getParameter("permission");
-  String kaiin_idStr = request.getParameter("kaiin_id");
 
 //   String message = passStr;
 //   int num = message.length();
@@ -110,9 +109,6 @@ public final class agenda_005fmakecheck_jsp extends org.apache.jasper.runtime.Ht
       out.write("\">\r\n");
       out.write("      <input type=\"hidden\" name=\"permission\" value=\"");
       out.print( permissionStr );
-      out.write("\">\r\n");
-      out.write("      <input type=\"hidden\" name=\"kaiin_id\" value=\"");
-      out.print( kaiin_idStr );
       out.write("\">\r\n");
       out.write("\r\n");
       out.write("\r\n");

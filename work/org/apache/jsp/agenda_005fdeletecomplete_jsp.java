@@ -3,14 +3,9 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
-import java.util.Date;
-import java.util.Calendar;
 import java.sql.*;
-import java.util.*;
-import java.util.HashMap;
-import java.util.ArrayList;
 
-public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class agenda_005fdeletecomplete_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -58,29 +53,13 @@ public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
 
       out.write("\r\n");
       out.write("\r\n");
-      out.write("\r\n");
-      out.write("\r\n");
-      out.write("\r\n");
-      out.write("\r\n");
-      out.write("\r\n");
 
 	//文字コードの指定
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
 
-  //現在の日付取得
-  Date today = new Date();
-  //Calendarクラスのオブジェクト生成
-  Calendar calendar = Calendar.getInstance();
-  //現在の日付設定
-  calendar.setTime(today);
-  //年、月、日の取得
-  int year = calendar.get(Calendar.YEAR);
-  int month = calendar.get(Calendar.MONTH);
-
 	//入力データ受信
-	String idStr  = request.getParameter("id");
-	String pasStr = request.getParameter("pass");
+	String yotei_idStr[]  = request.getParameterValues("yotei_id");
 
 	//データベースに接続するために使用する変数宣言
 	Connection con = null;
@@ -89,31 +68,24 @@ public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
 	ResultSet rs = null;
 
 	//ローカルのMySQLに接続する設定
-  String USER ="root";
+	String USER ="root";
 	String PASSWORD = "";
-	String URL ="";
-	if (USER.equals("root")) {
-		URL ="jdbc:mysql://localhost/agenda";
-	}
-  //サーバーのMySQLに接続する設定
-	else{
-		USER ="nhs90345";
-		PASSWORD = "b19931230";
-	 	URL ="jdbc:mysql://192.168.121.16/agenda";
-	}
+	String URL ="jdbc:mysql://localhost/agenda";
+
+	//サーバーのMySQLに接続する設定
+//	String USER = "nhs90345";
+//	String PASSWORD = "b19931230";
+//  String URL ="jdbc:mysql://192.168.121.16/agenda";
 
 	String DRIVER = "com.mysql.jdbc.Driver";
 
 	//確認メッセージ
 	StringBuffer ERMSG = null;
 
-	//確認メッセージ
-	String COMPMSG = null;
-	String COMPPRO = null;
-	boolean flg = true;
+	//削除件数
+	int del_count = 0;
 
-if(idStr != "" && pasStr != ""){
-	try{
+	try{	// ロードに失敗したときのための例外処理
 		// JDBCドライバのロード
 		Class.forName(DRIVER).newInstance();
 
@@ -125,24 +97,19 @@ if(idStr != "" && pasStr != ""){
 
 		//SQLステートメントの作成（選択クエリ）
 		SQL = new StringBuffer();
-		//SQL文の構築（選択クエリ）
-		SQL.append("select kaiin_id,kaiin_name from kaiin_tbl where kaiin_id = '" + idStr + "'and kaiin_pass = '" + pasStr +"'");
 
-		//SQL文の実行（選択クエリ）
-		rs = stmt.executeQuery(SQL.toString());
+		//SQL文の構築（DB複数削除）
+		for(int i = 0; i < yotei_idStr.length; i++){
+		  //SQLステートメントの作成（選択クエリ）
+		  SQL = new StringBuffer();
+		  //delete実行
+		  SQL.append("delete from open_tbl where yotei_id = '");
+      SQL.append(yotei_idStr[i]);
+      SQL.append("'");
+      System.out.println(SQL.toString());
+	      del_count = stmt.executeUpdate(SQL.toString());
+	    }
 
-		//入力したデータがデータベースに存在するか調べる
-		if(rs.next()==true){  //存在する
-						//セッションにバインド
-            session.setAttribute("login_id",rs.getString("kaiin_id"));
-            session.setAttribute("login_name",rs.getString("kaiin_name"));
-            session.setAttribute("year",year);
-						session.setAttribute("month",month);
-						//メインページへ遷移
-						response.sendRedirect("main.jsp");
-		}else{  //ログイン失敗
-			COMPMSG = "顧客IDまたはパスワードが誤っています";
-		}
 	}	//tryブロック終了
 	catch(ClassNotFoundException e){
 		ERMSG = new StringBuffer();
@@ -168,58 +135,60 @@ if(idStr != "" && pasStr != ""){
 			}
 	    	if(con != null){
 	    		con.close();
-				}
+			}
 	    }
 		catch(SQLException e){
 		ERMSG = new StringBuffer();
 		ERMSG.append(e.getMessage());
 		}
 	}
-}else{
-		COMPMSG = "未入力の項目があります。";
+
+      out.write("\r\n");
+      out.write("\r\n");
+      out.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\r\n");
+      out.write("<html>\r\n");
+      out.write("<head>\r\n");
+      out.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\r\n");
+      out.write("<title>『顧客テーブルにレコードを削除するプログラム』</title>\r\n");
+      out.write("</head>\r\n");
+      out.write("<body>\r\n");
+
+	if(del_count == 0){  //追加処理失敗
+
+      out.write("\r\n");
+      out.write("\t削除NG<br>\r\n");
+      out.write("\t  ");
+      out.print( "削除処理が失敗しました" );
+      out.write('\r');
+      out.write('\n');
+
+	}else{  //削除OK
+
+      out.write("\r\n");
+      out.write("\t削除OK<br>\r\n");
+      out.write("\t  ");
+      out.print( yotei_idStr.length + "件　削除が完了しました" );
+      out.write('\r');
+      out.write('\n');
+
 	}
 
       out.write("\r\n");
+      out.write("<br><br>\r\n");
+ if(ERMSG != null){ 
       out.write("\r\n");
-      out.write("<!DOCTYPE html>\r\n");
-      out.write("<html>\r\n");
-      out.write("  <meta charset=\"utf-8\">\r\n");
-      out.write("\r\n");
-      out.write("  <head>\r\n");
-      out.write("    <title>ログイン認証</title>\r\n");
-      out.write("  </head>\r\n");
-      out.write("\r\n");
-      out.write("  <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/main.css\">\r\n");
-      out.write("\r\n");
-      out.write("  <body>\r\n");
-      out.write("\r\n");
-      out.write("    ");
-
-    	if(ERMSG!=null){
-    
-      out.write("\r\n");
-      out.write("    \t予期せぬエラーが発生しました<br>\r\n");
-      out.write("    \t  ");
+      out.write("予期せぬエラーが発生しました<br />\r\n");
       out.print( ERMSG );
+      out.write('\r');
+      out.write('\n');
+ }else{ 
       out.write("\r\n");
-      out.write("    ");
-
-    	}else{
-    
+      out.write("※エラーは発生しませんでした<br/>\r\n");
+ } 
       out.write("\r\n");
-      out.write("    \t");
-      out.print( COMPMSG );
-      out.write("<br>\r\n");
-      out.write("    ");
-
-        }
-    
+      out.write("<p id=\"back\"><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
       out.write("\r\n");
-      out.write("  認証NG<br>\r\n");
-      out.write("    <p><a href=\"./index.jsp\">ログインに戻る</a></p>\r\n");
-      out.write("\r\n");
-      out.write("\r\n");
-      out.write("  </body>\r\n");
+      out.write("</body>\r\n");
       out.write("</html>\r\n");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){

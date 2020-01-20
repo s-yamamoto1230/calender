@@ -58,7 +58,7 @@ public final class schedule_005fmakecheck_jsp extends org.apache.jasper.runtime.
       out.write('\n');
 
 
-  String kaiin_idStr = request.getParameter("id");
+  String session_id = (String)session.getAttribute("login_id");
   String dayStr = request.getParameter("day");
   String s_hourStr = request.getParameter("s_hour");
   String s_minStr = request.getParameter("s_min");
@@ -100,9 +100,6 @@ public final class schedule_005fmakecheck_jsp extends org.apache.jasper.runtime.
       out.write("    <table>\r\n");
       out.write("    <form action=\"./schedule_makecomplete.jsp\" method=\"post\">\r\n");
       out.write("\r\n");
-      out.write("      <input type=\"hidden\" name=\"id\" value=\"");
-      out.print( kaiin_idStr );
-      out.write("\">\r\n");
       out.write("      <input type=\"hidden\" name=\"day\" value=\"");
       out.print( dayStr );
       out.write("\">\r\n");

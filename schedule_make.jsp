@@ -5,7 +5,7 @@
   request.setCharacterEncoding("UTF-8");
   response.setCharacterEncoding("UTF-8");
 
-  String kaiin_idStr = request.getParameter("id");
+  String session_id = (String)session.getAttribute("login_id");
   String dayStr = request.getParameter("day");
   String year = request.getParameter("year");
   String month = request.getParameter("month");
@@ -32,7 +32,6 @@
     <table>
       <form  name="form" action="./schedule_makecheck.jsp" method="post" action="#" onsubmit="return formCheck()">
 
-        <input type="hidden" name="id" value="<%= kaiin_idStr %>">
         <input type="hidden" name="day" value="<%= dayStr %>">
         <input type="hidden" name="year" value="<%= year %>">
         <input type="hidden" name="month" value="<%= month %>">
@@ -154,7 +153,7 @@
 
         <tr class="no-line">
           <td class="no-line" colspan="2">
-            <p><a href="./logincheck.jsp?id=<%= kaiin_idStr %>">メイン画面に戻る</a></p>
+            <p><a href="./main.jsp">メイン画面に戻る</a></p>
           </td>
 
         </tr>

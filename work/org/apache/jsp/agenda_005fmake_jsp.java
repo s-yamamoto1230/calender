@@ -57,8 +57,6 @@ public final class agenda_005fmake_jsp extends org.apache.jasper.runtime.HttpJsp
   request.setCharacterEncoding("UTF-8");
   response.setCharacterEncoding("UTF-8");
 
-  String kaiin_idStr = request.getParameter("kaiin_id");
-
 
       out.write("\r\n");
       out.write("\r\n");
@@ -80,11 +78,7 @@ public final class agenda_005fmake_jsp extends org.apache.jasper.runtime.HttpJsp
       out.write("\r\n");
       out.write("\r\n");
       out.write("    <table>\r\n");
-      out.write("      <form  name=\"form\" action=\"./agenda_makecheck.jsp\" method=\"post\" action=\"#\" onsubmit=\"return formCheck()\">\r\n");
-      out.write("\r\n");
-      out.write("        <input type=\"hidden\" name=\"kaiin_id\" value=\"");
-      out.print( kaiin_idStr );
-      out.write("\">\r\n");
+      out.write("      <form  name=\"form\" action=\"./agenda_makecheck.jsp\" method=\"post\" onsubmit=\"return formCheck()\">\r\n");
       out.write("\r\n");
       out.write("      <tr>\r\n");
       out.write("        <td class=\"title\">\r\n");
@@ -159,7 +153,7 @@ public final class agenda_005fmake_jsp extends org.apache.jasper.runtime.HttpJsp
       out.write("\r\n");
       out.write("        <tr class=\"no-line\">\r\n");
       out.write("          <td class=\"no-line\" colspan=\"2\">\r\n");
-      out.write("            <p><a href=\"./logincheck.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("            <p><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
       out.write("          </td>\r\n");
       out.write("\r\n");
       out.write("        </tr>\r\n");

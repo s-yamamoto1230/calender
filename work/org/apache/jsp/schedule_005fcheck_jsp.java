@@ -63,7 +63,7 @@ public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.Http
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idStr  = request.getParameter("kaiin_id");
+  String session_id = (String)session.getAttribute("login_id");
   String dayStr  = request.getParameter("day");
   String s_hourStr  = request.getParameter("s_hour");
   String s_mineStr  = request.getParameter("s_mine");
@@ -115,7 +115,7 @@ public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.Http
 
     //SQL文の構築（選択クエリ）
     SQL.append("select * from yotei_tbl where kaiin_id = '");
-    SQL.append(kaiin_idStr);
+    SQL.append(session_id);
     SQL.append("' and day ='");
     SQL.append(dayStr);
     SQL.append("' and s_hour ='");
@@ -135,7 +135,6 @@ public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.Http
 
         //検索データをHashMapへ格納する
         map = new HashMap<String,String>();
-      map.put("kaiin_id",rs.getString("kaiin_id"));
       map.put("day",rs.getString("day"));
       map.put("s_hour",rs.getString("s_hour"));
       map.put("s_mine",rs.getString("s_mine"));
@@ -201,9 +200,6 @@ public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.Http
       out.write("\r\n");
       out.write("    <form action=\"./schedule_update.jsp\" method=\"post\">\r\n");
       out.write("\r\n");
-      out.write("      <input type=\"hidden\" name=\"kaiin_id\" value=\"");
-      out.print( list.get(0).get("kaiin_id") );
-      out.write("\">\r\n");
       out.write("      <input type=\"hidden\" name=\"day\" value=\"");
       out.print( list.get(0).get("day") );
       out.write("\">\r\n");
@@ -305,9 +301,7 @@ public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.Http
       out.write("\r\n");
       out.write("    <tr class=\"no-line\">\r\n");
       out.write("      <td class=\"no-line\" colspan=\"2\">\r\n");
-      out.write("        <p><a href=\"./logincheck.jsp?id=");
-      out.print( kaiin_idStr );
-      out.write("\">メイン画面に戻る</a></p>\r\n");
+      out.write("        <p><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
       out.write("      </td>\r\n");
       out.write("\r\n");
       out.write("    </tr>\r\n");

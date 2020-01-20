@@ -11,7 +11,8 @@
   String openStr = request.getParameter("open");
   String passStr = request.getParameter("pass");
   String permissionStr = request.getParameter("permission");
-  String kaiin_idStr = request.getParameter("kaiin_id");
+  String session_id = (String)session.getAttribute("login_id");
+
 
 
 
@@ -57,7 +58,7 @@
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select * from open_tbl where yotei_id = '");
+    SQL.append("select yotei_id,yotei_name,open_set,yotei_pass,yotei_writing,open_tbl.kaiin_id from open_tbl where yotei_id = '");
     SQL.append(idStr);
     SQL.append("'");
       System.out.println(SQL.toString());
@@ -88,7 +89,7 @@
     SQL.append("','");
     SQL.append(permissionStr);
     SQL.append("','");
-    SQL.append(kaiin_idStr);
+    SQL.append(session_id);
     SQL.append("')");
     }
 
@@ -168,7 +169,7 @@
 <% } %>
 
 
-  <p><a href="./logincheck.jsp">メイン画面に戻る</a></p>
+  <p><a href="./main.jsp">メイン画面に戻る</a></p>
 
 </body>
 </html>

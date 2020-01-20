@@ -8,7 +8,7 @@
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idStr  = request.getParameter("kaiin_id");
+  String session_id = (String)session.getAttribute("login_id");
   String dayStr  = request.getParameter("day");
   String s_hourStr  = request.getParameter("s_hour");
   String s_mineStr  = request.getParameter("s_mine");
@@ -60,7 +60,7 @@
 
     //SQL文の構築（選択クエリ）
     SQL.append("select * from yotei_tbl where kaiin_id = '");
-    SQL.append(kaiin_idStr);
+    SQL.append(session_id);
     SQL.append("' and day ='");
     SQL.append(dayStr);
     SQL.append("' and s_hour ='");
@@ -80,7 +80,6 @@
 
         //検索データをHashMapへ格納する
         map = new HashMap<String,String>();
-      map.put("kaiin_id",rs.getString("kaiin_id"));
       map.put("day",rs.getString("day"));
       map.put("s_hour",rs.getString("s_hour"));
       map.put("s_mine",rs.getString("s_mine"));
@@ -145,7 +144,6 @@
 
     <form action="./schedule_update.jsp" method="post">
 
-      <input type="hidden" name="kaiin_id" value="<%= list.get(0).get("kaiin_id") %>">
       <input type="hidden" name="day" value="<%= list.get(0).get("day") %>">
       <input type="hidden" name="s_hour" value="<%= list.get(0).get("s_hour") %>">
       <input type="hidden" name="s_mine" value="<%= list.get(0).get("s_mine") %>">
@@ -206,7 +204,7 @@
 
     <tr class="no-line">
       <td class="no-line" colspan="2">
-        <p><a href="./logincheck.jsp?id=<%= kaiin_idStr %>">メイン画面に戻る</a></p>
+        <p><a href="./main.jsp">メイン画面に戻る</a></p>
       </td>
 
     </tr>

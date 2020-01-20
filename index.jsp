@@ -1,5 +1,16 @@
 <%
-session.invalidate();
+String logout = request.getParameter("logout");
+if(logout != null){
+  //セッション変数を削除
+  session.removeAttribute("login_id");
+  session.removeAttribute("login_name");
+  session.removeAttribute("year");
+  session.removeAttribute("month");
+}
+String session_id = (String)session.getAttribute("login_id");
+if(session_id != null){
+  response.sendRedirect("main.jsp");
+}
 %>
 
 <!DOCTYPE html>
@@ -17,8 +28,22 @@ session.invalidate();
   </head>
 
   <body>
-    <div id="contents">
-      <h1>My Agenda</h1>
+
+    <div class='background'>
+      <div class='wave -one'></div>
+      <div class='wave -two'></div>
+      <div class='wave -three'></div>
+      <div class='wave -four'></div>
+      <div class='wave -five'></div>
+      <div class='concept'>自分の予定を管理。<br>予定を共有、シェアできる</div>
+    </div>
+      <h1 id="title">
+        My Agenda<br>
+        My Agenda<br>
+        My Agenda<br>
+        My Agenda<br>
+        My Agenda
+      </h1>
        <form action="./logincheck.jsp" method="post">
         <table>
           <tr>
@@ -26,7 +51,7 @@ session.invalidate();
               <p>ＩＤ</p>
             </td>
             <td>
-              <input type="text" name="id" size="50" class="text">
+              <input type="text" name="id" size="50" class="text" autofocus>
             </td>
           </tr>
           <tr>
@@ -56,22 +81,7 @@ session.invalidate();
 
 
        </table>
-      </div>
 
-      <div class="area" >
-        <ul class="circles">
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div >
 
   </body>
 

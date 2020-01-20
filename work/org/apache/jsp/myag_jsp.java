@@ -63,7 +63,8 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idStr  = request.getParameter("kaiin_id");
+    String session_id = (String)session.getAttribute("login_id");
+    String session_name = (String)session.getAttribute("login_name");
 
   //データベースに接続するために使用する変数宣言
   Connection con = null;
@@ -110,8 +111,8 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select * from open_tbl where kaiin_id = '");
-    SQL.append(kaiin_idStr);
+    SQL.append("select yotei_id,yotei_name,open_set,yotei_pass,yotei_writing from open_tbl where kaiin_id = '");
+    SQL.append(session_id);
     SQL.append("'");
 //      System.out.println(SQL.toString());
 
@@ -120,7 +121,6 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
 
     //入力したデータがデータベースに存在するか調べる
     if(rs.next()){  //存在する
-      //ヒットフラグON
       hit_flag = 1;
 
         //検索データをHashMapへ格納する
@@ -132,7 +132,6 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
           map.put("open_set",rs.getString("open_set"));
           map.put("yotei_pass",rs.getString("yotei_pass"));
           map.put("yotei_writing",rs.getString("yotei_writing"));
-          map.put("kaiin_id",rs.getString("kaiin_id"));
 
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
@@ -188,12 +187,16 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("  </head>\r\n");
       out.write("\r\n");
       out.write("  <body>\r\n");
+      out.print( list.size() );
       out.write("\r\n");
       out.write("    <h1>\r\n");
       out.write("    ");
-      out.print( kaiin_idStr );
+      out.print( session_name );
       out.write("さんの作成したAgenda一覧\r\n");
       out.write("  </h1>\r\n");
+      out.write("  ");
+ if (hit_flag == 1) {
+      out.write("\r\n");
       out.write("    <table id=\"list\">\r\n");
       out.write("      <tr class=\"no-line\">\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">AgendaID</td>\r\n");
@@ -204,15 +207,12 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("      </tr>\r\n");
       out.write("    ");
 
-      for(int i = 0; i < list.size(); i++){
+      for(int i=0; i<list.size();i++){
     
       out.write("\r\n");
       out.write("          <tr class=\"no-line\">\r\n");
-      out.write("              <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\"><a href=\"monthcheck.jsp?yotei_id=");
-      out.print( list.get(i).get("yotei_id") );
-      out.write('"');
-      out.write('>');
-      out.write('・');
+      out.write("              <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\">\r\n");
+      out.write("                <a href=\"monthcheck.jsp\">・");
       out.print( list.get(i).get("yotei_id") );
       out.write("</a></td>\r\n");
       out.write("            <td class=\"no-line\">");
@@ -252,7 +252,15 @@ if (list.get(i).get("open_set").equals("1")) {
 }
       out.write("\r\n");
       out.write("  </table>\r\n");
-      out.write("    <p id=\"back\"><a href=\"./logincheck.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("  ");
+ }else if (hit_flag == 0) {
+      out.write("\r\n");
+      out.write("  作成した予定はありません。\r\n");
+      out.write("  ");
+ }
+      out.write("\r\n");
+      out.write("\r\n");
+      out.write("    <p id=\"back\"><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
       out.write("</body>\r\n");
       out.write("</html>\r\n");
     } catch (Throwable t) {

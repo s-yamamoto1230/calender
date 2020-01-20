@@ -2,13 +2,12 @@
 <%@ page import="java.sql.*" %>
 <% request.setCharacterEncoding("UTF-8"); %>
 <%
-  
+
   String idStr = request.getParameter("id");
   String titleStr = request.getParameter("title");
   String openStr = request.getParameter("open");
   String passStr = request.getParameter("password");
   String permissionStr = request.getParameter("permission");
-  String kaiin_idStr = request.getParameter("kaiin_id");
 
 //   String message = passStr;
 //   int num = message.length();
@@ -45,7 +44,6 @@
       <input type="hidden" name="open" value="<%= openStr %>">
       <input type="hidden" name="pass" value="<%= passStr %>">
       <input type="hidden" name="permission" value="<%= permissionStr %>">
-      <input type="hidden" name="kaiin_id" value="<%= kaiin_idStr %>">
 
 
       <tr>

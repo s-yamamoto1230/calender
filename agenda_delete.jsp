@@ -8,7 +8,8 @@
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idStr  = request.getParameter("kaiin_id");
+  String session_id = (String)session.getAttribute("login_id");
+  String session_name = (String)session.getAttribute("login_name");
 
   //データベースに接続するために使用する変数宣言
   Connection con = null;
@@ -55,8 +56,8 @@
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select * from open_tbl where kaiin_id = '");
-    SQL.append(kaiin_idStr);
+    SQL.append("select yotei_id,yotei_name,open_set,yotei_pass,yotei_writing from open_tbl where kaiin_id = '");
+    SQL.append(session_id);
     SQL.append("'");
 //      System.out.println(SQL.toString());
 
@@ -77,7 +78,6 @@
           map.put("open_set",rs.getString("open_set"));
           map.put("yotei_pass",rs.getString("yotei_pass"));
           map.put("yotei_writing",rs.getString("yotei_writing"));
-          map.put("kaiin_id",rs.getString("kaiin_id"));
 
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
@@ -136,7 +136,8 @@
   <form action="./agenda_deletecheck.jsp" method="post">
 
     <h1>
-    <%= kaiin_idStr %>さんの作成したAgenda一覧
+    <%= session_name %>さんの作成したAgenda一覧
+    <% if (hit_flag == 1) {%>
     <table id="list">
       <tr class="no-line">
         <th></th>
@@ -172,7 +173,10 @@
         <%}%>
     </table>
     <input type="submit" value="削除">
-</form>
-    <p id="back"><a href="./logincheck.jsp">メイン画面に戻る</a></p>
+  </form>
+  <% }else if (hit_flag == 0) {%>
+    作成した予定はありません。
+  <% }%>
+    <p id="back"><a href="./main.jsp">メイン画面に戻る</a></p>
 </body>
 </html>

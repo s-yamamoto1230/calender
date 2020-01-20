@@ -63,7 +63,7 @@ public final class add_005fchange_jsp extends org.apache.jasper.runtime.HttpJspB
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idStr  = request.getParameter("kaiin_id");
+  String session_id = (String)session.getAttribute("login_id");
 
   //データベースに接続するために使用する変数宣言
   Connection con = null;
@@ -111,7 +111,7 @@ public final class add_005fchange_jsp extends org.apache.jasper.runtime.HttpJspB
 
     //SQL文の構築（選択クエリ）
     SQL.append("select * from kaiin_tbl where kaiin_id = '");
-    SQL.append(kaiin_idStr);
+    SQL.append(session_id);
     SQL.append("'");
 //      System.out.println(SQL.toString());
 
@@ -180,7 +180,7 @@ public final class add_005fchange_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("\r\n");
       out.write("    <meta charset=\"utf-8\">\r\n");
       out.write("\r\n");
-      out.write("    <title>メールアドレス変更</title>\r\n");
+      out.write("    <title>会員情報変更</title>\r\n");
       out.write("\r\n");
       out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/info.css\">\r\n");
       out.write("\r\n");

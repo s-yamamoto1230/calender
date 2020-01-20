@@ -5,7 +5,7 @@ import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import java.sql.*;
 
-public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class new_005fcomplete_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -57,20 +57,13 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
   //文字コードの指定
   request.setCharacterEncoding("UTF-8");
   response.setCharacterEncoding("UTF-8");
-
+  
   //入力データ受信
-  String session_id = (String)session.getAttribute("login_id");
-  String dayStr = request.getParameter("day");
-  String s_hourStr = request.getParameter("s_hour");
-  String s_minStr = request.getParameter("s_min");
-  String f_hourStr = request.getParameter("f_hour");
-  String f_minStr = request.getParameter("f_min");
-  String placeStr = request.getParameter("place");
-  String detailsStr = request.getParameter("details");
-  String importanceStr = request.getParameter("importance");
-  String year = request.getParameter("year");
-  String month = request.getParameter("month");
-
+  String idStr = request.getParameter("id");
+  String usernameStr = request.getParameter("username");
+  String mailStr = request.getParameter("mail");
+  String passStr = request.getParameter("pass");
+  String birthday = request.getParameter("bday");
 
 
   //データベースに接続するために使用する変数宣言
@@ -94,13 +87,13 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
 
   //確認メッセージ
   StringBuffer ERMSG = null;
-
+  
   //ヒットフラグ
   int hit_flag = 0;
-
+  
   //追加件数
   int ins_count=0;
-
+   
   try{  // ロードに失敗したときのための例外処理
     // JDBCドライバのロード
     Class.forName(DRIVER).newInstance();
@@ -115,16 +108,9 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select * from yotei_tbl where kaiin_id = '");
-    SQL.append(session_id);
-    SQL.append("' and day ='");
-    SQL.append(dayStr);
-    SQL.append("' and s_hour ='");
-    SQL.append(s_hourStr);
-    SQL.append("' and s_mine ='");
-    SQL.append(s_minStr);
+    SQL.append("select * from kaiin_tbl where kaiin_id = '");
+    SQL.append(idStr);
     SQL.append("'");
-
       System.out.println(SQL.toString());
 
     //SQL文の実行（選択クエリ）
@@ -141,25 +127,17 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
     SQL=new StringBuffer();
 
     //SQL文の構築
-    SQL.append("insert into yotei_tbl(kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance)");
+    SQL.append("insert into kaiin_tbl(kaiin_id,kaiin_name,kaiin_add,kaiin_pass,kaiin_bday)");
     SQL.append("values('");
-    SQL.append(session_id);
+    SQL.append(idStr);
     SQL.append("','");
-    SQL.append(dayStr);
+    SQL.append(usernameStr);
     SQL.append("','");
-    SQL.append(s_hourStr);
+    SQL.append(mailStr);
     SQL.append("','");
-    SQL.append(s_minStr);
+    SQL.append(passStr);
     SQL.append("','");
-    SQL.append(f_hourStr);
-    SQL.append("','");
-    SQL.append(f_minStr);
-    SQL.append("','");
-    SQL.append(placeStr);
-    SQL.append("','");
-    SQL.append(detailsStr);
-    SQL.append("','");
-    SQL.append(importanceStr);
+    SQL.append(birthday);
     SQL.append("')");
     }
 
@@ -217,7 +195,7 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
 
       out.write("\r\n");
       out.write("追加NG<br>\r\n");
-      out.print( "入力された予定時刻は既に登録してあります" );
+      out.print( "入力された顧客IDは既に存在しています" );
       out.write('\r');
       out.write('\n');
 
@@ -226,8 +204,8 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
       out.write("\r\n");
       out.write("追加NG<br>\r\n");
       out.print( "登録が失敗しました" );
-      out.write('\r');
-      out.write('\n');
+      out.write("\r\n");
+      out.write("\r\n");
 
   }else{  //認証OK
 
@@ -255,10 +233,10 @@ public final class schedule_005fmakecomplete_jsp extends org.apache.jasper.runti
       out.write("\r\n");
       out.write("\r\n");
       out.write("\r\n");
-      out.write("  <p><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("  <p><a href=\"./index.jsp\">ログインに戻る</a></p>\r\n");
       out.write("\r\n");
       out.write("</body>\r\n");
-      out.write("</html>\r\n");
+      out.write("</html>");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

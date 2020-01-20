@@ -64,7 +64,8 @@ public final class agenda_005fmakecomplete_jsp extends org.apache.jasper.runtime
   String openStr = request.getParameter("open");
   String passStr = request.getParameter("pass");
   String permissionStr = request.getParameter("permission");
-  String kaiin_idStr = request.getParameter("kaiin_id");
+  String session_id = (String)session.getAttribute("login_id");
+
 
 
 
@@ -110,7 +111,7 @@ public final class agenda_005fmakecomplete_jsp extends org.apache.jasper.runtime
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select * from open_tbl where yotei_id = '");
+    SQL.append("select yotei_id,yotei_name,open_set,yotei_pass,yotei_writing,open_tbl.kaiin_id from open_tbl where yotei_id = '");
     SQL.append(idStr);
     SQL.append("'");
       System.out.println(SQL.toString());
@@ -141,7 +142,7 @@ public final class agenda_005fmakecomplete_jsp extends org.apache.jasper.runtime
     SQL.append("','");
     SQL.append(permissionStr);
     SQL.append("','");
-    SQL.append(kaiin_idStr);
+    SQL.append(session_id);
     SQL.append("')");
     }
 
@@ -237,7 +238,7 @@ public final class agenda_005fmakecomplete_jsp extends org.apache.jasper.runtime
       out.write("\r\n");
       out.write("\r\n");
       out.write("\r\n");
-      out.write("  <p><a href=\"./logincheck.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("  <p><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
       out.write("\r\n");
       out.write("</body>\r\n");
       out.write("</html>\r\n");

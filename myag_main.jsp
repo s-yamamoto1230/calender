@@ -202,13 +202,15 @@ finally{
 
   <body>
 
-  <ul id="nav">
-    <li><a href="./logincheck.jsp">メインに戻る</a></li>
-    <li><a href="#" onclick="ShowLile();">お気に入り登録</a></li>
-    <li id="day"><%= show_year %>/<%= show_month+1 %>/<%= show_day %></li>
-  </ul>
+    <div id="contents">
 
-  <table id="cal">
+    <ul id="nav">
+      <li id="today"><%= show_year %>/<%= show_month+1 %>/<%= show_day %></li>
+      <li id="info"><a href="#" onclick="ShowLike();">お気に入り登録</a></li>
+      <li><a href="./logincheck.jsp">メインに戻る</a></li>
+    </ul>
+
+    <table id="cal">
         <tr>
           <td colspan="7">
           <%= yotei_idStr %>
@@ -1586,6 +1588,23 @@ finally{
           </tr>
 
         </table>
+
+      </div>
+
+        <div class="area" >
+          <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div >
 
   <script type="text/javascript" src="./js/main.js"></script>
 

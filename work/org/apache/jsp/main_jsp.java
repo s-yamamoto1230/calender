@@ -68,7 +68,14 @@ public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
     request.setCharacterEncoding("UTF-8");
     response.setCharacterEncoding("UTF-8");
 
-    String kaiin_idStr = request.getParameter("id");
+    String session_id = (String)session.getAttribute("login_id");
+    String session_name = (String)session.getAttribute("login_name");
+    int session_year = (Integer)session.getAttribute("year");
+    int session_month = (Integer)session.getAttribute("month");
+  	if (session_id == null) {
+  		response.sendRedirect("index.jsp");
+  	}
+
 
     //現在の日付取得
     Date today = new Date();
@@ -86,10 +93,12 @@ public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
     calendar.set(year,month,1);
     int ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
 
-    if (!(request.getParameter("month").equals(month))) {
-      year = Integer.valueOf(request.getParameter("year"));
-      month = Integer.valueOf(request.getParameter("month"));
-
+    if (request.getParameter("month") != null) {
+      if (!(request.getParameter("month").equals(month))) {
+        year = Integer.valueOf(request.getParameter("year"));
+        month = Integer.valueOf(request.getParameter("month"));
+      }
+    }
       if (month>11) {
         year = year+1;
         month = 0;
@@ -105,7 +114,6 @@ public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
       calendar.set(year,month,1);
       ww = calendar.get(Calendar.DAY_OF_WEEK)-1;
       }
-    }
 
     //うるう年
     int a = year%4;
@@ -190,8 +198,8 @@ try{	// ロードに失敗したときのための例外処理
     SQL = new StringBuffer();
 
   //SQL文の発行（選択クエリ）
-  SQL.append("select yotei_tbl.kaiin_id,yotei_tbl.day,yotei_tbl.s_hour,yotei_tbl.s_mine,yotei_tbl.f_hour,yotei_tbl.f_mine,yotei_tbl.place,yotei_tbl.details,yotei_tbl.importance,kaiin_tbl.kaiin_name from yotei_tbl,kaiin_tbl where yotei_tbl.kaiin_id = kaiin_tbl.kaiin_id and yotei_tbl.kaiin_id = '");
-  SQL.append(kaiin_idStr);
+  SQL.append("select day,s_hour,s_mine,f_hour,f_mine,place from yotei_tbl where yotei_tbl.kaiin_id = '");
+  SQL.append(session_id);
   SQL.append("'");
 
   //SQL文の発行（選択クエリ）
@@ -201,16 +209,12 @@ try{	// ロードに失敗したときのための例外処理
   while(rs.next()){
       //DBのデータをHashMapへ格納する
     map = new HashMap<String,String>();
-    map.put("kaiin_id",rs.getString("kaiin_id"));
     map.put("day",rs.getString("day"));
     map.put("s_hour",rs.getString("s_hour"));
     map.put("s_mine",rs.getString("s_mine"));
     map.put("f_hour",rs.getString("f_hour"));
     map.put("f_mine",rs.getString("f_mine"));
     map.put("place",rs.getString("place"));
-    map.put("details",rs.getString("details"));
-    map.put("importance",rs.getString("importance"));
-    map.put("kaiin_name",rs.getString("kaiin_name"));
 
     //1件分のデータ(HashMap)をArrayListへ追加
     list.add(map);
@@ -262,6 +266,9 @@ finally{
       out.write("\r\n");
       out.write("  <body>\r\n");
       out.write("\r\n");
+      out.write("\r\n");
+      out.write("    <div id=\"contents\">\r\n");
+      out.write("\r\n");
       out.write("      <ul id=\"nav\">\r\n");
       out.write("        <li id=\"today\">");
       out.print( show_year );
@@ -271,34 +278,37 @@ finally{
       out.print( show_day );
       out.write("</li>\r\n");
       out.write("        <li id=\"info\"><a href=\"./agenda_make.jsp\">Agenda作成</a></li>\r\n");
-      out.write("        <li><a href=\"./myag.jsp?kaiin_id=");
-      out.print( kaiin_idStr );
-      out.write("\">作成したAgenda</a></li>\r\n");
+      out.write("        <li><a href=\"./myag.jsp\">作成したAgenda</a></li>\r\n");
       out.write("        <li><a href=\"./agenda_search.jsp\">Agenda検索</a></li>\r\n");
       out.write("        <li><a href=\"./agenda_delete.jsp\">Agenda削除</a></li>\r\n");
       out.write("        <li><a href=\"./ad_favodel.jsp\">お気に入り削除</a></li>\r\n");
       out.write("        <li><a href=\"add_change.jsp\">会員情報変更</a></li>\r\n");
       out.write("        <li><a href=\"#\" onclick=\"ShowAlert();\">ログアウト </a></li>\r\n");
+      out.write("        <form name=\"logout_info\" action=\"./index.jsp\" method=\"post\">\r\n");
+      out.write("          <input type=\"hidden\" name=\"logout\" value=\"logout\">\r\n");
+      out.write("        </form>\r\n");
       out.write("      </ul>\r\n");
       out.write("\r\n");
       out.write("    <table id=\"cal\">\r\n");
       out.write("        <tr class=\"no-line\">\r\n");
       out.write("          <td colspan=\"7\" class=\"no-line\">\r\n");
-      out.write("            <h1>");
-      out.print( kaiin_idStr );
+      out.write("            <h1 id=\"name\">");
+      out.print( session_name );
       out.write("さんの予定</h1>\r\n");
       out.write("          </td>\r\n");
       out.write("        </tr>\r\n");
       out.write("        <tr border=\"0\" cellspacing=\"1\" cellpadding=\"1\" bgcolor=\"#CCCCCC\" style=\"font: 12px; color: #666666;\">\r\n");
       out.write("            <td align=\"center\" colspan=\"7\" bgcolor=\"#EEEEEE\" height=\"30\" style=\"color: #666666;\">\r\n");
       out.write("              <div class=\"tuki\">\r\n");
-      out.write("                <a href=\"./main.jsp?year=");
-      out.print( year );
-      out.write("&month=");
-      out.print( month-1 );
+      out.write("                <form method=\"post\" action=\"./main.jsp\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"year\" value=\"");
+      out.print(year);
       out.write("\">\r\n");
-      out.write("                  <button>前月</button>\r\n");
-      out.write("                </a>\r\n");
+      out.write("                  <input type=\"hidden\" name=\"month\" value=\"");
+      out.print(month-1);
+      out.write("\">\r\n");
+      out.write("                  <input class=\"button\" type=\"submit\" value=\"前月\">\r\n");
+      out.write("                </form>\r\n");
       out.write("              </div>\r\n");
       out.write("              <div class=\"tuki\">\r\n");
       out.write("                <h1>");
@@ -308,13 +318,14 @@ finally{
       out.write("月</h1>\r\n");
       out.write("              </div>\r\n");
       out.write("              <div class=\"tuki\">\r\n");
-      out.write("                <a href=\"./main.jsp?year=");
-      out.print( year );
-      out.write("&month=");
-      out.print( month+1 );
+      out.write("                <form method=\"post\" action=\"./main.jsp\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"year\" value=\"");
+      out.print(year);
       out.write("\">\r\n");
-      out.write("                  <button>翌月</button>\r\n");
-      out.write("                </a>\r\n");
+      out.write("                  <input type=\"hidden\" name=\"month\" value=\"");
+      out.print(month+1);
+      out.write("\">\r\n");
+      out.write("                  <input class=\"button\" type=\"submit\" value=\"翌月\">\r\n");
       out.write("             </div>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
@@ -365,9 +376,7 @@ finally{
                     if (day0.equals(list.get(j).get("day"))) {
                   
       out.write("\r\n");
-      out.write("                  <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                  <a href=\"schedule_check.jsp?day=");
       out.print( day0 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -403,6 +412,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -447,9 +457,7 @@ finally{
                   if (day1.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day1 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -485,6 +493,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -529,9 +538,7 @@ finally{
                   if (day2.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day2 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -567,6 +574,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -611,9 +619,7 @@ finally{
                   if (day3.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day3 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -641,9 +647,7 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?id=");
-      out.print( kaiin_idStr );
-      out.write("&day=");
+      out.write("                  <a href=\"./schedule_make.jsp?day=");
       out.print( year );
       out.print( month+1 );
       out.print( num[3] );
@@ -651,6 +655,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -695,9 +700,7 @@ finally{
                   if (day4.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day4 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -729,6 +732,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -773,9 +777,7 @@ finally{
                   if (day5.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day5 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -807,6 +809,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -840,9 +843,7 @@ finally{
                   if (day6.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day6 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -874,6 +875,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
@@ -904,9 +906,7 @@ finally{
                   if (day7.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day7 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -938,6 +938,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-09\">\r\n");
@@ -966,9 +967,7 @@ finally{
                   if (day8.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day8 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1000,6 +999,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-10\">\r\n");
@@ -1028,9 +1028,7 @@ finally{
                   if (day9.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day9 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1062,6 +1060,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-11\">\r\n");
@@ -1090,9 +1089,7 @@ finally{
                   if (day10.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day10 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1124,6 +1121,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-12\">\r\n");
@@ -1152,9 +1150,7 @@ finally{
                   if (day11.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day11 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1186,6 +1182,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-13\">\r\n");
@@ -1214,9 +1211,7 @@ finally{
                   if (day12.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day12 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1248,6 +1243,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-14\">\r\n");
@@ -1276,9 +1272,7 @@ finally{
                   if (day13.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day13 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1310,6 +1304,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #FF0000;\">\r\n");
@@ -1339,9 +1334,7 @@ finally{
                   if (day14.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day14 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1373,6 +1366,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-16\">\r\n");
@@ -1401,9 +1395,7 @@ finally{
                   if (day15.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day15 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1435,6 +1427,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-17\">\r\n");
@@ -1463,9 +1456,7 @@ finally{
                   if (day16.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day16 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1497,6 +1488,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-18\">\r\n");
@@ -1525,9 +1517,7 @@ finally{
                   if (day17.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day17 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1559,6 +1549,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-19\">\r\n");
@@ -1587,9 +1578,7 @@ finally{
                   if (day18.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day18 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1621,6 +1610,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-20\">\r\n");
@@ -1649,9 +1639,7 @@ finally{
                   if (day19.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day19 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1683,6 +1671,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-21\">\r\n");
@@ -1711,9 +1700,7 @@ finally{
                   if (day20.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day20 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1745,6 +1732,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
@@ -1775,9 +1763,7 @@ finally{
                   if (day21.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day21 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1809,6 +1795,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-23\">\r\n");
@@ -1837,9 +1824,7 @@ finally{
                   if (day22.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day22 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1871,6 +1856,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-24\">\r\n");
@@ -1899,9 +1885,7 @@ finally{
                   if (day23.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day23 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1933,6 +1917,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-25\">\r\n");
@@ -1961,9 +1946,7 @@ finally{
                   if (day24.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day24 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1995,6 +1978,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-26\">\r\n");
@@ -2023,9 +2007,7 @@ finally{
                   if (day25.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day25 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2057,6 +2039,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-27\">\r\n");
@@ -2085,9 +2068,7 @@ finally{
                   if (day26.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day26 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2119,6 +2100,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              <a href=\"#modal-28\">\r\n");
@@ -2147,9 +2129,7 @@ finally{
                   if (day27.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day27 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2181,6 +2161,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
@@ -2222,9 +2203,7 @@ finally{
                   if (day28.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day28 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2256,6 +2235,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -2267,7 +2247,7 @@ finally{
             if (num[29]==0 || tuki_max < num[29]) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td class=\"no-line\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -2300,9 +2280,7 @@ finally{
                   if (day29.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day29 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2334,6 +2312,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -2345,7 +2324,7 @@ finally{
             if (num[30]==0 || tuki_max < num[30]) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td class=\"no-line\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -2378,9 +2357,7 @@ finally{
                   if (day30.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day30 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2412,6 +2389,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -2423,7 +2401,7 @@ finally{
             if (num[31]==0 || tuki_max < num[31]) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td class=\"no-line\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -2456,9 +2434,7 @@ finally{
                   if (day31.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day31 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2490,6 +2466,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -2501,7 +2478,7 @@ finally{
             if (num[32]==0 || tuki_max < num[32]) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td class=\"no-line\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -2534,9 +2511,7 @@ finally{
                   if (day32.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day32 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2568,6 +2543,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -2579,7 +2555,7 @@ finally{
             if (num[33]==0 || tuki_max < num[33]) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td class=\"no-line\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -2612,9 +2588,7 @@ finally{
                   if (day33.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day33 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2646,6 +2620,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -2657,7 +2632,7 @@ finally{
             if (num[34]==0 || tuki_max < num[34]) {
             
       out.write("\r\n");
-      out.write("            <td></td>\r\n");
+      out.write("            <td class=\"no-line\"></td>\r\n");
       out.write("            ");
 
             }else{
@@ -2690,9 +2665,7 @@ finally{
                   if (day34.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day34 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2723,6 +2696,8 @@ finally{
       out.write("\"><button>追加</button></a>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
+      out.write("          </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -2769,9 +2744,7 @@ finally{
                   if (day35.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day35 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2803,6 +2776,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -2847,9 +2821,7 @@ finally{
                   if (day36.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?kaiin_id=");
-      out.print( list.get(j).get("kaiin_id") );
-      out.write("&day=");
+      out.write("                <a href=\"schedule_check.jsp?day=");
       out.print( day36 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2881,6 +2853,7 @@ finally{
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
+      out.write("            </div>\r\n");
       out.write("            </td>\r\n");
       out.write("            ");
 
@@ -2890,6 +2863,23 @@ finally{
       out.write("          </tr>\r\n");
       out.write("\r\n");
       out.write("        </table>\r\n");
+      out.write("\r\n");
+      out.write("      </div>\r\n");
+      out.write("\r\n");
+      out.write("        <div class=\"area\" >\r\n");
+      out.write("          <ul class=\"circles\">\r\n");
+      out.write("            <li></li>\r\n");
+      out.write("            <li></li>\r\n");
+      out.write("            <li></li>\r\n");
+      out.write("            <li></li>\r\n");
+      out.write("            <li></li>\r\n");
+      out.write("            <li></li>\r\n");
+      out.write("            <li></li>\r\n");
+      out.write("            <li></li>\r\n");
+      out.write("            <li></li>\r\n");
+      out.write("            <li></li>\r\n");
+      out.write("          </ul>\r\n");
+      out.write("        </div >\r\n");
       out.write("\r\n");
       out.write("  <script type=\"text/javascript\" src=\"./js/main.js\"></script>\r\n");
       out.write("\r\n");

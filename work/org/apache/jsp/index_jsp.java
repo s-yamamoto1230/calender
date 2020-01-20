@@ -51,7 +51,18 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_out = out;
 
 
-session.invalidate();
+String logout = request.getParameter("logout");
+if(logout != null){
+  //ã»ãã·ã§ã³å¤æ°ãåé¤
+  session.removeAttribute("login_id");
+  session.removeAttribute("login_name");
+  session.removeAttribute("year");
+  session.removeAttribute("month");
+}
+String session_id = (String)session.getAttribute("login_id");
+if(session_id != null){
+  response.sendRedirect("main.jsp");
+}
 
       out.write("\r\n");
       out.write("\r\n");
@@ -70,8 +81,22 @@ session.invalidate();
       out.write("  </head>\r\n");
       out.write("\r\n");
       out.write("  <body>\r\n");
-      out.write("    <div id=\"contents\">\r\n");
-      out.write("      <h1>My Agenda</h1>\r\n");
+      out.write("\r\n");
+      out.write("    <div class='background'>\r\n");
+      out.write("      <div class='wave -one'></div>\r\n");
+      out.write("      <div class='wave -two'></div>\r\n");
+      out.write("      <div class='wave -three'></div>\r\n");
+      out.write("      <div class='wave -four'></div>\r\n");
+      out.write("      <div class='wave -five'></div>\r\n");
+      out.write("      <div class='concept'>èªåã®äºå®ãç®¡çã<br>äºå®ãå±æãã·ã§ã¢ã§ãã</div>\r\n");
+      out.write("    </div>\r\n");
+      out.write("      <h1 id=\"title\">\r\n");
+      out.write("        My Agenda<br>\r\n");
+      out.write("        My Agenda<br>\r\n");
+      out.write("        My Agenda<br>\r\n");
+      out.write("        My Agenda<br>\r\n");
+      out.write("        My Agenda\r\n");
+      out.write("      </h1>\r\n");
       out.write("       <form action=\"./logincheck.jsp\" method=\"post\">\r\n");
       out.write("        <table>\r\n");
       out.write("          <tr>\r\n");
@@ -79,7 +104,7 @@ session.invalidate();
       out.write("              <p>ï¼©ï¼¤</p>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td>\r\n");
-      out.write("              <input type=\"text\" name=\"id\" size=\"50\" class=\"text\">\r\n");
+      out.write("              <input type=\"text\" name=\"id\" size=\"50\" class=\"text\" autofocus>\r\n");
       out.write("            </td>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
@@ -109,22 +134,7 @@ session.invalidate();
       out.write("\r\n");
       out.write("\r\n");
       out.write("       </table>\r\n");
-      out.write("      </div>\r\n");
       out.write("\r\n");
-      out.write("      <div class=\"area\" >\r\n");
-      out.write("        <ul class=\"circles\">\r\n");
-      out.write("          <li></li>\r\n");
-      out.write("          <li></li>\r\n");
-      out.write("          <li></li>\r\n");
-      out.write("          <li></li>\r\n");
-      out.write("          <li></li>\r\n");
-      out.write("          <li></li>\r\n");
-      out.write("          <li></li>\r\n");
-      out.write("          <li></li>\r\n");
-      out.write("          <li></li>\r\n");
-      out.write("          <li></li>\r\n");
-      out.write("        </ul>\r\n");
-      out.write("      </div >\r\n");
       out.write("\r\n");
       out.write("  </body>\r\n");
       out.write("\r\n");

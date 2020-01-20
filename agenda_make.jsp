@@ -5,8 +5,6 @@
   request.setCharacterEncoding("UTF-8");
   response.setCharacterEncoding("UTF-8");
 
-  String kaiin_idStr = request.getParameter("kaiin_id");
-
 %>
 
 <html>
@@ -27,9 +25,7 @@
 
 
     <table>
-      <form  name="form" action="./agenda_makecheck.jsp" method="post" action="#" onsubmit="return formCheck()">
-
-        <input type="hidden" name="kaiin_id" value="<%= kaiin_idStr %>">
+      <form  name="form" action="./agenda_makecheck.jsp" method="post" onsubmit="return formCheck()">
 
       <tr>
         <td class="title">
@@ -104,7 +100,7 @@
 
         <tr class="no-line">
           <td class="no-line" colspan="2">
-            <p><a href="./logincheck.jsp">メイン画面に戻る</a></p>
+            <p><a href="./main.jsp">メイン画面に戻る</a></p>
           </td>
 
         </tr>

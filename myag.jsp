@@ -8,7 +8,8 @@
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idStr  = request.getParameter("kaiin_id");
+    String session_id = (String)session.getAttribute("login_id");
+    String session_name = (String)session.getAttribute("login_name");
 
   //データベースに接続するために使用する変数宣言
   Connection con = null;
@@ -55,8 +56,8 @@
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select * from open_tbl where kaiin_id = '");
-    SQL.append(kaiin_idStr);
+    SQL.append("select yotei_id,yotei_name,open_set,yotei_pass,yotei_writing from open_tbl where kaiin_id = '");
+    SQL.append(session_id);
     SQL.append("'");
 //      System.out.println(SQL.toString());
 
@@ -65,7 +66,6 @@
 
     //入力したデータがデータベースに存在するか調べる
     if(rs.next()){  //存在する
-      //ヒットフラグON
       hit_flag = 1;
 
         //検索データをHashMapへ格納する
@@ -77,7 +77,6 @@
           map.put("open_set",rs.getString("open_set"));
           map.put("yotei_pass",rs.getString("yotei_pass"));
           map.put("yotei_writing",rs.getString("yotei_writing"));
-          map.put("kaiin_id",rs.getString("kaiin_id"));
 
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
@@ -132,10 +131,11 @@
   </head>
 
   <body>
-
+<%= list.size() %>
     <h1>
-    <%= kaiin_idStr %>さんの作成したAgenda一覧
+    <%= session_name %>さんの作成したAgenda一覧
   </h1>
+  <% if (hit_flag == 1) {%>
     <table id="list">
       <tr class="no-line">
         <th class="no-line" style="padding: 20px;">AgendaID</td>
@@ -145,10 +145,11 @@
         <th class="no-line" style="padding: 20px;">他人の書き込み設定</td>
       </tr>
     <%
-      for(int i = 0; i < list.size(); i++){
+      for(int i=0; i<list.size();i++){
     %>
           <tr class="no-line">
-              <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;"><a href="monthcheck.jsp?yotei_id=<%= list.get(i).get("yotei_id") %>">・<%= list.get(i).get("yotei_id") %></a></td>
+              <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;">
+                <a href="monthcheck.jsp">・<%= list.get(i).get("yotei_id") %></a></td>
             <td class="no-line"><%= list.get(i).get("yotei_name") %></td>
             <td class="no-line">
               <%if (list.get(i).get("open_set").equals("1")) { %>
@@ -168,6 +169,10 @@
           </tr>
     <%}%>
   </table>
-    <p id="back"><a href="./logincheck.jsp">メイン画面に戻る</a></p>
+  <% }else if (hit_flag == 0) {%>
+  作成した予定はありません。
+  <% }%>
+
+    <p id="back"><a href="./main.jsp">メイン画面に戻る</a></p>
 </body>
 </html>

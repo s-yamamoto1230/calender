@@ -8,7 +8,7 @@
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String kaiin_idStr  = request.getParameter("kaiin_id");
+  String session_id = (String)session.getAttribute("login_id");
 
   //データベースに接続するために使用する変数宣言
   Connection con = null;
@@ -56,7 +56,7 @@
 
     //SQL文の構築（選択クエリ）
     SQL.append("select * from kaiin_tbl where kaiin_id = '");
-    SQL.append(kaiin_idStr);
+    SQL.append(session_id);
     SQL.append("'");
 //      System.out.println(SQL.toString());
 
@@ -124,7 +124,7 @@
 
     <meta charset="utf-8">
 
-    <title>メールアドレス変更</title>
+    <title>会員情報変更</title>
 
     <link rel="stylesheet" type="text/css" href="./css/info.css">
 
@@ -141,7 +141,7 @@
           会員ID
         </td>
         <td>
-          <input type="text" name="kaiin_id" pattern="^[0-9a-z]+$" size="25" maxlength="15" readonly value="<%= list.get(0).get("kaiin_id") %>">
+          <input type="text" name="kaiin_id" size="25" readonly value="<%= list.get(0).get("kaiin_id") %>">
         </td>
       </tr>
       <tr class="no-line">
