@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class session_005fIssue_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -69,8 +69,9 @@ public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
 	response.setCharacterEncoding("UTF-8");
 
 	//入力データ受信
-	String idStr  = request.getParameter("id");
-	String pasStr = request.getParameter("pass");
+	String yotei_id  = request.getParameter("yotei_id");
+	String yotei_name = request.getParameter("yotei_name");
+	String favorite = request.getParameter("favorite");
 
 	//データベースに接続するために使用する変数宣言
 	Connection con = null;
@@ -102,7 +103,13 @@ public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
 	String COMPPRO = null;
 	boolean flg = true;
 
-if(idStr != "" && pasStr != ""){
+	if (favorite != null) {
+		session.setAttribute("favorite_s",favorite);
+		//メインページへ遷移
+		response.sendRedirect("myag_main.jsp");
+	}
+
+if(yotei_id != "" && yotei_name != ""){
 	try{
 		// JDBCドライバのロード
 		Class.forName(DRIVER).newInstance();
@@ -116,7 +123,7 @@ if(idStr != "" && pasStr != ""){
 		//SQLステートメントの作成（選択クエリ）
 		SQL = new StringBuffer();
 		//SQL文の構築（選択クエリ）
-		SQL.append("select kaiin_id,kaiin_name from kaiin_tbl where kaiin_id = '" + idStr + "'and kaiin_pass = '" + pasStr +"'");
+		SQL.append("select yotei_id,yotei_name from open_tbl where yotei_id = '" + yotei_id + "'");
 
 		//SQL文の実行（選択クエリ）
 		rs = stmt.executeQuery(SQL.toString());
@@ -124,10 +131,10 @@ if(idStr != "" && pasStr != ""){
 		//入力したデータがデータベースに存在するか調べる
 		if(rs.next()==true){  //存在する
 						//セッションにバインド
-            session.setAttribute("login_id",rs.getString("kaiin_id"));
-            session.setAttribute("login_name",rs.getString("kaiin_name"));
+            session.setAttribute("yotei_id",rs.getString("yotei_id"));
+            session.setAttribute("yotei_name",rs.getString("yotei_name"));
 						//メインページへ遷移
-						response.sendRedirect("main.jsp");
+						response.sendRedirect("myag_main.jsp");
 		}else{  //ログイン失敗
 			COMPMSG = "顧客IDまたはパスワードが誤っています";
 		}
@@ -174,12 +181,12 @@ if(idStr != "" && pasStr != ""){
       out.write("  <meta charset=\"utf-8\">\r\n");
       out.write("\r\n");
       out.write("  <head>\r\n");
-      out.write("    <title>ログイン認証</title>\r\n");
+      out.write("    <title>セッション発行</title>\r\n");
       out.write("  </head>\r\n");
       out.write("\r\n");
       out.write("  <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/main.css\">\r\n");
       out.write("\r\n");
-      out.write("  <body id=\"logincheck\">\r\n");
+      out.write("  <body>\r\n");
       out.write("\r\n");
       out.write("    ");
 
@@ -203,7 +210,7 @@ if(idStr != "" && pasStr != ""){
         }
     
       out.write("\r\n");
-      out.write("  認証NG<br>\r\n");
+      out.write("  発行NG<br>\r\n");
       out.write("    <p><a href=\"./index.jsp\">ログインに戻る</a></p>\r\n");
       out.write("\r\n");
       out.write("\r\n");

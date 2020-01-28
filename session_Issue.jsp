@@ -11,8 +11,9 @@
 	response.setCharacterEncoding("UTF-8");
 
 	//入力データ受信
-	String idStr  = request.getParameter("id");
-	String pasStr = request.getParameter("pass");
+	String yotei_id  = request.getParameter("yotei_id");
+	String yotei_name = request.getParameter("yotei_name");
+	String favorite = request.getParameter("favorite");
 
 	//データベースに接続するために使用する変数宣言
 	Connection con = null;
@@ -44,7 +45,13 @@
 	String COMPPRO = null;
 	boolean flg = true;
 
-if(idStr != "" && pasStr != ""){
+	if (favorite != null) {
+		session.setAttribute("favorite_s",favorite);
+		//メインページへ遷移
+		response.sendRedirect("myag_main.jsp");
+	}
+
+if(yotei_id != "" && yotei_name != ""){
 	try{
 		// JDBCドライバのロード
 		Class.forName(DRIVER).newInstance();
@@ -58,7 +65,7 @@ if(idStr != "" && pasStr != ""){
 		//SQLステートメントの作成（選択クエリ）
 		SQL = new StringBuffer();
 		//SQL文の構築（選択クエリ）
-		SQL.append("select kaiin_id,kaiin_name from kaiin_tbl where kaiin_id = '" + idStr + "'and kaiin_pass = '" + pasStr +"'");
+		SQL.append("select yotei_id,yotei_name from open_tbl where yotei_id = '" + yotei_id + "'");
 
 		//SQL文の実行（選択クエリ）
 		rs = stmt.executeQuery(SQL.toString());
@@ -66,10 +73,10 @@ if(idStr != "" && pasStr != ""){
 		//入力したデータがデータベースに存在するか調べる
 		if(rs.next()==true){  //存在する
 						//セッションにバインド
-            session.setAttribute("login_id",rs.getString("kaiin_id"));
-            session.setAttribute("login_name",rs.getString("kaiin_name"));
+            session.setAttribute("yotei_id",rs.getString("yotei_id"));
+            session.setAttribute("yotei_name",rs.getString("yotei_name"));
 						//メインページへ遷移
-						response.sendRedirect("main.jsp");
+						response.sendRedirect("myag_main.jsp");
 		}else{  //ログイン失敗
 			COMPMSG = "顧客IDまたはパスワードが誤っています";
 		}
@@ -115,12 +122,12 @@ if(idStr != "" && pasStr != ""){
   <meta charset="utf-8">
 
   <head>
-    <title>ログイン認証</title>
+    <title>セッション発行</title>
   </head>
 
   <link rel="stylesheet" type="text/css" href="./css/main.css">
 
-  <body id="logincheck">
+  <body>
 
     <%
     	if(ERMSG!=null){
@@ -134,7 +141,7 @@ if(idStr != "" && pasStr != ""){
     <%
         }
     %>
-  認証NG<br>
+  発行NG<br>
     <p><a href="./index.jsp">ログインに戻る</a></p>
 
 

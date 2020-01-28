@@ -17,6 +17,16 @@ body{
   text-shadow: 0 0 2px #000000;
 }
 
+#subtitle{
+  position: absolute;
+  top: 26%;
+  right: 50%;
+  font-size: 30px;
+  line-height: 0;
+  color: #FFFFFF;
+  text-shadow: 0 0 2px #000000;
+}
+
 table{
   position: absolute;
   top: 45%;

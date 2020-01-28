@@ -119,10 +119,6 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
     //SQL文の実行（選択クエリ）
     rs = stmt.executeQuery(SQL.toString());
 
-    //入力したデータがデータベースに存在するか調べる
-    if(rs.next()){  //存在する
-      hit_flag = 1;
-
         //検索データをHashMapへ格納する
         while(rs.next()){
       //DBのデータをHashMapへ格納する
@@ -136,6 +132,9 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
         }
+    //入力したデータがデータベースに存在するか調べる
+    if(list.size() > 0){  //存在する
+          hit_flag = 1;
     }else{  //存在しない
       //ヒットフラグOFF
       hit_flag = 0;
@@ -195,10 +194,13 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("さんの作成したAgenda一覧\r\n");
       out.write("  </h1>\r\n");
       out.write("  ");
- if (hit_flag == 1) {
+
+   if (hit_flag == 1) {
+  
       out.write("\r\n");
       out.write("    <table id=\"list\">\r\n");
       out.write("      <tr class=\"no-line\">\r\n");
+      out.write("        <th></th>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">AgendaID</td>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">Agenda名</td>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">公開設定</td>\r\n");
@@ -211,10 +213,19 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
     
       out.write("\r\n");
       out.write("          <tr class=\"no-line\">\r\n");
-      out.write("              <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\">\r\n");
-      out.write("                <a href=\"monthcheck.jsp\">・");
+      out.write("            <td class=\"no-line\">\r\n");
+      out.write("              <form action=\"myag_main.jsp\" method=\"post\">\r\n");
+      out.write("                <input type=\"hidden\" name=\"yotei_id\" value=\"");
       out.print( list.get(i).get("yotei_id") );
-      out.write("</a></td>\r\n");
+      out.write("\">\r\n");
+      out.write("                <input type=\"submit\" value=\"確認する\">\r\n");
+      out.write("              </form>\r\n");
+      out.write("            </td>\r\n");
+      out.write("            <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\">\r\n");
+      out.write("              ");
+      out.print( list.get(i).get("yotei_id") );
+      out.write("\r\n");
+      out.write("            </td>\r\n");
       out.write("            <td class=\"no-line\">");
       out.print( list.get(i).get("yotei_name") );
       out.write("</td>\r\n");
@@ -224,11 +235,15 @@ if (list.get(i).get("open_set").equals("1")) {
       out.write("\r\n");
       out.write("                全員に公開\r\n");
       out.write("                ");
-}else{
+
+                  }else{
+                
       out.write("\r\n");
       out.write("                特定の人にのみ公開\r\n");
       out.write("              ");
-}
+
+                }
+              
       out.write("\r\n");
       out.write("            </td>\r\n");
       out.write("            <td class=\"no-line\">");
@@ -236,28 +251,40 @@ if (list.get(i).get("open_set").equals("1")) {
       out.write("</td>\r\n");
       out.write("            <td class=\"no-line\">\r\n");
       out.write("              ");
- if(list.get(i).get("yotei_writing").equals("1")) { 
+
+                if(list.get(i).get("yotei_writing").equals("1")) {
+              
       out.write("\r\n");
       out.write("              許可\r\n");
       out.write("              ");
-}else{
+
+                }else{
+              
       out.write("\r\n");
       out.write("              禁止\r\n");
       out.write("              ");
- } 
+
+                }
+              
       out.write("\r\n");
       out.write("            </td>\r\n");
       out.write("          </tr>\r\n");
-      out.write("    ");
-}
+      out.write("        ");
+
+          }
+        
       out.write("\r\n");
-      out.write("  </table>\r\n");
-      out.write("  ");
- }else if (hit_flag == 0) {
+      out.write("      </table>\r\n");
+      out.write("      ");
+
+        }else if (hit_flag == 0) {
+      
       out.write("\r\n");
-      out.write("  作成した予定はありません。\r\n");
-      out.write("  ");
- }
+      out.write("      作成した予定はありません。\r\n");
+      out.write("      ");
+
+        }
+      
       out.write("\r\n");
       out.write("\r\n");
       out.write("    <p id=\"back\"><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");

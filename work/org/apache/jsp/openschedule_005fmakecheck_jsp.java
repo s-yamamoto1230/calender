@@ -58,7 +58,6 @@ public final class openschedule_005fmakecheck_jsp extends org.apache.jasper.runt
       out.write('\n');
 
 
-  String yotei_idStr = request.getParameter("yotei_id");
   String dayStr = request.getParameter("day");
   String s_hourStr = request.getParameter("s_hour");
   String s_minStr = request.getParameter("s_min");
@@ -100,9 +99,6 @@ public final class openschedule_005fmakecheck_jsp extends org.apache.jasper.runt
       out.write("    <table>\r\n");
       out.write("    <form action=\"./openschedule_makecomplete.jsp\" method=\"post\">\r\n");
       out.write("\r\n");
-      out.write("      <input type=\"hidden\" name=\"yotei_id\" value=\"");
-      out.print( yotei_idStr );
-      out.write("\">\r\n");
       out.write("      <input type=\"hidden\" name=\"day\" value=\"");
       out.print( dayStr );
       out.write("\">\r\n");

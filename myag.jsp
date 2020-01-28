@@ -64,10 +64,6 @@
     //SQL文の実行（選択クエリ）
     rs = stmt.executeQuery(SQL.toString());
 
-    //入力したデータがデータベースに存在するか調べる
-    if(rs.next()){  //存在する
-      hit_flag = 1;
-
         //検索データをHashMapへ格納する
         while(rs.next()){
       //DBのデータをHashMapへ格納する
@@ -81,6 +77,9 @@
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
         }
+    //入力したデータがデータベースに存在するか調べる
+    if(list.size() > 0){  //存在する
+          hit_flag = 1;
     }else{  //存在しない
       //ヒットフラグOFF
       hit_flag = 0;
@@ -124,7 +123,7 @@
 
     <meta charset="utf-8">
 
-    <title>Agenda一覧</title>
+    <title>カレンダー一覧</title>
 
     <link rel="stylesheet" type="text/css" href="./css/info.css">
 
@@ -133,13 +132,16 @@
   <body>
 <%= list.size() %>
     <h1>
-    <%= session_name %>さんの作成したAgenda一覧
+    <%= session_name %>さんの作成したカレンダー一覧
   </h1>
-  <% if (hit_flag == 1) {%>
+  <%
+   if (hit_flag == 1) {
+  %>
     <table id="list">
       <tr class="no-line">
-        <th class="no-line" style="padding: 20px;">AgendaID</td>
-        <th class="no-line" style="padding: 20px;">Agenda名</td>
+        <th></th>
+        <th class="no-line" style="padding: 20px;">カレンダーID</td>
+        <th class="no-line" style="padding: 20px;">カレンダー名</td>
         <th class="no-line" style="padding: 20px;">公開設定</td>
         <th class="no-line" style="padding: 20px;">パスワード</td>
         <th class="no-line" style="padding: 20px;">他人の書き込み設定</td>
@@ -148,30 +150,53 @@
       for(int i=0; i<list.size();i++){
     %>
           <tr class="no-line">
-              <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;">
-                <a href="monthcheck.jsp">・<%= list.get(i).get("yotei_id") %></a></td>
+            <td class="no-line">
+              <form action="myag_main.jsp" method="post">
+                <input type="hidden" name="yotei_id" value="<%= list.get(i).get("yotei_id") %>">
+                <input type="submit" value="確認する">
+              </form>
+            </td>
+            <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;">
+              <%= list.get(i).get("yotei_id") %>
+            </td>
             <td class="no-line"><%= list.get(i).get("yotei_name") %></td>
             <td class="no-line">
               <%if (list.get(i).get("open_set").equals("1")) { %>
                 全員に公開
-                <%}else{%>
+                <%
+                  }else{
+                %>
                 特定の人にのみ公開
-              <%}%>
+              <%
+                }
+              %>
             </td>
             <td class="no-line"><%= list.get(i).get("yotei_pass") %></td>
             <td class="no-line">
-              <% if(list.get(i).get("yotei_writing").equals("1")) { %>
+              <%
+                if(list.get(i).get("yotei_writing").equals("1")) {
+              %>
               許可
-              <%}else{%>
+              <%
+                }else{
+              %>
               禁止
-              <% } %>
+              <%
+                }
+              %>
             </td>
           </tr>
-    <%}%>
-  </table>
-  <% }else if (hit_flag == 0) {%>
-  作成した予定はありません。
-  <% }%>
+        <%
+          }
+        %>
+      </table>
+      <%
+        }else if (hit_flag == 0) {
+      %>
+      作成した予定はありません。
+      <%
+        }
+      %>
 
     <p id="back"><a href="./main.jsp">メイン画面に戻る</a></p>
 </body>

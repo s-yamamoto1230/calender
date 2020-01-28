@@ -96,7 +96,7 @@ public final class agenda_005fsearch_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("          </tr>\r\n");
       out.write("          <tr class=\"no-line\">\r\n");
       out.write("            <td class=\"no-line\" colspan=\"2\">\r\n");
-      out.write("              <p id=\"new\"><a href=\"./logincheck.jsp\">ã¡ã¤ã³ç»é¢ã«æ»ã </a></p>\r\n");
+      out.write("              <p id=\"new\"><a href=\"./main.jsp\">ã¡ã¤ã³ç»é¢ã«æ»ã </a></p>\r\n");
       out.write("            </td>\r\n");
       out.write("          </tr>\r\n");
       out.write("\r\n");

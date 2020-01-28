@@ -6,7 +6,7 @@
 
     <meta charset="utf-8">
 
-    <title>Agenda検索</title>
+    <title>カレンダー検索</title>
 
     <link rel="stylesheet" type="text/css" href="./css/info.css">
 
@@ -14,15 +14,15 @@
 
   <body>
 
-      <h1>Agenda検索</h1>
+      <h1>カレンダー検索</h1>
       <h2>
-        AgendaIDかキーワードを入力して検索ボタンを押してください。<br>Agendaを検索します。
+        カレンダーIDかキーワードを入力して検索ボタンを押してください。<br>カレンダーを検索します。
       </h2>
        <form action="./agenda_searchcomplete.jsp" method="post">
         <table>
           <tr>
             <td  class="title">
-              <p>AgendaID</p>
+              <p>カレンダーID</p>
             </td>
             <td class="no-line">
               <input type="text" name="id" size="25" class="text">
@@ -44,7 +44,7 @@
           </tr>
           <tr class="no-line">
             <td class="no-line" colspan="2">
-              <p id="new"><a href="./logincheck.jsp">メイン画面に戻る </a></p>
+              <p id="new"><a href="./main.jsp">メイン画面に戻る </a></p>
             </td>
           </tr>
 

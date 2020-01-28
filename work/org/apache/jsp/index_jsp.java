@@ -74,7 +74,7 @@ if(session_id != null){
       out.write("\r\n");
       out.write("    <meta charset=\"utf-8\">\r\n");
       out.write("\r\n");
-      out.write("    <title>My Agenda</title>\r\n");
+      out.write("    <title>sharedule</title>\r\n");
       out.write("\r\n");
       out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/index.css\">\r\n");
       out.write("\r\n");
@@ -91,12 +91,19 @@ if(session_id != null){
       out.write("      <div class='concept'>èªåã®äºå®ãç®¡çã<br>äºå®ãå±æãã·ã§ã¢ã§ãã</div>\r\n");
       out.write("    </div>\r\n");
       out.write("      <h1 id=\"title\">\r\n");
-      out.write("        My Agenda<br>\r\n");
-      out.write("        My Agenda<br>\r\n");
-      out.write("        My Agenda<br>\r\n");
-      out.write("        My Agenda<br>\r\n");
-      out.write("        My Agenda\r\n");
+      out.write("        sharedule<br>\r\n");
+      out.write("        sharedule<br>\r\n");
+      out.write("        sharedule<br>\r\n");
+      out.write("        sharedule<br>\r\n");
+      out.write("        sharedule\r\n");
       out.write("      </h1>\r\n");
+      out.write("      <h2 id=\"subtitle\">\r\n");
+      out.write("        share Ã schedule<br>\r\n");
+      out.write("        share Ã schedule<br>\r\n");
+      out.write("        share Ã schedule<br>\r\n");
+      out.write("        share Ã schedule<br>\r\n");
+      out.write("        share Ã schedule\r\n");
+      out.write("      </h2>\r\n");
       out.write("       <form action=\"./logincheck.jsp\" method=\"post\">\r\n");
       out.write("        <table>\r\n");
       out.write("          <tr>\r\n");

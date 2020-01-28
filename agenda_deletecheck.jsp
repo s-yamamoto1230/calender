@@ -16,7 +16,7 @@
 
     <meta charset="utf-8">
 
-    <title>Agenda削除</title>
+    <title>カレンダー削除</title>
 
     <link rel="stylesheet" type="text/css" href="./css/info.css">
 
@@ -25,7 +25,7 @@
   <body>
 
     <h1>
-      以下のAgendaを削除しますか？
+      以下のカレンダーを削除しますか？
     </h1>
 
     <form method="post" action="./agenda_deletecomplete.jsp">

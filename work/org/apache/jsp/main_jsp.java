@@ -70,11 +70,17 @@ public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
 
     String session_id = (String)session.getAttribute("login_id");
     String session_name = (String)session.getAttribute("login_name");
-    int session_year = (Integer)session.getAttribute("year");
-    int session_month = (Integer)session.getAttribute("month");
+    String yotei_s = (String)session.getAttribute("yotei_s");
+    String favorite_s = (String)session.getAttribute("favorite_s");
   	if (session_id == null) {
   		response.sendRedirect("index.jsp");
   	}
+    if (yotei_s != null) {
+      session.removeAttribute("yotei_ids");
+    }
+    if (favorite_s != null) {
+      session.removeAttribute("favorite_s");
+    }
 
 
     //現在の日付取得
@@ -277,12 +283,12 @@ finally{
       out.write('/');
       out.print( show_day );
       out.write("</li>\r\n");
-      out.write("        <li id=\"info\"><a href=\"./agenda_make.jsp\">Agenda作成</a></li>\r\n");
-      out.write("        <li><a href=\"./myag.jsp\">作成したAgenda</a></li>\r\n");
-      out.write("        <li><a href=\"./agenda_search.jsp\">Agenda検索</a></li>\r\n");
-      out.write("        <li><a href=\"./agenda_delete.jsp\">Agenda削除</a></li>\r\n");
+      out.write("        <li id=\"info\"><a href=\"./agenda_make.jsp\">公開カレンダー作成</a></li>\r\n");
+      out.write("        <li><a href=\"./myag.jsp\">作成した公開カレンダー</a></li>\r\n");
+      out.write("        <li><a href=\"./agenda_search.jsp\">公開カレンダー検索</a></li>\r\n");
+      out.write("        <li><a href=\"./agenda_delete.jsp\">公開カレンダー削除</a></li>\r\n");
       out.write("        <li><a href=\"./ad_favodel.jsp\">お気に入り削除</a></li>\r\n");
-      out.write("        <li><a href=\"add_change.jsp\">会員情報変更</a></li>\r\n");
+      out.write("        <li><a href=\"./add_change.jsp\">会員情報変更</a></li>\r\n");
       out.write("        <li><a href=\"#\" onclick=\"ShowAlert();\">ログアウト </a></li>\r\n");
       out.write("        <form name=\"logout_info\" action=\"./index.jsp\" method=\"post\">\r\n");
       out.write("          <input type=\"hidden\" name=\"logout\" value=\"logout\">\r\n");
@@ -326,6 +332,7 @@ finally{
       out.print(month+1);
       out.write("\">\r\n");
       out.write("                  <input class=\"button\" type=\"submit\" value=\"翌月\">\r\n");
+      out.write("                </form>\r\n");
       out.write("             </div>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
@@ -404,11 +411,14 @@ finally{
       out.write("                  ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                    <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[0] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                    <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                  </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -485,11 +495,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[1] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -566,11 +579,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[2] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -647,11 +663,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                  <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                    <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[3] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                    <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                  </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -724,11 +743,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[4] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -801,11 +823,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[5] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -867,11 +892,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[6] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -930,11 +958,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[7] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -991,11 +1022,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[8] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1052,11 +1086,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[9] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1113,11 +1150,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[10] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1174,11 +1214,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[11] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1235,11 +1278,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[12] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1296,11 +1342,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[13] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1358,11 +1407,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[14] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1419,11 +1471,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[15] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1480,11 +1535,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[16] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1541,11 +1599,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[17] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1602,11 +1663,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[18] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1663,11 +1727,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[19] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1724,11 +1791,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[20] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1787,11 +1857,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[21] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1848,11 +1921,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[22] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1909,11 +1985,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[23] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1970,11 +2049,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[24] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2031,11 +2113,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[25] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2092,11 +2177,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[26] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2153,11 +2241,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[27] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2227,11 +2318,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[28] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2304,11 +2398,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[29] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2381,11 +2478,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[30] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2458,11 +2558,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[31] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2535,11 +2638,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[32] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2612,11 +2718,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[33] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2689,11 +2798,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[34] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("              </div>\r\n");
       out.write("            </div>\r\n");
@@ -2768,11 +2880,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[35] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2845,11 +2960,14 @@ finally{
       out.write("                ");
  }} 
       out.write("\r\n");
-      out.write("                  <a href=\"./schedule_make.jsp?day=");
+      out.write("                <form action=\"./schedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[36] );
-      out.write("\"><button>追加</button></a>\r\n");
+      out.write("\">\r\n");
+      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2866,7 +2984,6 @@ finally{
       out.write("\r\n");
       out.write("      </div>\r\n");
       out.write("\r\n");
-      out.write("        <div class=\"area\" >\r\n");
       out.write("          <ul class=\"circles\">\r\n");
       out.write("            <li></li>\r\n");
       out.write("            <li></li>\r\n");
@@ -2879,7 +2996,6 @@ finally{
       out.write("            <li></li>\r\n");
       out.write("            <li></li>\r\n");
       out.write("          </ul>\r\n");
-      out.write("        </div >\r\n");
       out.write("\r\n");
       out.write("  <script type=\"text/javascript\" src=\"./js/main.js\"></script>\r\n");
       out.write("\r\n");

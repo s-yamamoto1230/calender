@@ -3,7 +3,6 @@
 <% request.setCharacterEncoding("UTF-8"); %>
 <%
 
-  String yotei_idStr = request.getParameter("yotei_id");
   String dayStr = request.getParameter("day");
   String s_hourStr = request.getParameter("s_hour");
   String s_minStr = request.getParameter("s_min");
@@ -44,7 +43,6 @@
     <table>
     <form action="./openschedule_makecomplete.jsp" method="post">
 
-      <input type="hidden" name="yotei_id" value="<%= yotei_idStr %>">
       <input type="hidden" name="day" value="<%= dayStr %>">
       <input type="hidden" name="s_hour" value="<%= s_hourStr %>">
       <input type="hidden" name="s_min" value="<%= s_minStr %>">

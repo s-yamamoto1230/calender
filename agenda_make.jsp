@@ -13,7 +13,7 @@
 
     <meta charset="utf-8">
 
-    <title>Agenda作成</title>
+    <title>カレンダー作成</title>
 
     <link rel="stylesheet" type="text/css" href="./css/info.css">
 
@@ -21,7 +21,7 @@
 
   <body>
 
-    <h1 class="title">Agenda新規作成</h1>
+    <h1 class="title">カレンダー新規作成</h1>
 
 
     <table>

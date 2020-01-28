@@ -126,7 +126,6 @@ showCalendar(year, month)
 
     function ShowAlert() {
       if(confirm("ログアウトしますか？")){
-        //location.href="./index.jsp?logout=logout";
         var f = document.forms["logout_info"];
         f.method = "POST";
         f.submit();
@@ -134,8 +133,11 @@ showCalendar(year, month)
       }
     }
 
-    function ShowLike() {
+    function ShowFavorite() {
       if(confirm("お気に入り登録しますか？")){
-        location.href="./index.jsp";
+        var f = document.forms["favorite_info"];
+        f.method = "POST";
+        f.submit();
+        return true;
       }
     }

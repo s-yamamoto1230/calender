@@ -5,7 +5,7 @@
   request.setCharacterEncoding("UTF-8");
   response.setCharacterEncoding("UTF-8");
 
-  String yotei_idStr = request.getParameter("yotei_id");
+  String yotei_ids = (String)session.getAttribute("yotei_id");
   String dayStr = request.getParameter("day");
   String year = request.getParameter("year");
   String month = request.getParameter("month");
@@ -32,7 +32,6 @@
     <table>
       <form  name="form" action="./openschedule_makecheck.jsp" method="post" action="#" onsubmit="return formCheck()">
 
-        <input type="hidden" name="yotei_id" value="<%= yotei_idStr %>">
         <input type="hidden" name="day" value="<%= dayStr %>">
         <input type="hidden" name="year" value="<%= year %>">
         <input type="hidden" name="month" value="<%= month %>">
@@ -154,7 +153,7 @@
 
         <tr class="no-line">
           <td class="no-line" colspan="2">
-            <p><a href="./monthcheck.jsp">メイン画面に戻る</a></p>
+            <p><a href="./monthcheck.jsp">予定に戻る</a></p>
           </td>
 
         </tr>

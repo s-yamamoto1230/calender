@@ -125,7 +125,7 @@
 
     <meta charset="utf-8">
 
-    <title>Agenda一覧</title>
+    <title>カレンダー一覧</title>
 
     <link rel="stylesheet" type="text/css" href="./css/info.css">
 
@@ -136,13 +136,13 @@
   <form action="./agenda_deletecheck.jsp" method="post">
 
     <h1>
-    <%= session_name %>さんの作成したAgenda一覧
+    <%= session_name %>さんの作成したカレンダー一覧
     <% if (hit_flag == 1) {%>
     <table id="list">
       <tr class="no-line">
         <th></th>
-        <th class="no-line" style="padding: 20px;">AgendaID</td>
-        <th class="no-line" style="padding: 20px;">Agenda名</td>
+        <th class="no-line" style="padding: 20px;">カレンダーID</td>
+        <th class="no-line" style="padding: 20px;">カレンダー名</td>
         <th class="no-line" style="padding: 20px;">公開設定</td>
         <th class="no-line" style="padding: 20px;">パスワード</td>
         <th class="no-line" style="padding: 20px;">他人の書き込み設定</td>

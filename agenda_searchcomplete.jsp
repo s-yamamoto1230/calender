@@ -8,6 +8,7 @@
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
+  String session_id = (String)session.getAttribute("login_id");
   String idStr  = request.getParameter("id");
   String keywordStr  = request.getParameter("keyword");
   //データベースに接続するために使用する変数宣言
@@ -54,19 +55,18 @@
     //SQLステートメントの作成（選択クエリ）
     SQL = new StringBuffer();
 
+    if (!(idStr.equals(""))) {
+
     //SQL文の構築（選択クエリ）
-    SQL.append("select yotei_id,yotei_name,open_set,yotei_writing from open_tbl where yotei_id = '");
-    SQL.append(idStrStr);
+    SQL.append("select yotei_id,yotei_name,kaiin_name from open_tbl,kaiin_tbl where open_tbl.kaiin_id = kaiin_tbl.kaiin_id and open_tbl.kaiin_id != '");
+    SQL.append(session_id);
+    SQL.append("'  and open_tbl.yotei_id = '");
+    SQL.append(idStr);
     SQL.append("'");
 //      System.out.println(SQL.toString());
 
     //SQL文の実行（選択クエリ）
     rs = stmt.executeQuery(SQL.toString());
-
-    //入力したデータがデータベースに存在するか調べる
-    if(rs.next()){  //存在する
-      //ヒットフラグON
-      hit_flag = 1;
 
         //検索データをHashMapへ格納する
         while(rs.next()){
@@ -74,12 +74,39 @@
           map = new HashMap<String,String>();
           map.put("yotei_id",rs.getString("yotei_id"));
           map.put("yotei_name",rs.getString("yotei_name"));
-          map.put("open_set",rs.getString("open_set"));
-          map.put("yotei_writing",rs.getString("yotei_writing"));
+          map.put("kaiin_name",rs.getString("kaiin_name"));
 
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
         }
+    }else if (!(keywordStr.equals(""))) {
+
+    //SQL文の構築（選択クエリ）
+    SQL.append("select yotei_id,yotei_name,kaiin_name from open_tbl,kaiin_tbl where open_tbl.kaiin_id = kaiin_tbl.kaiin_id and open_tbl.kaiin_id != '");
+    SQL.append(session_id);
+    SQL.append("' and open_tbl.yotei_name like '%");
+    SQL.append(keywordStr);
+    SQL.append("%'");
+    System.out.println(SQL.toString());
+
+    //SQL文の実行（選択クエリ）
+    rs = stmt.executeQuery(SQL.toString());
+
+        //検索データをHashMapへ格納する
+        while(rs.next()){
+      //DBのデータをHashMapへ格納する
+          map = new HashMap<String,String>();
+          map.put("yotei_id",rs.getString("yotei_id"));
+          map.put("yotei_name",rs.getString("yotei_name"));
+          map.put("kaiin_name",rs.getString("kaiin_name"));
+
+          //1件分のデータ(HashMap)をArrayListへ追加
+          list.add(map);
+        }
+    }
+    //入力したデータがデータベースに存在するか調べる
+    if(list.size() > 0){  //存在する
+          hit_flag = 1;
     }else{  //存在しない
       //ヒットフラグOFF
       hit_flag = 0;
@@ -123,7 +150,7 @@
 
     <meta charset="utf-8">
 
-    <title>Agenda一覧</title>
+    <title>検索結果</title>
 
     <link rel="stylesheet" type="text/css" href="./css/info.css">
 
@@ -132,39 +159,44 @@
   <body>
 
     <h1>
-    <%= kaiin_idStr %>さんの作成したAgenda一覧
+    カレンダー検索一覧
   </h1>
+  <%
+   if (hit_flag == 1) {
+  %>
     <table id="list">
       <tr class="no-line">
-        <th class="no-line" style="padding: 20px;">AgendaID</td>
-        <th class="no-line" style="padding: 20px;">Agenda名</td>
-        <th class="no-line" style="padding: 20px;">公開設定</td>
-        <th class="no-line" style="padding: 20px;">他人の書き込み設定</td>
+        <th></th>
+        <th class="no-line" style="padding: 20px;">カレンダー名</td>
+        <th class="no-line" style="padding: 20px;">作成者</td>
       </tr>
-    <%
-      for(int i = 0; i < list.size(); i++){
-    %>
-          <tr class="no-line">
-              <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;"><a href="monthcheck.jsp?yotei_id=<%= list.get(i).get("yotei_id") %>">・<%= list.get(i).get("yotei_id") %></a></td>
-            <td class="no-line"><%= list.get(i).get("yotei_name") %></td>
-            <td class="no-line">
-              <%if (list.get(i).get("open_set").equals("1")) { %>
-                全員に公開
-                <%}else{%>
-                特定の人にのみ公開
-              <%}%>
-            </td>
-            <td class="no-line"><%= list.get(i).get("yotei_pass") %></td>
-            <td class="no-line">
-              <% if(list.get(i).get("yotei_writing").equals("1")) { %>
-              許可
-              <%}else{%>
-              禁止
-              <% } %>
-            </td>
+      <%
+        for(int i=0; i<list.size();i++){
+      %>
+            <tr class="no-line">
+              <td class="no-line">
+                <form action="session_Issue.jsp" method="post">
+                  <input type="hidden" name="yotei_id" value="<%= list.get(i).get("yotei_id") %>">
+                  <input type="hidden" name="yotei_name" value="<%= list.get(i).get("yotei_name") %>">
+                  <input type="submit" value="確認する">
+                </form>
+              </td>
+              <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;">
+                <%= list.get(i).get("yotei_name") %>
+              </td>
+              <td class="no-line"><%= list.get(i).get("kaiin_name") %></td>
           </tr>
-    <%}%>
+      <%
+        }
+      %>
   </table>
-    <p id="back"><a href="./logincheck.jsp">メイン画面に戻る</a></p>
+  <%
+    }else if (hit_flag == 0) {
+  %>
+  該当するカレンダーはありません。
+  <%
+    }
+  %>
+    <p id="back"><a href="./agenda_search.jsp">検索画面に戻る</a></p>
 </body>
 </html>

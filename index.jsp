@@ -21,7 +21,7 @@ if(session_id != null){
 
     <meta charset="utf-8">
 
-    <title>My Agenda</title>
+    <title>sharedule</title>
 
     <link rel="stylesheet" type="text/css" href="./css/index.css">
 
@@ -38,12 +38,19 @@ if(session_id != null){
       <div class='concept'>自分の予定を管理。<br>予定を共有、シェアできる</div>
     </div>
       <h1 id="title">
-        My Agenda<br>
-        My Agenda<br>
-        My Agenda<br>
-        My Agenda<br>
-        My Agenda
+        sharedule<br>
+        sharedule<br>
+        sharedule<br>
+        sharedule<br>
+        sharedule
       </h1>
+      <h2 id="subtitle">
+        share × schedule<br>
+        share × schedule<br>
+        share × schedule<br>
+        share × schedule<br>
+        share × schedule
+      </h2>
        <form action="./logincheck.jsp" method="post">
         <table>
           <tr>

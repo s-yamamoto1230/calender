@@ -3,14 +3,9 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
-import java.util.Date;
-import java.util.Calendar;
 import java.sql.*;
-import java.util.*;
-import java.util.HashMap;
-import java.util.ArrayList;
 
-public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class add_005fchangecomplete_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -58,52 +53,45 @@ public final class logincheck_jsp extends org.apache.jasper.runtime.HttpJspBase
 
       out.write("\r\n");
       out.write("\r\n");
-      out.write("\r\n");
-      out.write("\r\n");
-      out.write("\r\n");
-      out.write("\r\n");
-      out.write("\r\n");
 
-	//文字コードの指定
-	request.setCharacterEncoding("UTF-8");
-	response.setCharacterEncoding("UTF-8");
+  //文字コードの指定
+  request.setCharacterEncoding("UTF-8");
+  response.setCharacterEncoding("UTF-8");
 
-	//入力データ受信
-	String idStr  = request.getParameter("id");
-	String pasStr = request.getParameter("pass");
+  //入力データ受信
+  String idStr = request.getParameter("id");
+  String usernameStr = request.getParameter("username");
+  String mailStr = request.getParameter("mail");
+  String passStr = request.getParameter("pass");
+  String birthday = request.getParameter("bday");
 
-	//データベースに接続するために使用する変数宣言
-	Connection con = null;
-	Statement stmt = null;
-	StringBuffer SQL = null;
-	ResultSet rs = null;
 
-	//ローカルのMySQLに接続する設定
+  //データベースに接続するために使用する変数宣言
+  Connection con = null;
+  Statement stmt = null;
+  StringBuffer SQL = null;
+  ResultSet rs = null;
+
+  //ローカルのMySQLに接続する設定
   String USER ="root";
-	String PASSWORD = "";
-	String URL ="";
-	if (USER.equals("root")) {
-		URL ="jdbc:mysql://localhost/agenda";
-	}
+  String PASSWORD = "";
+  String URL ="jdbc:mysql://localhost/agenda";
+
   //サーバーのMySQLに接続する設定
-	else{
-		USER ="nhs90345";
-		PASSWORD = "b19931230";
-	 	URL ="jdbc:mysql://192.168.121.16/agenda";
-	}
+/*  String USER = "nhsxxxxx";
+  String PASSWORD = "byyyymmdd";
+  String URL ="jdbc:mysql://192.168.121.16/nhs90345db";
+*/
 
-	String DRIVER = "com.mysql.jdbc.Driver";
+  String DRIVER = "com.mysql.jdbc.Driver";
 
-	//確認メッセージ
+  //確認メッセージ
 	StringBuffer ERMSG = null;
 
-	//確認メッセージ
-	String COMPMSG = null;
-	String COMPPRO = null;
-	boolean flg = true;
+	//更新件数
+	int upd_count = 0;
 
-if(idStr != "" && pasStr != ""){
-	try{
+	try{	// ロードに失敗したときのための例外処理
 		// JDBCドライバのロード
 		Class.forName(DRIVER).newInstance();
 
@@ -115,22 +103,23 @@ if(idStr != "" && pasStr != ""){
 
 		//SQLステートメントの作成（選択クエリ）
 		SQL = new StringBuffer();
-		//SQL文の構築（選択クエリ）
-		SQL.append("select kaiin_id,kaiin_name from kaiin_tbl where kaiin_id = '" + idStr + "'and kaiin_pass = '" + pasStr +"'");
 
-		//SQL文の実行（選択クエリ）
-		rs = stmt.executeQuery(SQL.toString());
+    //SQL文の構築（DB更新）
+		SQL.append("update kaiin_tbl set kaiin_name = '");
+		SQL.append(usernameStr);
+		SQL.append("',kaiin_add = '");
+		SQL.append(mailStr);
+		SQL.append("',kaiin_pass = '");
+		SQL.append(passStr);
+		SQL.append("',kaiin_bday = '");
+		SQL.append(birthday);
+		SQL.append("' where kaiin_id = '");
+    SQL.append(idStr);
+		SQL.append("'");
 
-		//入力したデータがデータベースに存在するか調べる
-		if(rs.next()==true){  //存在する
-						//セッションにバインド
-            session.setAttribute("login_id",rs.getString("kaiin_id"));
-            session.setAttribute("login_name",rs.getString("kaiin_name"));
-						//メインページへ遷移
-						response.sendRedirect("main.jsp");
-		}else{  //ログイン失敗
-			COMPMSG = "顧客IDまたはパスワードが誤っています";
-		}
+      System.out.println(SQL.toString());
+		upd_count = stmt.executeUpdate(SQL.toString());
+
 	}	//tryブロック終了
 	catch(ClassNotFoundException e){
 		ERMSG = new StringBuffer();
@@ -156,58 +145,62 @@ if(idStr != "" && pasStr != ""){
 			}
 	    	if(con != null){
 	    		con.close();
-				}
+			}
 	    }
 		catch(SQLException e){
 		ERMSG = new StringBuffer();
 		ERMSG.append(e.getMessage());
 		}
 	}
-}else{
-		COMPMSG = "未入力の項目があります。";
-	}
 
       out.write("\r\n");
       out.write("\r\n");
       out.write("<!DOCTYPE html>\r\n");
       out.write("<html>\r\n");
-      out.write("  <meta charset=\"utf-8\">\r\n");
-      out.write("\r\n");
-      out.write("  <head>\r\n");
-      out.write("    <title>ログイン認証</title>\r\n");
-      out.write("  </head>\r\n");
-      out.write("\r\n");
-      out.write("  <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/main.css\">\r\n");
-      out.write("\r\n");
-      out.write("  <body id=\"logincheck\">\r\n");
-      out.write("\r\n");
-      out.write("    ");
+      out.write("<head>\r\n");
+      out.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\r\n");
+      out.write("<title>『更新完了』</title>\r\n");
+      out.write("</head>\r\n");
+      out.write("<body>\r\n");
 
-    	if(ERMSG!=null){
-    
+	if(upd_count == 0){  //更新処理失敗
+
       out.write("\r\n");
-      out.write("    \t予期せぬエラーが発生しました<br>\r\n");
-      out.write("    \t  ");
+      out.write("\t更新NG<br>\r\n");
+      out.write("\t  ");
+      out.print( "更新処理が失敗しました" );
+      out.write('\r');
+      out.write('\n');
+
+	}else{  //更新OK
+
+      out.write("\r\n");
+      out.write("\t更新OK<br>\r\n");
+      out.write("\t  ");
+      out.print( upd_count + "件　更新が完了しました" );
+      out.write('\r');
+      out.write('\n');
+
+	}
+
+      out.write("\r\n");
+      out.write("<br><br>\r\n");
+ if(ERMSG != null){ 
+      out.write("\r\n");
+      out.write("予期せぬエラーが発生しました<br />\r\n");
       out.print( ERMSG );
+      out.write('\r');
+      out.write('\n');
+ }else{ 
       out.write("\r\n");
-      out.write("    ");
-
-    	}else{
-    
+      out.write("※エラーは発生しませんでした<br/>\r\n");
+ } 
       out.write("\r\n");
-      out.write("    \t");
-      out.print( COMPMSG );
-      out.write("<br>\r\n");
-      out.write("    ");
-
-        }
-    
-      out.write("\r\n");
-      out.write("  認証NG<br>\r\n");
-      out.write("    <p><a href=\"./index.jsp\">ログインに戻る</a></p>\r\n");
+      out.write("<p><a href=\"./main.jsp\">ログインに戻る</a></p>\r\n");
+      out.print( idStr );
       out.write("\r\n");
       out.write("\r\n");
-      out.write("  </body>\r\n");
+      out.write("</body>\r\n");
       out.write("</html>\r\n");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){

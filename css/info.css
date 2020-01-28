@@ -19,6 +19,11 @@ table#list{
   margin-top: 20px;
 }
 
+table#change{
+  margin-left: 25%;
+  margin-bottom: 50px;
+}
+
 table tr{
   border: 2px solid;
 
