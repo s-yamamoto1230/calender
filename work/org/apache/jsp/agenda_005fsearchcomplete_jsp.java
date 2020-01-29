@@ -215,7 +215,7 @@ public final class agenda_005fsearchcomplete_jsp extends org.apache.jasper.runti
       out.write("  <body>\r\n");
       out.write("\r\n");
       out.write("    <h1>\r\n");
-      out.write("    Agenda検索一覧\r\n");
+      out.write("    カレンダー検索一覧\r\n");
       out.write("  </h1>\r\n");
       out.write("  ");
 
@@ -225,7 +225,7 @@ public final class agenda_005fsearchcomplete_jsp extends org.apache.jasper.runti
       out.write("    <table id=\"list\">\r\n");
       out.write("      <tr class=\"no-line\">\r\n");
       out.write("        <th></th>\r\n");
-      out.write("        <th class=\"no-line\" style=\"padding: 20px;\">Agenda名</td>\r\n");
+      out.write("        <th class=\"no-line\" style=\"padding: 20px;\">カレンダー名</td>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">作成者</td>\r\n");
       out.write("      </tr>\r\n");
       out.write("      ");
@@ -265,7 +265,7 @@ public final class agenda_005fsearchcomplete_jsp extends org.apache.jasper.runti
     }else if (hit_flag == 0) {
   
       out.write("\r\n");
-      out.write("  該当するAgendaはありません。\r\n");
+      out.write("  該当するカレンダーはありません。\r\n");
       out.write("  ");
 
     }

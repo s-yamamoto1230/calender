@@ -151,8 +151,9 @@
     %>
           <tr class="no-line">
             <td class="no-line">
-              <form action="myag_main.jsp" method="post">
+              <form action="session_Issue.jsp" method="post">
                 <input type="hidden" name="yotei_id" value="<%= list.get(i).get("yotei_id") %>">
+                <input type="hidden" name="yotei_name" value="<%= list.get(i).get("yotei_name") %>">
                 <input type="submit" value="確認する">
               </form>
             </td>

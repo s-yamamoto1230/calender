@@ -12,16 +12,13 @@
 
     String session_id = (String)session.getAttribute("login_id");
     String session_name = (String)session.getAttribute("login_name");
-    String yotei_s = (String)session.getAttribute("yotei_s");
-    String favorite_s = (String)session.getAttribute("favorite_s");
+    String yotei_ids = (String)session.getAttribute("yotei_id");
   	if (session_id == null) {
   		response.sendRedirect("index.jsp");
   	}
-    if (yotei_s != null) {
-      session.removeAttribute("yotei_ids");
-    }
-    if (favorite_s != null) {
-      session.removeAttribute("favorite_s");
+    if (yotei_ids != null) {
+      session.removeAttribute("yotei_id");
+      session.removeAttribute("yotei_name");
     }
 
 

@@ -179,7 +179,7 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("    <meta charset=\"utf-8\">\r\n");
       out.write("\r\n");
-      out.write("    <title>Agenda一覧</title>\r\n");
+      out.write("    <title>カレンダー一覧</title>\r\n");
       out.write("\r\n");
       out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/info.css\">\r\n");
       out.write("\r\n");
@@ -191,7 +191,7 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    <h1>\r\n");
       out.write("    ");
       out.print( session_name );
-      out.write("さんの作成したAgenda一覧\r\n");
+      out.write("さんの作成したカレンダー一覧\r\n");
       out.write("  </h1>\r\n");
       out.write("  ");
 
@@ -201,8 +201,8 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    <table id=\"list\">\r\n");
       out.write("      <tr class=\"no-line\">\r\n");
       out.write("        <th></th>\r\n");
-      out.write("        <th class=\"no-line\" style=\"padding: 20px;\">AgendaID</td>\r\n");
-      out.write("        <th class=\"no-line\" style=\"padding: 20px;\">Agenda名</td>\r\n");
+      out.write("        <th class=\"no-line\" style=\"padding: 20px;\">カレンダーID</td>\r\n");
+      out.write("        <th class=\"no-line\" style=\"padding: 20px;\">カレンダー名</td>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">公開設定</td>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">パスワード</td>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">他人の書き込み設定</td>\r\n");
@@ -214,9 +214,12 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("          <tr class=\"no-line\">\r\n");
       out.write("            <td class=\"no-line\">\r\n");
-      out.write("              <form action=\"myag_main.jsp\" method=\"post\">\r\n");
+      out.write("              <form action=\"session_Issue.jsp\" method=\"post\">\r\n");
       out.write("                <input type=\"hidden\" name=\"yotei_id\" value=\"");
       out.print( list.get(i).get("yotei_id") );
+      out.write("\">\r\n");
+      out.write("                <input type=\"hidden\" name=\"yotei_name\" value=\"");
+      out.print( list.get(i).get("yotei_name") );
       out.write("\">\r\n");
       out.write("                <input type=\"submit\" value=\"確認する\">\r\n");
       out.write("              </form>\r\n");

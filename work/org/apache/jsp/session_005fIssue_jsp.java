@@ -72,6 +72,8 @@ public final class session_005fIssue_jsp extends org.apache.jasper.runtime.HttpJ
 	String yotei_id  = request.getParameter("yotei_id");
 	String yotei_name = request.getParameter("yotei_name");
 	String favorite = request.getParameter("favorite");
+	String session_id = (String)session.getAttribute("login_id");
+	String yotei_ids = (String)session.getAttribute("yotei_id");
 
 	//データベースに接続するために使用する変数宣言
 	Connection con = null;
@@ -103,10 +105,89 @@ public final class session_005fIssue_jsp extends org.apache.jasper.runtime.HttpJ
 	String COMPPRO = null;
 	boolean flg = true;
 
+	//追加件数
+  int ins_count=0;
+
 	if (favorite != null) {
-		session.setAttribute("favorite_s",favorite);
-		//メインページへ遷移
-		response.sendRedirect("myag_main.jsp");
+		try{  // ロードに失敗したときのための例外処理
+			// JDBCドライバのロード
+			Class.forName(DRIVER).newInstance();
+
+			// Connectionオブジェクトの作成
+			con = DriverManager.getConnection(URL,USER,PASSWORD);
+
+			//Statementオブジェクトの作成
+			stmt = con.createStatement();
+
+			//SQLステートメントの作成（選択クエリ）
+			SQL = new StringBuffer();
+
+			//SQL文の構築（選択クエリ）
+			SQL.append("select * from favorite_tbl where kaiin_id = '");
+			SQL.append(session_id);
+			SQL.append("' and yotei_id = '");
+			SQL.append(yotei_ids);
+			SQL.append("'");
+				System.out.println(SQL.toString());
+
+			//SQL文の実行（選択クエリ）
+			rs = stmt.executeQuery(SQL.toString());
+
+			//入力したデータがデータベースに存在するか調べる
+			if(rs.next()){  //存在する
+				//メインページへ遷移
+				response.sendRedirect("myag_main.jsp?hit_flag=1");
+			}else{  //存在しない(追加OK)
+				//SQLステートメントの作成（選択クエリ）
+				SQL=new StringBuffer();
+
+				//SQL文の構築
+				SQL.append("insert into favorite_tbl(kaiin_id,yotei_id)");
+				SQL.append(" values('");
+				SQL.append(session_id);
+				SQL.append("','");
+				SQL.append(yotei_ids);
+				SQL.append("')");
+				System.out.println(SQL.toString());
+			}
+
+			//SQL文の実行(DB追加)
+			ins_count=stmt.executeUpdate(SQL.toString());
+			//メインページへ遷移
+			response.sendRedirect("myag_main.jsp?hit_flag=0");
+
+		} //tryブロック終了
+		catch(ClassNotFoundException e){
+			ERMSG = new StringBuffer();
+			ERMSG.append(e.getMessage());
+		}
+		catch(SQLException e){
+			ERMSG = new StringBuffer();
+			ERMSG.append(e.getMessage());
+		}
+		catch(Exception e){
+			ERMSG = new StringBuffer();
+			ERMSG.append(e.getMessage());
+		}
+
+		finally{
+			//各種オブジェクトクローズ
+				try{
+					if(rs != null){
+						rs.close();
+					}
+					if(stmt != null){
+						stmt.close();
+				}
+					if(con != null){
+						con.close();
+				}
+				}
+			catch(SQLException e){
+			ERMSG = new StringBuffer();
+			ERMSG.append(e.getMessage());
+			}
+		}
 	}
 
 if(yotei_id != "" && yotei_name != ""){

@@ -13,7 +13,6 @@
     String session_id = (String)session.getAttribute("login_id");
     String yotei_ids = (String)session.getAttribute("yotei_id");
     String yotei_names = (String)session.getAttribute("yotei_name");
-    String favorite_s = (String)session.getAttribute("favorite_s");
   	if (session_id == null) {
   		response.sendRedirect("index.jsp");
   	}
@@ -117,6 +116,9 @@ String DRIVER = "com.mysql.jdbc.Driver";
 
 //確認メッセージ
 StringBuffer ERMSG = null;
+//ヒットフラグ
+int hit_flag = 0;
+int user_hit = 0;
 
 //HashMap（1件分のデータを格納する連想配列）
 HashMap<String,String> map = null;
@@ -138,7 +140,36 @@ try{	// ロードに失敗したときのための例外処理
   //SQLステートメントの作成（選択クエリ）
   SQL = new StringBuffer();
 
-  //SQLステートメントの作成（選択クエリ）
+  SQL.append("select * from favorite_tbl where kaiin_id = '");
+  SQL.append(session_id);
+  SQL.append("' and yotei_id = '");
+  SQL.append(yotei_ids);
+  SQL.append("'");
+
+  rs = stmt.executeQuery(SQL.toString());
+  //入力したデータがデータベースに存在するか調べる
+  if(rs.next()){  //存在する
+    hit_flag=1;
+  }else{  //存在しない(追加OK)
+    hit_flag=0;
+  }
+
+  SQL = new StringBuffer();
+
+  SQL.append("select kaiin_id from open_tbl where yotei_id =  '");
+  SQL.append(yotei_ids);
+  SQL.append("'and kaiin_id = '");
+  SQL.append(session_id);
+  SQL.append("'");
+
+  rs = stmt.executeQuery(SQL.toString());
+  //入力したデータがデータベースに存在するか調べる
+  if(rs.next()){  //存在する
+    user_hit=1;
+  }else{  //存在しない(追加OK)
+    user_hit=0;
+  }
+
   SQL = new StringBuffer();
 
   //SQL文の発行（選択クエリ）
@@ -216,26 +247,35 @@ finally{
       <ul id="nav">
         <li id="today"><%= show_year %>/<%= show_month+1 %>/<%= show_day %></li>
         <%
-          if (favorite_s != null) {
+          if (user_hit == 1) {
         %>
-        <li id="info">お気に入り登録済</li>
+            <li id="info"><a href="./main.jsp">メインに戻る</a></li>
         <%
-          }else{
+          }else if (user_hit == 0) {
+            if (hit_flag == 1) {
         %>
-          <li id="info"><a href="#" onclick="ShowFavorite();">お気に入り登録</a></li>
-          <form name="favorite_info" action="./session_Issue.jsp" method="post">
-            <input type="hidden" name="favorite" value="favorite">
-          </form>
+              <li id="info">お気に入り登録済</li>
+              <li><a href="./main.jsp">メインに戻る</a></li>
+        <%
+            }else{
+        %>
+            <li id="info"><a href="#" onclick="ShowFavorite();">お気に入り登録</a></li>
+            <form name="favorite_info" action="./session_Issue.jsp" method="post">
+              <input type="hidden" name="favorite" value="favorite">
+            </form>
+            <li><a href="./main.jsp">メインに戻る</a></li>
+        <%
+            }
+        %>
         <%
           }
         %>
-        <li><a href="./main.jsp">メインに戻る</a></li>
       </ul>
 
     <table id="cal">
         <tr class="no-line">
           <td colspan="7" class="no-line">
-            <h1 id="name">予定名「<%= yotei_names %>」<%=favorite_s%></h1>
+            <h1 id="name">予定名「<%= yotei_names %>」<%=user_hit%></h1>
           </td>
         </tr>
         <tr border="0" cellspacing="1" cellpadding="1" bgcolor="#CCCCCC" style="font: 12px; color: #666666;">

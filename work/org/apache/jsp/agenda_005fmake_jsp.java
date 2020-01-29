@@ -66,7 +66,7 @@ public final class agenda_005fmake_jsp extends org.apache.jasper.runtime.HttpJsp
       out.write("\r\n");
       out.write("    <meta charset=\"utf-8\">\r\n");
       out.write("\r\n");
-      out.write("    <title>Agenda作成</title>\r\n");
+      out.write("    <title>カレンダー作成</title>\r\n");
       out.write("\r\n");
       out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/info.css\">\r\n");
       out.write("\r\n");
@@ -74,7 +74,7 @@ public final class agenda_005fmake_jsp extends org.apache.jasper.runtime.HttpJsp
       out.write("\r\n");
       out.write("  <body>\r\n");
       out.write("\r\n");
-      out.write("    <h1 class=\"title\">Agenda新規作成</h1>\r\n");
+      out.write("    <h1 class=\"title\">カレンダー新規作成</h1>\r\n");
       out.write("\r\n");
       out.write("\r\n");
       out.write("    <table>\r\n");

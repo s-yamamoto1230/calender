@@ -58,7 +58,7 @@ public final class agenda_005fsearch_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("\r\n");
       out.write("    <meta charset=\"utf-8\">\r\n");
       out.write("\r\n");
-      out.write("    <title>Agendaæ¤ç´¢</title>\r\n");
+      out.write("    <title>ã«ã¬ã³ãã¼æ¤ç´¢</title>\r\n");
       out.write("\r\n");
       out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/info.css\">\r\n");
       out.write("\r\n");
@@ -66,15 +66,15 @@ public final class agenda_005fsearch_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("\r\n");
       out.write("  <body>\r\n");
       out.write("\r\n");
-      out.write("      <h1>Agendaæ¤ç´¢</h1>\r\n");
+      out.write("      <h1>ã«ã¬ã³ãã¼æ¤ç´¢</h1>\r\n");
       out.write("      <h2>\r\n");
-      out.write("        AgendaIDãã­ã¼ã¯ã¼ããå¥åãã¦æ¤ç´¢ãã¿ã³ãæ¼ãã¦ãã ããã<br>Agendaãæ¤ç´¢ãã¾ãã\r\n");
+      out.write("        ã«ã¬ã³ãã¼IDãã­ã¼ã¯ã¼ããå¥åãã¦æ¤ç´¢ãã¿ã³ãæ¼ãã¦ãã ããã<br>ã«ã¬ã³ãã¼ãæ¤ç´¢ãã¾ãã\r\n");
       out.write("      </h2>\r\n");
       out.write("       <form action=\"./agenda_searchcomplete.jsp\" method=\"post\">\r\n");
       out.write("        <table>\r\n");
       out.write("          <tr>\r\n");
       out.write("            <td  class=\"title\">\r\n");
-      out.write("              <p>AgendaID</p>\r\n");
+      out.write("              <p>ã«ã¬ã³ãã¼ID</p>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td class=\"no-line\">\r\n");
       out.write("              <input type=\"text\" name=\"id\" size=\"25\" class=\"text\">\r\n");
