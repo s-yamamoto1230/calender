@@ -352,9 +352,7 @@ finally{
       out.write("          <td colspan=\"7\" class=\"no-line\">\r\n");
       out.write("            <h1 id=\"name\">予定名「");
       out.print( yotei_names );
-      out.write('」');
-      out.print(user_hit);
-      out.write("</h1>\r\n");
+      out.write("」\r\n");
       out.write("          </td>\r\n");
       out.write("        </tr>\r\n");
       out.write("        <tr border=\"0\" cellspacing=\"1\" cellpadding=\"1\" bgcolor=\"#CCCCCC\" style=\"font: 12px; color: #666666;\">\r\n");

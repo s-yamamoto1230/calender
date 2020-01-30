@@ -275,7 +275,7 @@ finally{
     <table id="cal">
         <tr class="no-line">
           <td colspan="7" class="no-line">
-            <h1 id="name">予定名「<%= yotei_names %>」<%=user_hit%></h1>
+            <h1 id="name">予定名「<%= yotei_names %>」
           </td>
         </tr>
         <tr border="0" cellspacing="1" cellpadding="1" bgcolor="#CCCCCC" style="font: 12px; color: #666666;">

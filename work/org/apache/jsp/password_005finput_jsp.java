@@ -4,7 +4,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 
-public final class agenda_005fmake_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class password_005finput_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -57,6 +57,8 @@ public final class agenda_005fmake_jsp extends org.apache.jasper.runtime.HttpJsp
   request.setCharacterEncoding("UTF-8");
   response.setCharacterEncoding("UTF-8");
 
+  String result = request.getParameter("result");
+
 
       out.write("\r\n");
       out.write("\r\n");
@@ -66,7 +68,7 @@ public final class agenda_005fmake_jsp extends org.apache.jasper.runtime.HttpJsp
       out.write("\r\n");
       out.write("    <meta charset=\"utf-8\">\r\n");
       out.write("\r\n");
-      out.write("    <title>カレンダー作成</title>\r\n");
+      out.write("    <title>パスワード入力</title>\r\n");
       out.write("\r\n");
       out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/info.css\">\r\n");
       out.write("\r\n");
@@ -74,76 +76,37 @@ public final class agenda_005fmake_jsp extends org.apache.jasper.runtime.HttpJsp
       out.write("\r\n");
       out.write("  <body>\r\n");
       out.write("\r\n");
-      out.write("    <h1 class=\"title\">カレンダー新規作成</h1>\r\n");
+      out.write("    <h1 class=\"title\">パスワード入力画面</h1>\r\n");
+      out.write("    ");
+
+      if (result != null) {
+    
+      out.write("\r\n");
+      out.write("        <h2 id=\"error\">＊パスワードが違います＊</h2>\r\n");
+      out.write("    ");
+
+      }
+    
+      out.write("\r\n");
       out.write("\r\n");
       out.write("\r\n");
       out.write("    <table>\r\n");
-      out.write("      <form  name=\"form\" action=\"./agenda_makecheck.jsp\" method=\"post\" onsubmit=\"return formChecksub()\">\r\n");
+      out.write("      <form action=\"./password_check.jsp\" method=\"post\">\r\n");
       out.write("\r\n");
-      out.write("      <tr>\r\n");
-      out.write("        <td class=\"title\">\r\n");
-      out.write("          <p>ID</p>\r\n");
-      out.write("        </td>\r\n");
-      out.write("        <td>\r\n");
-      out.write("          <p><input type=\"text\" name=\"id\" id=\"id\" pattern=\"^[0-9a-z]+$\" size=\"25\" required></p>\r\n");
-      out.write("          <p id=\"notice-input-text-0\" style=\"display: none; color: red;\"></p>\r\n");
-      out.write("          <p class=\"alert\">※半角英数字15文字以下</p>\r\n");
-      out.write("        </td>\r\n");
-      out.write("      </tr>\r\n");
-      out.write("      <tr>\r\n");
-      out.write("        <td class=\"title\">\r\n");
-      out.write("          <p>タイトル</p>\r\n");
-      out.write("        </td>\r\n");
-      out.write("        <td>\r\n");
-      out.write("          <input type=\"text\" name=\"title\" size=\"25\" required>\r\n");
-      out.write("        </td>\r\n");
-      out.write("      </tr>\r\n");
-      out.write("      <tr>\r\n");
-      out.write("        <td class=\"title\">\r\n");
-      out.write("          <p>公開設定</p>\r\n");
-      out.write("        </td>\r\n");
-      out.write("        <td>\r\n");
-      out.write("          <label><input type=\"radio\" name=\"open\"  value=\"1\" onClick=\"openflg0(this.checked);\" checked>全員に公開</label>\r\n");
-      out.write("          <label><input type=\"radio\" name=\"open\"  value=\"2\" onClick=\"openflg1(this.checked);\">特定の人にのみ公開</label>\r\n");
-      out.write("        </td>\r\n");
-      out.write("      </tr>\r\n");
-      out.write("      <div class=\"form-group\">\r\n");
       out.write("      <tr>\r\n");
       out.write("        <td class=\"title\">\r\n");
       out.write("          <p>パスワード</p>\r\n");
       out.write("        </td>\r\n");
       out.write("        <td>\r\n");
-      out.write("          <br><div class=\"form-group\">\r\n");
-      out.write("            <p><input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" size=\"25\" pattern=\"^[0-9a-z]+$\" disabled=\"disabled\"> </p>\r\n");
-      out.write("          </div>\r\n");
+      out.write("          <br>\r\n");
+      out.write("            <p><input type=\"text\" name=\"password\" size=\"25\" pattern=\"^[0-9a-z]+$\"> </p>\r\n");
       out.write("        </td>\r\n");
       out.write("      </tr>\r\n");
-      out.write("      <tr>\r\n");
-      out.write("        <td class=\"title\">\r\n");
-      out.write("          パスワード（確認）\r\n");
-      out.write("        </td>\r\n");
-      out.write("        <td>\r\n");
-      out.write("          <div class=\"form-group\">\r\n");
-      out.write("            <p><input type=\"password\" class=\"form-control\" id=\"confirm\" name=\"confirm\" size=\"25\" oninput=\"CheckPassword(this)\" disabled=\"disabled\"></p>\r\n");
-      out.write("          </div>\r\n");
-      out.write("        </td>\r\n");
-      out.write("      </tr>\r\n");
-      out.write("    </div>\r\n");
-      out.write("      <tr>\r\n");
-      out.write("        <td class=\"title\">\r\n");
-      out.write("          <p>他人の書き込み</p>\r\n");
-      out.write("        </td>\r\n");
-      out.write("        <td>\r\n");
-      out.write("          <label><input type=\"radio\" name=\"permission\" value=\"1\">許可</label>\r\n");
-      out.write("          <label><input type=\"radio\" name=\"permission\" value=\"2\" checked>禁止</label>\r\n");
-      out.write("        </td>\r\n");
-      out.write("      </tr>\r\n");
-      out.write("\r\n");
       out.write("\r\n");
       out.write("      <tr class=\"no-line\">\r\n");
       out.write("        <td class=\"no-line\" id=\"button\" colspan=\"2\">\r\n");
       out.write("            <p>\r\n");
-      out.write("              <input type=\"submit\" id=\"submit\" value=\"登録\">\r\n");
+      out.write("              <input type=\"submit\" id=\"submit\" value=\"閲覧\">\r\n");
       out.write("            </p>\r\n");
       out.write("        </td>\r\n");
       out.write("      </form>\r\n");

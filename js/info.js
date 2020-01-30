@@ -1,3 +1,24 @@
+//ラジオボタンチェック
+function openflg1(ischecked){
+    if(ischecked == true){
+      document.getElementById("password").disabled = false;
+      document.getElementById("confirm").disabled = false;
+    } else {
+      document.getElementById("password").disabled = true;
+      document.getElementById("confirm").disabled = true;
+    }
+  }
+
+  function openflg0(ischecked){
+    if(ischecked == true){
+      document.getElementById("password").disabled = true;
+      document.getElementById("confirm").disabled = true;
+    } else {
+      document.getElementById("password").disabled = false;
+      document.getElementById("confirm").disabled = false;
+    }
+  }
+
 //フォーム内文字数チェック
   function formCheck(){
     var flag = 0;
@@ -13,12 +34,12 @@
     }else{
       document . getElementById( "notice-input-text-0") . style . display = "none";
     }
-    if ( input_text_1_length < 6 ){ // 入力文字数が不足している場合
+    if ( input_text_1_length < 6){ // 入力文字数が不足している場合
         flag = 1;
         document . getElementById( 'notice-input-text-1' ) . innerHTML = 6 - input_text_1_length + "文字不足しています。";
         document . getElementById( 'notice-input-text-1' ) . style . display = "block";
         reset_target1.value = '';
-    }else if ( input_text_1_length  > 20 ){ // 入力文字数が超過している場合
+    }else if ( input_text_1_length  > 20){ // 入力文字数が超過している場合
         flag = 1;
         document . getElementById( 'notice-input-text-1' ) . innerHTML = input_text_1_length - 20 + "文字オーバーしています。";
         document . getElementById( 'notice-input-text-1' ) . style . display = "block";
@@ -35,6 +56,30 @@
         return true; // 送信実行
     }
 
+}
+
+//フォーム内文字数チェック
+  function formChecksub(){
+    var flag = 0;
+
+    var reset_target1 = document.getElementById("confirm");
+    // 入力文字数をチェック
+    var input_text_0_length = document . form . id . value . length; // 入力文字数を、変数に格納
+    if (input_text_0_length > 15) {
+      flag = 1;
+      document . getElementById( 'notice-input-text-0') . innerHTML = input_text_0_length - 15 + "文字オーバーしています。";
+      document . getElementById( "notice-input-text-0") . style . display = "block";
+    }else{
+      document . getElementById( "notice-input-text-0") . style . display = "none";
+    }
+
+    if( flag ){ // 入力文字数が、不足もしくは超過している場合
+        window . alert( '入力内容に不備があります。' ); // アラートを表示
+        return false; // 送信中止
+    }else{ // 入力文字数が、不足もしくは超過していない場合
+        document . getElementById( 'notice-input-text-1' ) . style . display = "none";
+        return true; // 送信実行
+    }
 }
 
 //パスワードとパスワード確認の一致確認
@@ -79,4 +124,3 @@ function dateCheck(year, month, day) {
     day.innerHTML = html;
   }
 }
-

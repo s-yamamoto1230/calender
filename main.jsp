@@ -219,7 +219,7 @@ finally{
         <li><a href="./myag.jsp">作成した公開カレンダー</a></li>
         <li><a href="./agenda_search.jsp">公開カレンダー検索</a></li>
         <li><a href="./agenda_delete.jsp">公開カレンダー削除</a></li>
-        <li><a href="./ad_favodel.jsp">お気に入り削除</a></li>
+        <li><a href="./favorite_delete.jsp">お気に入り削除</a></li>
         <li><a href="./add_change.jsp">会員情報変更</a></li>
         <li><a href="#" onclick="ShowAlert();">ログアウト </a></li>
         <form name="logout_info" action="./index.jsp" method="post">

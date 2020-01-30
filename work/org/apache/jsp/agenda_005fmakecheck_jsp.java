@@ -88,6 +88,8 @@ public final class agenda_005fmakecheck_jsp extends org.apache.jasper.runtime.Ht
       out.write("\r\n");
       out.write("  <body>\r\n");
       out.write("\r\n");
+      out.write("    ");
+      out.print(passStr);
       out.write("\r\n");
       out.write("    <h1>カレンダー新規作成（確認）</h1>\r\n");
       out.write("    <h2>以下の内容で登録しますか？</h2>\r\n");
@@ -156,7 +158,17 @@ public final class agenda_005fmakecheck_jsp extends org.apache.jasper.runtime.Ht
       out.write("        </td>\r\n");
       out.write("        <td class=\"check\">\r\n");
       out.write("          ");
+ if(openStr.equals("1")) { 
+      out.write("\r\n");
+      out.write("          なし\r\n");
+      out.write("          ");
+}else{
+      out.write("\r\n");
+      out.write("          ");
       out.print( "入力されたパスワード" );
+      out.write("\r\n");
+      out.write("          ");
+ } 
       out.write("\r\n");
       out.write("        </td>\r\n");
       out.write("      </tr>\r\n");

@@ -25,7 +25,7 @@
 
 
     <table>
-      <form  name="form" action="./agenda_makecheck.jsp" method="post" onsubmit="return formCheck()">
+      <form  name="form" action="./agenda_makecheck.jsp" method="post" onsubmit="return formChecksub()">
 
       <tr>
         <td class="title">
@@ -50,8 +50,8 @@
           <p>公開設定</p>
         </td>
         <td>
-          <label><input type="radio" name="open" value="1">全員に公開</label>
-          <label><input type="radio" name="open" value="2">特定の人にのみ公開</label>
+          <label><input type="radio" name="open"  value="1" onClick="openflg0(this.checked);" checked>全員に公開</label>
+          <label><input type="radio" name="open"  value="2" onClick="openflg1(this.checked);">特定の人にのみ公開</label>
         </td>
       </tr>
       <div class="form-group">
@@ -61,10 +61,8 @@
         </td>
         <td>
           <br><div class="form-group">
-            <p><input type="password" class="form-control" id="password" name="password" size="25" pattern="^[0-9a-z]+$" > </p>
+            <p><input type="password" class="form-control" id="password" name="password" size="25" pattern="^[0-9a-z]+$" disabled="disabled"> </p>
           </div>
-          <p id="notice-input-text-1" style="display: none; color: red;"></p>
-          <p class="alert">※半角英数字6文字以上20字以内</p>
         </td>
       </tr>
       <tr>
@@ -73,7 +71,7 @@
         </td>
         <td>
           <div class="form-group">
-            <p><input type="password" class="form-control" id="confirm" name="confirm" size="25" oninput="CheckPassword(this)" ></p>
+            <p><input type="password" class="form-control" id="confirm" name="confirm" size="25" oninput="CheckPassword(this)" disabled="disabled"></p>
           </div>
         </td>
       </tr>
@@ -84,7 +82,7 @@
         </td>
         <td>
           <label><input type="radio" name="permission" value="1">許可</label>
-          <label><input type="radio" name="permission" value="2">禁止</label>
+          <label><input type="radio" name="permission" value="2" checked>禁止</label>
         </td>
       </tr>
 

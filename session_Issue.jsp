@@ -13,6 +13,7 @@
 	//入力データ受信
 	String yotei_id  = request.getParameter("yotei_id");
 	String yotei_name = request.getParameter("yotei_name");
+	String open_set = request.getParameter("open_set");
 	String favorite = request.getParameter("favorite");
 	String session_id = (String)session.getAttribute("login_id");
 	String yotei_ids = (String)session.getAttribute("yotei_id");
@@ -156,6 +157,11 @@ if(yotei_id != "" && yotei_name != ""){
 						//セッションにバインド
             session.setAttribute("yotei_id",rs.getString("yotei_id"));
             session.setAttribute("yotei_name",rs.getString("yotei_name"));
+						if (open_set != null){
+							if (open_set.equals("2")) {
+								response.sendRedirect("password_input.jsp");
+							}
+						}
 						//メインページへ遷移
 						response.sendRedirect("myag_main.jsp");
 		}else{  //ログイン失敗
