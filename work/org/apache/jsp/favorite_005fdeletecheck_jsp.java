@@ -105,19 +105,13 @@ public final class favorite_005fdeletecheck_jsp extends org.apache.jasper.runtim
     //Statementオブジェクトの作成
     stmt = con.createStatement();
 
-    //SQLステートメントの作成（選択クエリ）
-    SQL = new StringBuffer();
-
     //SQL文の構築（選択クエリ）
-    SQL.append("select yotei_name from open_tbl where ");
     for (int i =0;yotei_idStr.length>i ;i++ ) {
-      SQL.append("yotei_id = '");
+    //SQLステートメントの作成（選択クエリ）
+      SQL = new StringBuffer();
+      SQL.append("select yotei_name from open_tbl where yotei_id = '");
       SQL.append(yotei_idStr[i]);
       SQL.append("'");
-      if (yotei_idStr.length >i+1) {
-        SQL.append(" or ");
-      }
-    }
      System.out.println(SQL.toString());
 
     //SQL文の実行（選択クエリ）
@@ -132,6 +126,7 @@ public final class favorite_005fdeletecheck_jsp extends org.apache.jasper.runtim
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
         }
+      }
       //入力したデータがデータベースに存在するか調べる
       if(list.size() > 0){  //存在する
             hit_flag = 1;
@@ -189,9 +184,7 @@ public final class favorite_005fdeletecheck_jsp extends org.apache.jasper.runtim
       out.write("  <body>\r\n");
       out.write("\r\n");
       out.write("    <h1>\r\n");
-      out.write("      以下のお気に入りを削除しますか？");
-      out.print(hit_flag);
-      out.write("\r\n");
+      out.write("      以下のお気に入りを削除しますか？\r\n");
       out.write("    </h1>\r\n");
       out.write("\r\n");
       out.write("    <form method=\"post\" action=\"./agenda_deletecomplete.jsp\">\r\n");
@@ -202,11 +195,12 @@ public final class favorite_005fdeletecheck_jsp extends org.apache.jasper.runtim
         
       out.write("\r\n");
       out.write("        <tr class=\"no-line\">\r\n");
-      out.write("          <td id=\"dcheck\">\r\n");
       out.write("            <input type=\"hidden\" name=\"yotei_id\" value=\"");
       out.print( yotei_idStr[i] );
-      out.write("\"\r\n");
-      out.write("          </td>\r\n");
+      out.write("\">\r\n");
+      out.write("            <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\">・");
+      out.print( list.get(i).get("yotei_name") );
+      out.write("</td>\r\n");
       out.write("        ");
 }
       out.write("\r\n");

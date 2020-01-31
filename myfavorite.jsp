@@ -8,8 +8,8 @@
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String session_id = (String)session.getAttribute("login_id");
-  String session_name = (String)session.getAttribute("login_name");
+    String session_id = (String)session.getAttribute("login_id");
+    String session_name = (String)session.getAttribute("login_name");
 
   //データベースに接続するために使用する変数宣言
   Connection con = null;
@@ -74,13 +74,13 @@
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
         }
-        //入力したデータがデータベースに存在するか調べる
-        if(list.size() > 0){  //存在する
-              hit_flag = 1;
-        }else{  //存在しない
-          //ヒットフラグOFF
-          hit_flag = 0;
-        }
+    //入力したデータがデータベースに存在するか調べる
+    if(list.size() > 0){  //存在する
+          hit_flag = 1;
+    }else{  //存在しない
+      //ヒットフラグOFF
+      hit_flag = 0;
+    }
   } //tryブロック終了
   catch(ClassNotFoundException e){
     ERMSG = new StringBuffer();
@@ -120,38 +120,53 @@
 
     <meta charset="utf-8">
 
-    <title>お気に入り削除</title>
+    <title>カレンダー一覧</title>
 
     <link rel="stylesheet" type="text/css" href="./css/info.css">
 
   </head>
 
   <body>
-
-  <form action="./favorite_deletecheck.jsp" method="post">
-
     <h1>
     <%= session_name %>さんのお気に入り一覧
-    <% if (hit_flag == 1) {%>
+  </h1>
+  <%
+   if (hit_flag == 1) {
+  %>
     <table id="list">
       <tr class="no-line">
         <th></th>
         <th class="no-line" style="padding: 20px;">カレンダー名</td>
+        <th class="no-line" style="padding: 20px;">作成者</td>
       </tr>
     <%
-      for(int i = 0; i < list.size(); i++){
+      for(int i=0; i<list.size();i++){
     %>
           <tr class="no-line">
-            <td class="no-line"><input type="checkbox" name="yotei_id" value="<%= list.get(i).get("yotei_id") %>"></td>
-            <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;">・<%= list.get(i).get("yotei_name") %></td>
+            <td class="no-line">
+              <form action="session_Issue.jsp" method="post">
+                <input type="hidden" name="yotei_id" value="<%= list.get(i).get("yotei_id") %>">
+                <input type="hidden" name="yotei_name" value="<%= list.get(i).get("yotei_name") %>">
+                <input type="submit" value="確認する">
+              </form>
+            </td>
+            <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;">
+              <%= list.get(i).get("yotei_id") %>
+            </td>
+            <td class="no-line"><%= list.get(i).get("yotei_name") %></td>
           </tr>
-        <%}%>
-    </table>
-    <input type="submit" value="削除">
-  </form>
-  <% }else if (hit_flag == 0) {%>
-    <br>お気に入りはありません。
-  <% }%>
+        <%
+          }
+        %>
+      </table>
+      <%
+        }else if (hit_flag == 0) {
+      %>
+      作成した予定はありません。
+      <%
+        }
+      %>
+
     <p id="back"><a href="./main.jsp">メイン画面に戻る</a></p>
 </body>
 </html>

@@ -215,7 +215,8 @@ finally{
 
       <ul id="nav">
         <li id="today"><%= show_year %>/<%= show_month+1 %>/<%= show_day %></li>
-        <li id="info"><a href="./agenda_make.jsp">公開カレンダー作成</a></li>
+        <li id="info"><a href="./myfavorite.jsp">お気に入り一覧</a></li>
+        <li><a href="./agenda_make.jsp">公開カレンダー作成</a></li>
         <li><a href="./myag.jsp">作成した公開カレンダー</a></li>
         <li><a href="./agenda_search.jsp">公開カレンダー検索</a></li>
         <li><a href="./agenda_delete.jsp">公開カレンダー削除</a></li>

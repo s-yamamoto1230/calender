@@ -50,19 +50,13 @@
     //Statementオブジェクトの作成
     stmt = con.createStatement();
 
-    //SQLステートメントの作成（選択クエリ）
-    SQL = new StringBuffer();
-
     //SQL文の構築（選択クエリ）
-    SQL.append("select yotei_name from open_tbl where ");
     for (int i =0;yotei_idStr.length>i ;i++ ) {
-      SQL.append("yotei_id = '");
+    //SQLステートメントの作成（選択クエリ）
+      SQL = new StringBuffer();
+      SQL.append("select yotei_name from open_tbl where yotei_id = '");
       SQL.append(yotei_idStr[i]);
       SQL.append("'");
-      if (yotei_idStr.length >i+1) {
-        SQL.append(" or ");
-      }
-    }
      System.out.println(SQL.toString());
 
     //SQL文の実行（選択クエリ）
@@ -77,6 +71,7 @@
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
         }
+      }
       //入力したデータがデータベースに存在するか調べる
       if(list.size() > 0){  //存在する
             hit_flag = 1;
@@ -133,7 +128,7 @@
   <body>
 
     <h1>
-      以下のお気に入りを削除しますか？<%=hit_flag%>
+      以下のお気に入りを削除しますか？
     </h1>
 
     <form method="post" action="./agenda_deletecomplete.jsp">
@@ -142,9 +137,8 @@
     		for(int i = 0; i < yotei_idStr.length; i++){
         %>
         <tr class="no-line">
-          <td id="dcheck">
-            <input type="hidden" name="yotei_id" value="<%= yotei_idStr[i] %>"
-          </td>
+            <input type="hidden" name="yotei_id" value="<%= yotei_idStr[i] %>">
+            <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;">・<%= list.get(i).get("yotei_name") %></td>
         <%}%>
         </tr>
         <tr class="no-line">

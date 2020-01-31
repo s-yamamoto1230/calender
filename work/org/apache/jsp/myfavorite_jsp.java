@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public final class favorite_005fdelete_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class myfavorite_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -63,8 +63,8 @@ public final class favorite_005fdelete_jsp extends org.apache.jasper.runtime.Htt
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String session_id = (String)session.getAttribute("login_id");
-  String session_name = (String)session.getAttribute("login_name");
+    String session_id = (String)session.getAttribute("login_id");
+    String session_name = (String)session.getAttribute("login_name");
 
   //データベースに接続するために使用する変数宣言
   Connection con = null;
@@ -129,13 +129,13 @@ public final class favorite_005fdelete_jsp extends org.apache.jasper.runtime.Htt
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
         }
-        //入力したデータがデータベースに存在するか調べる
-        if(list.size() > 0){  //存在する
-              hit_flag = 1;
-        }else{  //存在しない
-          //ヒットフラグOFF
-          hit_flag = 0;
-        }
+    //入力したデータがデータベースに存在するか調べる
+    if(list.size() > 0){  //存在する
+          hit_flag = 1;
+    }else{  //存在しない
+      //ヒットフラグOFF
+      hit_flag = 0;
+    }
   } //tryブロック終了
   catch(ClassNotFoundException e){
     ERMSG = new StringBuffer();
@@ -176,53 +176,72 @@ public final class favorite_005fdelete_jsp extends org.apache.jasper.runtime.Htt
       out.write("\r\n");
       out.write("    <meta charset=\"utf-8\">\r\n");
       out.write("\r\n");
-      out.write("    <title>お気に入り削除</title>\r\n");
+      out.write("    <title>カレンダー一覧</title>\r\n");
       out.write("\r\n");
       out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/info.css\">\r\n");
       out.write("\r\n");
       out.write("  </head>\r\n");
       out.write("\r\n");
       out.write("  <body>\r\n");
-      out.write("\r\n");
-      out.write("  <form action=\"./favorite_deletecheck.jsp\" method=\"post\">\r\n");
-      out.write("\r\n");
       out.write("    <h1>\r\n");
       out.write("    ");
       out.print( session_name );
       out.write("さんのお気に入り一覧\r\n");
-      out.write("    ");
- if (hit_flag == 1) {
+      out.write("  </h1>\r\n");
+      out.write("  ");
+
+   if (hit_flag == 1) {
+  
       out.write("\r\n");
       out.write("    <table id=\"list\">\r\n");
       out.write("      <tr class=\"no-line\">\r\n");
       out.write("        <th></th>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">カレンダー名</td>\r\n");
+      out.write("        <th class=\"no-line\" style=\"padding: 20px;\">作成者</td>\r\n");
       out.write("      </tr>\r\n");
       out.write("    ");
 
-      for(int i = 0; i < list.size(); i++){
+      for(int i=0; i<list.size();i++){
     
       out.write("\r\n");
       out.write("          <tr class=\"no-line\">\r\n");
-      out.write("            <td class=\"no-line\"><input type=\"checkbox\" name=\"yotei_id\" value=\"");
+      out.write("            <td class=\"no-line\">\r\n");
+      out.write("              <form action=\"session_Issue.jsp\" method=\"post\">\r\n");
+      out.write("                <input type=\"hidden\" name=\"yotei_id\" value=\"");
       out.print( list.get(i).get("yotei_id") );
-      out.write("\"></td>\r\n");
-      out.write("            <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\">・");
+      out.write("\">\r\n");
+      out.write("                <input type=\"hidden\" name=\"yotei_name\" value=\"");
+      out.print( list.get(i).get("yotei_name") );
+      out.write("\">\r\n");
+      out.write("                <input type=\"submit\" value=\"確認する\">\r\n");
+      out.write("              </form>\r\n");
+      out.write("            </td>\r\n");
+      out.write("            <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\">\r\n");
+      out.write("              ");
+      out.print( list.get(i).get("yotei_id") );
+      out.write("\r\n");
+      out.write("            </td>\r\n");
+      out.write("            <td class=\"no-line\">");
       out.print( list.get(i).get("yotei_name") );
       out.write("</td>\r\n");
       out.write("          </tr>\r\n");
       out.write("        ");
-}
+
+          }
+        
       out.write("\r\n");
-      out.write("    </table>\r\n");
-      out.write("    <input type=\"submit\" value=\"削除\">\r\n");
-      out.write("  </form>\r\n");
-      out.write("  ");
- }else if (hit_flag == 0) {
+      out.write("      </table>\r\n");
+      out.write("      ");
+
+        }else if (hit_flag == 0) {
+      
       out.write("\r\n");
-      out.write("    <br>お気に入りはありません。\r\n");
-      out.write("  ");
- }
+      out.write("      作成した予定はありません。\r\n");
+      out.write("      ");
+
+        }
+      
+      out.write("\r\n");
       out.write("\r\n");
       out.write("    <p id=\"back\"><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
       out.write("</body>\r\n");
