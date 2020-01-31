@@ -71,6 +71,7 @@ public final class myag_005fmain_jsp extends org.apache.jasper.runtime.HttpJspBa
     String session_id = (String)session.getAttribute("login_id");
     String yotei_ids = (String)session.getAttribute("yotei_id");
     String yotei_names = (String)session.getAttribute("yotei_name");
+  	String favorite = request.getParameter("hit_flag");
   	if (session_id == null) {
   		response.sendRedirect("index.jsp");
   	}
@@ -298,7 +299,24 @@ finally{
       out.write("\r\n");
       out.write("  <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/main.css\">\r\n");
       out.write("\r\n");
-      out.write("  <body>\r\n");
+      out.write("  ");
+
+    if (favorite != null){
+      if (favorite.equals("0")) {
+  
+      out.write("\r\n");
+      out.write("    <body onLoad=\"loadFavorite()\">\r\n");
+      out.write("  ");
+
+      }
+    }else{
+  
+      out.write("\r\n");
+      out.write("    <body>\r\n");
+      out.write("  ");
+
+    }
+  
       out.write("\r\n");
       out.write("\r\n");
       out.write("    <div id=\"contents\">\r\n");
@@ -3052,8 +3070,6 @@ finally{
       out.write("        </div >\r\n");
       out.write("\r\n");
       out.write("  <script type=\"text/javascript\" src=\"./js/main.js\"></script>\r\n");
-      out.write("\r\n");
-      out.write("\r\n");
       out.write("\r\n");
       out.write("  </body>\r\n");
       out.write("</html>\r\n");

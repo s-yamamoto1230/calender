@@ -63,12 +63,6 @@
 
     //SQL文の実行（選択クエリ）
     rs = stmt.executeQuery(SQL.toString());
-
-    //入力したデータがデータベースに存在するか調べる
-    if(rs.next()){  //存在する
-      //ヒットフラグON
-      hit_flag = 1;
-
         //検索データをHashMapへ格納する
         while(rs.next()){
       //DBのデータをHashMapへ格納する
@@ -82,10 +76,13 @@
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
         }
-    }else{  //存在しない
-      //ヒットフラグOFF
-      hit_flag = 0;
-    }
+        //入力したデータがデータベースに存在するか調べる
+        if(list.size() > 0){  //存在する
+              hit_flag = 1;
+        }else{  //存在しない
+          //ヒットフラグOFF
+          hit_flag = 0;
+        }
   } //tryブロック終了
   catch(ClassNotFoundException e){
     ERMSG = new StringBuffer();

@@ -13,6 +13,7 @@
     String session_id = (String)session.getAttribute("login_id");
     String yotei_ids = (String)session.getAttribute("yotei_id");
     String yotei_names = (String)session.getAttribute("yotei_name");
+  	String favorite = request.getParameter("hit_flag");
   	if (session_id == null) {
   		response.sendRedirect("index.jsp");
   	}
@@ -239,8 +240,19 @@ finally{
 
   <link rel="stylesheet" type="text/css" href="./css/main.css">
 
-  <body>
-
+  <%
+    if (favorite != null){
+      if (favorite.equals("0")) {
+  %>
+    <body onLoad="loadFavorite()">
+  <%
+      }
+    }else{
+  %>
+    <body>
+  <%
+    }
+  %>
 
     <div id="contents">
 
@@ -1821,8 +1833,6 @@ finally{
         </div >
 
   <script type="text/javascript" src="./js/main.js"></script>
-
-
 
   </body>
 </html>

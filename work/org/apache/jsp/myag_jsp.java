@@ -186,8 +186,6 @@ public final class myag_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("  </head>\r\n");
       out.write("\r\n");
       out.write("  <body>\r\n");
-      out.print( list.size() );
-      out.write("\r\n");
       out.write("    <h1>\r\n");
       out.write("    ");
       out.print( session_name );

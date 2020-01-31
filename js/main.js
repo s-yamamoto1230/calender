@@ -141,3 +141,7 @@ showCalendar(year, month)
         return true;
       }
     }
+
+    function loadFavorite(){
+  alert("お気に入り登録が完了しました！！!");
+}
