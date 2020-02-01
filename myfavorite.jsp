@@ -56,7 +56,7 @@
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select favorite_tbl.yotei_id,yotei_name from favorite_tbl,open_tbl where favorite_tbl.yotei_id = open_tbl.yotei_id and favorite_tbl.kaiin_id = '");
+    SQL.append("select favorite_tbl.yotei_id,yotei_name,yotei_writing,kaiin_name from favorite_tbl,open_tbl,kaiin_tbl where favorite_tbl.yotei_id = open_tbl.yotei_id and kaiin_tbl.kaiin_id = open_tbl.kaiin_id and favorite_tbl.kaiin_id = '");
     SQL.append(session_id);
     SQL.append("'");
 //      System.out.println(SQL.toString());
@@ -70,6 +70,8 @@
           map = new HashMap<String,String>();
           map.put("yotei_id",rs.getString("yotei_id"));
           map.put("yotei_name",rs.getString("yotei_name"));
+          map.put("yotei_writing",rs.getString("yotei_writing"));
+          map.put("kaiin_name",rs.getString("kaiin_name"));
 
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
@@ -137,6 +139,7 @@
       <tr class="no-line">
         <th></th>
         <th class="no-line" style="padding: 20px;">カレンダー名</td>
+        <th class="no-line" style="padding: 20px;">書き込み</td>
         <th class="no-line" style="padding: 20px;">作成者</td>
       </tr>
     <%
@@ -151,9 +154,19 @@
               </form>
             </td>
             <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;">
-              <%= list.get(i).get("yotei_id") %>
+              <%= list.get(i).get("yotei_name") %>
             </td>
-            <td class="no-line"><%= list.get(i).get("yotei_name") %></td>
+            <td class="no-line">
+              <%
+               if(list.get(i).get("yotei_writing").equals("1")) {
+              %>
+                許可
+              <%}else{%>
+                禁止
+              <%
+                }
+              %></td>
+            <td class="no-line"><%= list.get(i).get("kaiin_name") %></td>
           </tr>
         <%
           }

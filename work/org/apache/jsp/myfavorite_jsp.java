@@ -111,7 +111,7 @@ public final class myfavorite_jsp extends org.apache.jasper.runtime.HttpJspBase
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select favorite_tbl.yotei_id,yotei_name from favorite_tbl,open_tbl where favorite_tbl.yotei_id = open_tbl.yotei_id and favorite_tbl.kaiin_id = '");
+    SQL.append("select favorite_tbl.yotei_id,yotei_name,yotei_writing,kaiin_name from favorite_tbl,open_tbl,kaiin_tbl where favorite_tbl.yotei_id = open_tbl.yotei_id and kaiin_tbl.kaiin_id = open_tbl.kaiin_id and favorite_tbl.kaiin_id = '");
     SQL.append(session_id);
     SQL.append("'");
 //      System.out.println(SQL.toString());
@@ -125,6 +125,8 @@ public final class myfavorite_jsp extends org.apache.jasper.runtime.HttpJspBase
           map = new HashMap<String,String>();
           map.put("yotei_id",rs.getString("yotei_id"));
           map.put("yotei_name",rs.getString("yotei_name"));
+          map.put("yotei_writing",rs.getString("yotei_writing"));
+          map.put("kaiin_name",rs.getString("kaiin_name"));
 
           //1件分のデータ(HashMap)をArrayListへ追加
           list.add(map);
@@ -197,6 +199,7 @@ public final class myfavorite_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("      <tr class=\"no-line\">\r\n");
       out.write("        <th></th>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">カレンダー名</td>\r\n");
+      out.write("        <th class=\"no-line\" style=\"padding: 20px;\">書き込み</td>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">作成者</td>\r\n");
       out.write("      </tr>\r\n");
       out.write("    ");
@@ -218,11 +221,27 @@ public final class myfavorite_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            </td>\r\n");
       out.write("            <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\">\r\n");
       out.write("              ");
-      out.print( list.get(i).get("yotei_id") );
+      out.print( list.get(i).get("yotei_name") );
       out.write("\r\n");
       out.write("            </td>\r\n");
+      out.write("            <td class=\"no-line\">\r\n");
+      out.write("              ");
+
+               if(list.get(i).get("yotei_writing").equals("1")) {
+              
+      out.write("\r\n");
+      out.write("                許可\r\n");
+      out.write("              ");
+}else{
+      out.write("\r\n");
+      out.write("                禁止\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("</td>\r\n");
       out.write("            <td class=\"no-line\">");
-      out.print( list.get(i).get("yotei_name") );
+      out.print( list.get(i).get("kaiin_name") );
       out.write("</td>\r\n");
       out.write("          </tr>\r\n");
       out.write("        ");
