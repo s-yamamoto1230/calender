@@ -255,7 +255,7 @@ public final class myfavorite_jsp extends org.apache.jasper.runtime.HttpJspBase
         }else if (hit_flag == 0) {
       
       out.write("\r\n");
-      out.write("      作成した予定はありません。\r\n");
+      out.write("      お気に入りはありません。\r\n");
       out.write("      ");
 
         }
