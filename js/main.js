@@ -145,3 +145,12 @@ showCalendar(year, month)
     function loadFavorite(){
   alert("お気に入り登録が完了しました！！!");
 }
+
+function ShowDel() {
+  if(confirm("予定を削除しますか？")){
+    var f = document.forms["Del_info"];
+    f.method = "POST";
+    f.submit();
+    return true;
+  }
+}

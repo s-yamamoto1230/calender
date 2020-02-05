@@ -238,6 +238,13 @@ finally{
             <td align="center" colspan="7" bgcolor="#EEEEEE" height="30" style="color: #666666;">
               <div class="tuki">
                 <form method="post" action="./main.jsp">
+                  <input type="hidden" name="year" value="<%=year-1%>">
+                  <input type="hidden" name="month" value="<%=month%>">
+                  <input class="button" type="submit" value="前年">
+                </form>
+              </div>
+              <div class="tuki">
+                <form method="post" action="./main.jsp">
                   <input type="hidden" name="year" value="<%=year%>">
                   <input type="hidden" name="month" value="<%=month-1%>">
                   <input class="button" type="submit" value="前月">
@@ -253,6 +260,13 @@ finally{
                   <input class="button" type="submit" value="翌月">
                 </form>
              </div>
+             <div class="tuki">
+               <form method="post" action="./main.jsp">
+                 <input type="hidden" name="year" value="<%=year+1%>">
+                 <input type="hidden" name="month" value="<%=month%>">
+                 <input class="button" type="submit" value="翌年">
+               </form>
+            </div>
           </tr>
           <tr>
               <td align="center" width="60" height="30" bgcolor="#FF3300" style="font-size: 20px; font-weight: bold; color: #FFFFFF;">日</td>

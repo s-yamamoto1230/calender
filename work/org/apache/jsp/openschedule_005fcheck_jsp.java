@@ -63,7 +63,7 @@ public final class openschedule_005fcheck_jsp extends org.apache.jasper.runtime.
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
-  String yotei_idStr  = request.getParameter("yotei_id");
+  String yotei_ids = (String)session.getAttribute("yotei_id");
   String dayStr  = request.getParameter("day");
   String s_hourStr  = request.getParameter("s_hour");
   String s_mineStr  = request.getParameter("s_mine");
@@ -115,7 +115,7 @@ public final class openschedule_005fcheck_jsp extends org.apache.jasper.runtime.
 
     //SQL文の構築（選択クエリ）
     SQL.append("select * from openyotei_tbl where yotei_id = '");
-    SQL.append(yotei_idStr);
+    SQL.append(yotei_ids);
     SQL.append("' and day ='");
     SQL.append(dayStr);
     SQL.append("' and s_hour ='");

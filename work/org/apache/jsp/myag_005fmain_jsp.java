@@ -178,6 +178,7 @@ StringBuffer ERMSG = null;
 //ヒットフラグ
 int hit_flag = 0;
 int user_hit = 0;
+int writing = 0;
 
 //HashMap（1件分のデータを格納する連想配列）
 HashMap<String,String> map = null;
@@ -225,9 +226,26 @@ try{	// ロードに失敗したときのための例外処理
   //入力したデータがデータベースに存在するか調べる
   if(rs.next()){  //存在する
     user_hit=1;
-  }else{  //存在しない(追加OK)
+  }else{  //存在しない
     user_hit=0;
   }
+
+  SQL = new StringBuffer();
+
+  SQL.append("select yotei_writing from open_tbl where yotei_id = '");
+  SQL.append(yotei_ids);
+  SQL.append("' and yotei_writing = '");
+  SQL.append(1);
+  SQL.append("'");
+  rs = stmt.executeQuery(SQL.toString());
+  System.out.println(SQL);
+  //入力したデータがデータベースに存在するか調べる
+  if(rs.next()){  //書き込み許可
+    writing=1;
+  }else{  //書き込み不可
+    writing=0;
+  }
+
 
   SQL = new StringBuffer();
 
@@ -378,6 +396,17 @@ finally{
       out.write("              <div class=\"tuki\">\r\n");
       out.write("                <form method=\"post\" action=\"./myag_main.jsp\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"year\" value=\"");
+      out.print(year-1);
+      out.write("\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"month\" value=\"");
+      out.print(month);
+      out.write("\">\r\n");
+      out.write("                  <input class=\"button\" type=\"submit\" value=\"前年\">\r\n");
+      out.write("                </form>\r\n");
+      out.write("              </div>\r\n");
+      out.write("              <div class=\"tuki\">\r\n");
+      out.write("                <form method=\"post\" action=\"./myag_main.jsp\">\r\n");
+      out.write("                  <input type=\"hidden\" name=\"year\" value=\"");
       out.print(year);
       out.write("\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"month\" value=\"");
@@ -404,6 +433,17 @@ finally{
       out.write("                  <input class=\"button\" type=\"submit\" value=\"翌月\">\r\n");
       out.write("                </form>\r\n");
       out.write("             </div>\r\n");
+      out.write("             <div class=\"tuki\">\r\n");
+      out.write("               <form method=\"post\" action=\"./myag_main.jsp\">\r\n");
+      out.write("                 <input type=\"hidden\" name=\"year\" value=\"");
+      out.print(year+1);
+      out.write("\">\r\n");
+      out.write("                 <input type=\"hidden\" name=\"month\" value=\"");
+      out.print(month);
+      out.write("\">\r\n");
+      out.write("                 <input class=\"button\" type=\"submit\" value=\"翌年\">\r\n");
+      out.write("               </form>\r\n");
+      out.write("            </div>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
       out.write("              <td align=\"center\" width=\"60\" height=\"30\" bgcolor=\"#FF3300\" style=\"font-size: 20px; font-weight: bold; color: #FFFFFF;\">日</td>\r\n");
@@ -477,7 +517,7 @@ finally{
                     if (day0.equals(list.get(j).get("day"))) {
                   
       out.write("\r\n");
-      out.write("                  <a href=\"schedule_check.jsp?day=");
+      out.write("                  <a href=\"openschedule_check.jsp?day=");
       out.print( day0 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -502,8 +542,11 @@ finally{
       out.write("                  <br>\r\n");
       out.write("                  </div>\r\n");
       out.write("                </a>\r\n");
-      out.write("                  ");
- }} 
+      out.write("                ");
+
+                    }
+                  }if (writing == 1) {
+                
       out.write("\r\n");
       out.write("                  <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                    <input type=\"hidden\" name=\"day\" value=\"");
@@ -513,6 +556,11 @@ finally{
       out.write("\">\r\n");
       out.write("                    <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                  </form>\r\n");
+      out.write("                ");
+
+                  }
+                
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -585,7 +633,7 @@ finally{
                   if (day1.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day1 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -610,8 +658,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -621,6 +672,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -693,7 +749,7 @@ finally{
                   if (day2.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day2 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -718,8 +774,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -729,6 +788,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -801,7 +865,7 @@ finally{
                   if (day3.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day3 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -826,8 +890,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -837,6 +904,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -909,7 +981,7 @@ finally{
                   if (day4.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day4 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -930,8 +1002,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -941,6 +1016,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1013,7 +1093,7 @@ finally{
                   if (day5.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day5 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1034,8 +1114,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -1045,6 +1128,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1106,7 +1194,7 @@ finally{
                   if (day6.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day6 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1128,16 +1216,24 @@ finally{
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("                ");
- }} 
+
+                    }
+                  }if (writing == 1) {
+                
       out.write("\r\n");
-      out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
-      out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
+      out.write("                  <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
+      out.write("                    <input type=\"hidden\" name=\"day\" value=\"");
       out.print( year );
       out.print( month+1 );
       out.print( num[6] );
       out.write("\">\r\n");
-      out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
-      out.write("                </form>\r\n");
+      out.write("                    <input type=\"submit\" value=\"追加\">\r\n");
+      out.write("                  </form>\r\n");
+      out.write("                ");
+
+                  }
+                
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1197,7 +1293,7 @@ finally{
                   if (day7.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day7 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1218,8 +1314,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -1229,6 +1328,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1286,7 +1390,7 @@ finally{
                   if (day8.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day8 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1307,8 +1411,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -1318,6 +1425,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1375,7 +1487,7 @@ finally{
                   if (day9.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day9 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1396,8 +1508,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -1407,6 +1522,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1464,7 +1584,7 @@ finally{
                   if (day10.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day10 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1485,8 +1605,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -1496,6 +1619,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1553,7 +1681,7 @@ finally{
                   if (day11.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day11 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1574,8 +1702,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -1585,6 +1716,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1642,7 +1778,7 @@ finally{
                   if (day12.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day12 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1663,8 +1799,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -1674,6 +1813,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1731,7 +1875,7 @@ finally{
                   if (day13.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day13 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1752,8 +1896,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -1763,6 +1910,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1821,7 +1973,7 @@ finally{
                   if (day14.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day14 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1842,8 +1994,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -1853,6 +2008,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1910,7 +2070,7 @@ finally{
                   if (day15.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day15 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1931,8 +2091,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -1942,6 +2105,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -1999,7 +2167,7 @@ finally{
                   if (day16.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day16 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2020,8 +2188,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -2031,6 +2202,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2088,7 +2264,7 @@ finally{
                   if (day17.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day17 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2109,8 +2285,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -2120,6 +2299,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2177,7 +2361,7 @@ finally{
                   if (day18.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day18 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2198,8 +2382,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -2209,6 +2396,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2266,7 +2458,7 @@ finally{
                   if (day19.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day19 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2287,8 +2479,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -2298,6 +2493,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2355,7 +2555,7 @@ finally{
                   if (day20.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day20 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2376,8 +2576,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -2387,6 +2590,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2446,7 +2654,7 @@ finally{
                   if (day21.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day21 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2467,8 +2675,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -2478,6 +2689,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2535,7 +2751,7 @@ finally{
                   if (day22.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day22 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2556,8 +2772,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -2567,6 +2786,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2624,7 +2848,7 @@ finally{
                   if (day23.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day23 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2645,8 +2869,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -2656,6 +2883,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2713,7 +2945,7 @@ finally{
                   if (day24.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day24 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2734,8 +2966,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -2745,6 +2980,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2802,7 +3042,7 @@ finally{
                   if (day25.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day25 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2823,8 +3063,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -2834,6 +3077,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2891,7 +3139,7 @@ finally{
                   if (day26.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day26 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2912,8 +3160,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -2923,6 +3174,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -2980,7 +3236,7 @@ finally{
                   if (day27.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day27 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3001,8 +3257,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -3012,6 +3271,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -3081,7 +3345,7 @@ finally{
                   if (day28.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day28 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3102,8 +3366,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -3113,6 +3380,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -3185,7 +3457,7 @@ finally{
                   if (day29.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day29 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3206,8 +3478,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -3217,6 +3492,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -3289,7 +3569,7 @@ finally{
                   if (day30.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day30 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3310,8 +3590,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -3321,6 +3604,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -3393,7 +3681,7 @@ finally{
                   if (day31.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day31 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3414,8 +3702,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -3425,6 +3716,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -3497,7 +3793,7 @@ finally{
                   if (day32.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day32 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3518,8 +3814,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -3529,6 +3828,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -3601,7 +3905,7 @@ finally{
                   if (day33.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day33 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3622,8 +3926,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -3633,6 +3940,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -3705,7 +4017,7 @@ finally{
                   if (day34.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day34 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3726,8 +4038,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -3737,6 +4052,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("              </div>\r\n");
       out.write("            </div>\r\n");
@@ -3811,7 +4131,7 @@ finally{
                   if (day35.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day35 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3832,8 +4152,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -3843,6 +4166,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
@@ -3915,7 +4243,7 @@ finally{
                   if (day36.equals(list.get(j).get("day"))) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"schedule_check.jsp?day=");
+      out.write("                <a href=\"openschedule_check.jsp?day=");
       out.print( day36 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3936,8 +4264,11 @@ finally{
       out.write("                <br>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
-      out.write("                ");
- }} 
+      out.write("              ");
+
+                  }
+                }if (writing == 1) {
+              
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
       out.write("                  <input type=\"hidden\" name=\"day\" value=\"");
@@ -3947,6 +4278,11 @@ finally{
       out.write("\">\r\n");
       out.write("                  <input type=\"submit\" value=\"追加\">\r\n");
       out.write("                </form>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
       out.write("                  <a href=\"#!\" class=\"modal-close\">×</a>\r\n");
       out.write("                </div>\r\n");
       out.write("              </div>\r\n");
