@@ -111,7 +111,28 @@
           <td class="no-line"></td>
         </tr>
       </table>
-
+      <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li class="right"></li>
+        <li class="right"></li>
+        <li class="right"></li>
+        <li class="right"></li>
+        <li class="right"></li>
+        <li class="right"></li>
+        <li class="right"></li>
+        <li class="right"></li>
+        <li class="right"></li>
+        <li class="right"></li>
+      </ul>
   </body>
 
 </html>

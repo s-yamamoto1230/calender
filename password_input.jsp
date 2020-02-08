@@ -64,7 +64,28 @@
       </table>
 
   <script type="text/javascript" src="./js/info.js"></script>
-
+  <ul class="circles">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+  </ul>
   </body>
 
 </html>

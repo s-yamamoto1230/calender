@@ -159,6 +159,7 @@ public final class add_005fchangecomplete_jsp extends org.apache.jasper.runtime.
       out.write("<html>\r\n");
       out.write("<head>\r\n");
       out.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\r\n");
+      out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"./css/info.css\">\r\n");
       out.write("<title>『更新完了』</title>\r\n");
       out.write("</head>\r\n");
       out.write("<body>\r\n");
@@ -175,11 +176,12 @@ public final class add_005fchangecomplete_jsp extends org.apache.jasper.runtime.
 	}else{  //更新OK
 
       out.write("\r\n");
-      out.write("\t更新OK<br>\r\n");
+      out.write("  <p class=\"mes\">\r\n");
+      out.write("\t   更新OK<br>\r\n");
       out.write("\t  ");
       out.print( upd_count + "件　更新が完了しました" );
-      out.write('\r');
-      out.write('\n');
+      out.write("\r\n");
+      out.write(" </p>\r\n");
 
 	}
 
@@ -187,19 +189,40 @@ public final class add_005fchangecomplete_jsp extends org.apache.jasper.runtime.
       out.write("<br><br>\r\n");
  if(ERMSG != null){ 
       out.write("\r\n");
-      out.write("予期せぬエラーが発生しました<br />\r\n");
+      out.write("<span class=\"mes\">\r\n");
+      out.write("  予期せぬエラーが発生しました<br />\r\n");
+      out.write("  ");
       out.print( ERMSG );
-      out.write('\r');
-      out.write('\n');
+      out.write("\r\n");
+      out.write("</span>\r\n");
  }else{ 
       out.write("\r\n");
       out.write("※エラーは発生しませんでした<br/>\r\n");
  } 
       out.write("\r\n");
       out.write("<p><a href=\"./main.jsp\">ログインに戻る</a></p>\r\n");
-      out.print( idStr );
-      out.write("\r\n");
-      out.write("\r\n");
+      out.write("<ul class=\"circles\">\r\n");
+      out.write("  <li></li>\r\n");
+      out.write("  <li></li>\r\n");
+      out.write("  <li></li>\r\n");
+      out.write("  <li></li>\r\n");
+      out.write("  <li></li>\r\n");
+      out.write("  <li></li>\r\n");
+      out.write("  <li></li>\r\n");
+      out.write("  <li></li>\r\n");
+      out.write("  <li></li>\r\n");
+      out.write("  <li></li>\r\n");
+      out.write("  <li class=\"right\"></li>\r\n");
+      out.write("  <li class=\"right\"></li>\r\n");
+      out.write("  <li class=\"right\"></li>\r\n");
+      out.write("  <li class=\"right\"></li>\r\n");
+      out.write("  <li class=\"right\"></li>\r\n");
+      out.write("  <li class=\"right\"></li>\r\n");
+      out.write("  <li class=\"right\"></li>\r\n");
+      out.write("  <li class=\"right\"></li>\r\n");
+      out.write("  <li class=\"right\"></li>\r\n");
+      out.write("  <li class=\"right\"></li>\r\n");
+      out.write("</ul>\r\n");
       out.write("</body>\r\n");
       out.write("</html>\r\n");
     } catch (Throwable t) {

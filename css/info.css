@@ -1,7 +1,12 @@
 @charaset "utf-8";
+*{
+  margin: 0;
+  padding: 0;
+}
 
 body{
   text-align: center;
+  background-color: #ffc0cb;
 }
 
 h1{
@@ -123,5 +128,231 @@ p#back a{
   text-align: left;
   font-size: 24px;
   font-weight: bold;
+}
+
+p.mes{
+  margin-top: 100px;
+}
+
+.button{
+    display: inline-block;
+    margin: 0 20px 0 20px;
+}
+
+/* -ここから背景- */
+
+.circles{
+    position: absolute;
+    top: 0;
+    right: : 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.circles li{
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    animation: animate 25s linear infinite;
+    bottom: -150px;
+}
+
+.circles li.right{
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    animation: animate_right 25s linear infinite;
+    bottom: -150px;
+}
+
+.circles li:nth-child(1){
+    left: 25%;
+    width: 80px;
+    height: 80px;
+    animation-delay: 0s; /*開始時間*/
+}
+
+
+.circles li:nth-child(2){
+    left: 10%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 1s;     /*開始時間*/
+    animation-duration: 8s; /*継続時間*/
+}
+
+.circles li:nth-child(3){
+    left: 70%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 3s; /*開始時間*/
+}
+
+.circles li:nth-child(4){
+    left: 40%;
+    width: 60px;
+    height: 60px;
+    animation-delay: 0s;     /*開始時間*/
+    animation-duration: 10s; /*継続時間*/
+}
+
+.circles li:nth-child(5){
+    left: 65%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 0s; /*開始時間*/
+}
+
+.circles li:nth-child(6){
+    left: 75%;
+    width: 110px;
+    height: 110px;
+    animation-delay: 2s; /*開始時間*/
+}
+
+.circles li:nth-child(7){
+    left: 35%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 4s; /*開始時間*/
+}
+
+.circles li:nth-child(8){
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    animation-delay: 15s;    /*開始時間*/
+    animation-duration: 30s; /*継続時間*/
+}
+
+.circles li:nth-child(9){
+    left: 20%;
+    width: 15px;
+    height: 15px;
+    animation-delay: 2s;     /*開始時間*/
+    animation-duration: 28s; /*継続時間*/
+}
+
+.circles li:nth-child(10){
+    left: 85%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 0s;     /*開始時間*/
+    animation-duration: 9s; /*継続時間*/
+}
+
+.circles li.right:nth-child(11){
+    left: 25%;
+    width: 80px;
+    height: 80px;
+    animation-delay: 0s; /*開始時間*/
+}
+
+
+.circles li.right:nth-child(12){
+    left: 10%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 1s;     /*開始時間*/
+    animation-duration: 8s; /*継続時間*/
+}
+
+.circles li.right:nth-child(13){
+    left: 70%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 3s; /*開始時間*/
+}
+
+.circles li.right:nth-child(14){
+    left: 40%;
+    width: 60px;
+    height: 60px;
+    animation-delay: 0s;     /*開始時間*/
+    animation-duration: 10s; /*継続時間*/
+}
+
+.circles li.right:nth-child(15){
+    left: 65%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 0s; /*開始時間*/
+}
+
+.circles li.right:nth-child(16){
+    left: 75%;
+    width: 110px;
+    height: 110px;
+    animation-delay: 2s; /*開始時間*/
+}
+
+.circles li.right:nth-child(17){
+    left: 35%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 4s; /*開始時間*/
+}
+
+.circles li.right:nth-child(18){
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    animation-delay: 15s;    /*開始時間*/
+    animation-duration: 30s; /*継続時間*/
+}
+
+.circles li.right:nth-child(19){
+    left: 20%;
+    width: 15px;
+    height: 15px;
+    animation-delay: 2s;     /*開始時間*/
+    animation-duration: 28s; /*継続時間*/
+}
+
+.circles li.right:nth-child(20){
+    left: 85%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 0s;     /*開始時間*/
+    animation-duration: 9s; /*継続時間*/
+}
+
+@keyframes animate {
+
+    0%{
+        opacity: 1;       /*透明度*/
+        transform: translate(-1000px,-1000px) rotate(720deg);
+        border-radius: 10%; /*面取り*/
+    }
+
+    100%{
+        transform: translate(100px,100px) rotate(0deg);transform:
+        opacity: 0;         /*透明度*/
+        border-radius: 55%; /*面取り*/
+    }
+
+}
+
+@keyframes animate_right {
+
+    0%{
+        opacity: 1;       /*透明度*/
+        transform: translate(800px,-1000px) rotate(720deg);
+        border-radius: 10%; /*面取り*/
+    }
+
+    100%{
+        transform: translate(-300px,100px) rotate(0deg);transform:
+        opacity: 0;         /*透明度*/
+        border-radius: 55%; /*面取り*/
+    }
 
 }

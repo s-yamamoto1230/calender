@@ -333,5 +333,29 @@
     </form>
     <p id="back"><a href="./main.jsp">メイン画面に戻る</a></p>
     <script type="text/javascript" src="./js/info.js"></script>
+
+
+    <ul class="circles">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+    </ul>
 </body>
 </html>

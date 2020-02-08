@@ -195,16 +195,18 @@
   </tr>
   <tr class="no-line">
     <td class="no-line" id="button" colspan="2">
-      <p>
+      <div class="button">
         <input type="submit" id="submit" value="編集">
       </form>
-      <form name="Del_info" action="schedule_delete.jsp" method="post">
+    </div>
+    <div class="button">
+      <form name="Del_info" action="openschedule_delete.jsp" method="post">
         <input type="button" value="削除" onclick="ShowDel();">
         <input type="hidden" name="day" value="<%= dayStr %>">
         <input type="hidden" name="s_hour" value="<%= s_hourStr %>">
         <input type="hidden" name="s_mine" value="<%= s_mineStr %>">
       </form>
-      <p>
+      </div>
     </td>
 </tr>
 
@@ -216,5 +218,27 @@
 </table>
 <br>
 <script type="text/javascript" src="./js/main.js"></script>
+<ul class="circles">
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+</ul>
 </body>
 </html>

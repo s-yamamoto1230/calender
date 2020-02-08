@@ -263,6 +263,28 @@ if (list.get(i).get("open_set").equals("1")) {
  }
       out.write("\r\n");
       out.write("    <p id=\"back\"><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("    <ul class=\"circles\">\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("    </ul>\r\n");
       out.write("</body>\r\n");
       out.write("</html>\r\n");
     } catch (Throwable t) {

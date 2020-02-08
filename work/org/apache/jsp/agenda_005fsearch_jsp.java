@@ -68,7 +68,7 @@ public final class agenda_005fsearch_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("\r\n");
       out.write("      <h1>ã«ã¬ã³ãã¼æ¤ç´¢</h1>\r\n");
       out.write("      <h2>\r\n");
-      out.write("        ã«ã¬ã³ãã¼IDãã­ã¼ã¯ã¼ããå¥åãã¦æ¤ç´¢ãã¿ã³ãæ¼ãã¦ãã ããã<br>ã«ã¬ã³ãã¼ãæ¤ç´¢ãã¾ãã\r\n");
+      out.write("        ã«ã¬ã³ãã¼IDãã­ã¼ã¯ã¼ããå¥åãã¦æ¤ç´¢ãã¿ã³ãæ¼ãã¦ãã ããã<br>ã«ã¬ã³ãã¼ãæ¤ç´¢ãã¾ãã<br>(ä¸¡æ¹å¥åããã¨å¥åIDãåªåãã¦æ¤ç´¢ãã¾ã)\r\n");
       out.write("      </h2>\r\n");
       out.write("       <form action=\"./agenda_searchcomplete.jsp\" method=\"post\">\r\n");
       out.write("        <table>\r\n");
@@ -101,6 +101,28 @@ public final class agenda_005fsearch_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("          </tr>\r\n");
       out.write("\r\n");
       out.write("       </table>\r\n");
+      out.write("       <ul class=\"circles\">\r\n");
+      out.write("         <li></li>\r\n");
+      out.write("         <li></li>\r\n");
+      out.write("         <li></li>\r\n");
+      out.write("         <li></li>\r\n");
+      out.write("         <li></li>\r\n");
+      out.write("         <li></li>\r\n");
+      out.write("         <li></li>\r\n");
+      out.write("         <li></li>\r\n");
+      out.write("         <li></li>\r\n");
+      out.write("         <li></li>\r\n");
+      out.write("         <li class=\"right\"></li>\r\n");
+      out.write("         <li class=\"right\"></li>\r\n");
+      out.write("         <li class=\"right\"></li>\r\n");
+      out.write("         <li class=\"right\"></li>\r\n");
+      out.write("         <li class=\"right\"></li>\r\n");
+      out.write("         <li class=\"right\"></li>\r\n");
+      out.write("         <li class=\"right\"></li>\r\n");
+      out.write("         <li class=\"right\"></li>\r\n");
+      out.write("         <li class=\"right\"></li>\r\n");
+      out.write("         <li class=\"right\"></li>\r\n");
+      out.write("       </ul>\r\n");
       out.write("\r\n");
       out.write("\r\n");
       out.write("  </body>\r\n");

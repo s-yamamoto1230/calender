@@ -161,14 +161,35 @@
 
         <tr class="no-line">
           <td class="no-line" colspan="2">
-            <p><a href="./main.jsp">メイン画面に戻る</a></p>
+            <p><a href="./myag_main.jsp">メイン画面に戻る</a></p>
           </td>
 
         </tr>
       </table>
 
   <script type="text/javascript" src="./js/info.js"></script>
-
+  <ul class="circles">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+  </ul>
   </body>
 
 

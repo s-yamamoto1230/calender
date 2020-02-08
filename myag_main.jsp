@@ -192,7 +192,7 @@ try{	// ロードに失敗したときのための例外処理
   SQL = new StringBuffer();
 
   //SQL文の発行（選択クエリ）
-  SQL.append("select day,s_hour,s_mine,f_hour,f_mine,place,yotei_name from open_tbl,openyotei_tbl where open_tbl.yotei_id = openyotei_tbl.yotei_id and  openyotei_tbl.yotei_id = '");
+  SQL.append("select kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,yotei_name from open_tbl,openyotei_tbl where open_tbl.yotei_id = openyotei_tbl.yotei_id and openyotei_tbl.yotei_id = '");
   SQL.append(yotei_ids);
   SQL.append("'");
 
@@ -203,6 +203,7 @@ try{	// ロードに失敗したときのための例外処理
   while(rs.next()){
       //DBのデータをHashMapへ格納する
     map = new HashMap<String,String>();
+    map.put("kaiin_id",rs.getString("kaiin_id"));
     map.put("day",rs.getString("day"));
     map.put("s_hour",rs.getString("s_hour"));
     map.put("s_mine",rs.getString("s_mine"));
@@ -262,12 +263,12 @@ finally{
     if (favorite != null){
       if (favorite.equals("0")) {
   %>
-    <body onLoad="loadFavorite()">
+    <body id="myag_main" onLoad="loadFavorite()">
   <%
       }
     }else{
   %>
-    <body>
+    <body id="myag_main">
   <%
     }
   %>
@@ -275,25 +276,30 @@ finally{
     <div id="contents">
 
       <ul id="nav">
-        <li id="today"><%= show_year %>/<%= show_month+1 %>/<%= show_day %></li>
+        <li id="today">
+          <a href="./myag_main.jsp?today=<%= today %>">
+            <span id="font1"><%= show_year %>/<%= show_month+1 %>/<%= show_day %></span>
+            <span id="font2">今月のカレンダーに戻る</span>
+          </a>
+        </li>
         <%
           if (user_hit == 1) {
         %>
-            <li id="info"><a href="./main.jsp">メインに戻る</a></li>
+            <li id="myag"><a href="./main.jsp">メインに戻る</a></li>
         <%
           }else if (user_hit == 0) {
             if (hit_flag == 1) {
         %>
-              <li id="info">お気に入り登録済</li>
-              <li><a href="./main.jsp">メインに戻る</a></li>
+              <li id="myag_info">お気に入り登録済</li>
+              <li class="info"><a href="./main.jsp">メインに戻る</a></li>
         <%
             }else{
         %>
-            <li id="info"><a href="#" onclick="ShowFavorite();">お気に入り登録</a></li>
+            <li id="favo_info"><a href="#" onclick="ShowFavorite();">お気に入り登録</a></li>
             <form name="favorite_info" action="./session_Issue.jsp" method="post">
               <input type="hidden" name="favorite" value="favorite">
             </form>
-            <li><a href="./main.jsp">メインに戻る</a></li>
+            <li class="info"><a href="./main.jsp">メインに戻る</a></li>
         <%
             }
         %>
@@ -473,7 +479,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[1] %>">
@@ -542,7 +548,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[2] %>">
@@ -611,7 +617,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[3] %>">
@@ -680,7 +686,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[4] %>">
@@ -749,7 +755,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[5] %>">
@@ -811,7 +817,7 @@ finally{
               </a>
                 <%
                     }
-                  }if (writing == 1) {
+                  }if (writing == 1 || user_hit == 1) {
                 %>
                   <form action="./openschedule_make.jsp" method="post">
                     <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[6] %>">
@@ -872,7 +878,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[7] %>">
@@ -931,7 +937,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[8] %>">
@@ -990,7 +996,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[9] %>">
@@ -1049,7 +1055,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[10] %>">
@@ -1108,7 +1114,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[11] %>">
@@ -1167,7 +1173,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[12] %>">
@@ -1226,7 +1232,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[13] %>">
@@ -1286,7 +1292,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[14] %>">
@@ -1345,7 +1351,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[15] %>">
@@ -1404,7 +1410,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[16] %>">
@@ -1463,7 +1469,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[17] %>">
@@ -1522,7 +1528,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[18] %>">
@@ -1581,7 +1587,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[19] %>">
@@ -1640,7 +1646,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[20] %>">
@@ -1701,7 +1707,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[21] %>">
@@ -1760,7 +1766,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[22] %>">
@@ -1819,7 +1825,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[23] %>">
@@ -1878,7 +1884,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[24] %>">
@@ -1937,7 +1943,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[25] %>">
@@ -1996,7 +2002,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[26] %>">
@@ -2055,7 +2061,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[27] %>">
@@ -2123,7 +2129,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[28] %>">
@@ -2192,7 +2198,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[29] %>">
@@ -2261,7 +2267,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[30] %>">
@@ -2330,7 +2336,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[31] %>">
@@ -2399,7 +2405,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[32] %>">
@@ -2468,7 +2474,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[33] %>">
@@ -2537,7 +2543,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[34] %>">
@@ -2608,7 +2614,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[35] %>">
@@ -2677,7 +2683,7 @@ finally{
               </a>
               <%
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               %>
                 <form action="./openschedule_make.jsp" method="post">
                   <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[36] %>">

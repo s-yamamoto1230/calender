@@ -171,6 +171,7 @@
         <th></th>
         <th class="no-line" style="padding: 20px;">カレンダー名</td>
         <th class="no-line" style="padding: 20px;">作成者</td>
+        <th class="no-line" style="padding: 20px;">公開設定</td>
       </tr>
       <%
         for(int i=0; i<list.size();i++){
@@ -188,6 +189,11 @@
                 <%= list.get(i).get("yotei_name") %>
               </td>
               <td class="no-line"><%= list.get(i).get("kaiin_name") %></td>
+              <% if(list.get(i).get("open_set").equals("1")) { %>
+              <td class="no-line">全員に公開</td>
+              <%}else{%>
+              <td class="no-line">特定の人にのみ公開</td>
+              <% } %>
           </tr>
       <%
         }
@@ -201,5 +207,27 @@
     }
   %>
     <p id="back"><a href="./agenda_search.jsp">検索画面に戻る</a></p>
+    <ul class="circles">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+    </ul>
 </body>
 </html>

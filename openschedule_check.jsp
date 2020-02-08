@@ -143,7 +143,7 @@
 
   <body>
 
-    <form action="./schedule_update.jsp" method="post">
+    <form action="./openschedule_update.jsp" method="post">
 
       <input type="hidden" name="yotei_id" value="<%= list.get(0).get("yotei_id") %>">
       <input type="hidden" name="day" value="<%= list.get(0).get("day") %>">
@@ -197,22 +197,54 @@
   </tr>
   <tr class="no-line">
     <td class="no-line" id="button" colspan="2">
+      <div class="button">
         <p>
           <input type="submit" id="submit" value="編集">
+        </form>
+      </div>
+      <div class="button">
+            <form name="Del_info" action="openschedule_delete.jsp" method="post">
+              <input type="button" value="削除" onclick="ShowDel();">
+              <input type="hidden" name="day" value="<%= dayStr %>">
+              <input type="hidden" name="s_hour" value="<%= s_hourStr %>">
+              <input type="hidden" name="s_mine" value="<%= s_mineStr %>">
+            </form>
+          </div>
         </p>
     </td>
-  </form>
   </tr>
 
     <tr class="no-line">
       <td class="no-line" colspan="2">
-        <p><a href="./logincheck.jsp">メイン画面に戻る</a></p>
+        <p><a href="./myag_main.jsp">メイン画面に戻る</a></p>
       </td>
 
     </tr>
 
 </table>
 <br>
-
+  <script type="text/javascript" src="./js/main.js"></script>
 </body>
+<ul class="circles">
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+</ul>
 </html>

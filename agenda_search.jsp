@@ -16,7 +16,7 @@
 
       <h1>カレンダー検索</h1>
       <h2>
-        カレンダーIDかキーワードを入力して検索ボタンを押してください。<br>カレンダーを検索します。
+        カレンダーIDかキーワードを入力して検索ボタンを押してください。<br>カレンダーを検索します。<br>(両方入力すると入力IDを優先して検索します)
       </h2>
        <form action="./agenda_searchcomplete.jsp" method="post">
         <table>
@@ -49,6 +49,28 @@
           </tr>
 
        </table>
+       <ul class="circles">
+         <li></li>
+         <li></li>
+         <li></li>
+         <li></li>
+         <li></li>
+         <li></li>
+         <li></li>
+         <li></li>
+         <li></li>
+         <li></li>
+         <li class="right"></li>
+         <li class="right"></li>
+         <li class="right"></li>
+         <li class="right"></li>
+         <li class="right"></li>
+         <li class="right"></li>
+         <li class="right"></li>
+         <li class="right"></li>
+         <li class="right"></li>
+         <li class="right"></li>
+       </ul>
 
 
   </body>

@@ -179,7 +179,29 @@
       <%
         }
       %>
-
     <p id="back"><a href="./main.jsp">メイン画面に戻る</a></p>
+
+    <ul class="circles">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+      <li class="right"></li>
+    </ul>
 </body>
 </html>

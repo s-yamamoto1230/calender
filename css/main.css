@@ -6,7 +6,11 @@
 body{
   text-align: center;
   background: #4169e1;
-  background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
+}
+
+body#myag_main{
+  text-align: center;
+  background: #93ca76;
 }
 
 body#logincheck{
@@ -28,7 +32,7 @@ body#logincheck{
 ul#nav{
   display: flex;
   width: 100vw;
-  padding: 0px 10px 0px 10px;
+  padding: 0px 10px 0px 0px;
   font-size: 1.6rem;
   text-align: center;
   color: #fff;
@@ -44,7 +48,7 @@ ul#nav{
   overflow: hidden;
 }
 
-#nav li {
+#nav li.info{
   text-align: center;
   background-color: #333;
   line-height: 70px;
@@ -52,23 +56,95 @@ ul#nav{
   height: 70px;
 }
 
-#nav li#today{
-  font-size: 40px;
-  line-height: 75px;
-  padding: 0 20px;
-  background-color: rgba(0,0,0,0);
+#nav li.info:hover {
+  background-color: #e7e7eb;
 }
 
-#nav li#info{
+#nav li#myag{
+  text-align: center;
+  line-height: 70px;
+  margin-right: 2px;
   margin-left: auto;
+  height: 70px;
   font-size: 12px;
+  background-color: #333;
+}
+
+#nav li#myag:hover {
+  background-color: #e7e7eb;
+}
+
+#nav li#main_info{
+  text-align: center;
+  line-height: 70px;
+  margin-right: 2px;
+  margin-left: auto;
+  height: 70px;
+  font-size: 12px;
+  background-color: #333;
+}
+
+#nav li#main_info:hover {
+  background-color: #e7e7eb;
+}
+
+#nav li#myag_info{
+  text-align: center;
+  line-height: 70px;
+  margin-right: 20px;
+  margin-left: auto;
+  height: 70px;
+  font-size: 12px;
+  color: #ffd900;
+}
+
+#nav li#favo_info{
+  text-align: center;
+  line-height: 70px;
+  margin-right: 2px;
+  margin-left: auto;
+  height: 70px;
+  font-size: 12px;
+  background-color: #333;
+}
+
+#nav li#favo_info:hover {
+  background-color: #e7e7eb;
+}
+
+#nav li#today{
+  line-height: 75px;
+  margin-left: 50px;
+  width: 150px;
+  background-color: rgba(0,0,0,0);
+    transition:0.3s ease;
+}
+
+#nav li#today:hover{
+  background-color:#c0a2c7;
+  border-radius: 10px;
+}
+
+
+#nav li a #font1{
+  display: block;
+  line-height: 0;
+  text-align: center;
+  text-decoration: none;
+  font-size: 27px;
+  color: #fff;
+}
+
+
+#nav li a#font:hover{
+  background-color: #fff;
 }
 
 #nav li a {
   display: block;
   width: 150px;
   height: 0px;
-  padding: 40px 0 40px 0;
+  padding: 35px 0 35px 0;
   line-height: 0;
   text-align: center;
   text-decoration: none;
@@ -76,8 +152,24 @@ ul#nav{
   color: #fff;
 }
 
-#nav li a:hover{
+#nav li a:hover {
+  color:#16160e;
+}
+
+a #font2{
+display: none;
+font-size: 13.5px;
+}
+
+#nav li a:hover #font1{/* ホバー時は通常時の文字を非表示にする */
   background-color: #777;
+  display: none;
+}
+
+/* ホバー時に、ホバー時の文字を表示する */
+a:hover #font2{
+display: inline;
+color: #fff;
 }
 
 table#cal{
@@ -241,7 +333,7 @@ input{
     list-style: none;
     width: 20px;
     height: 20px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.3);
     animation: animate 25s linear infinite;
     bottom: -150px;
 

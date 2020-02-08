@@ -72,13 +72,6 @@
           list.add(map);
         }
       }
-      //入力したデータがデータベースに存在するか調べる
-      if(list.size() > 0){  //存在する
-            hit_flag = 1;
-      }else{  //存在しない
-        //ヒットフラグOFF
-        hit_flag = 0;
-      }
   } //tryブロック終了
   catch(ClassNotFoundException e){
     ERMSG = new StringBuffer();
@@ -113,6 +106,9 @@
   }
 
 %>
+<%
+  if (yotei_idStr != null) {
+%>
 <html>
 
   <head>
@@ -131,7 +127,7 @@
       以下のお気に入りを削除しますか？
     </h1>
 
-    <form method="post" action="./agenda_deletecomplete.jsp">
+    <form method="post" action="./favorite_deletecomplete.jsp">
       <table id="list">
         <%
     		for(int i = 0; i < yotei_idStr.length; i++){
@@ -150,5 +146,32 @@
       </table>
     </form>
   <p id="back"><a href="./main.jsp">メイン画面に戻る</a></p>
+  <ul class="circles">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+  </ul>
 </body>
 </html>
+<%
+}else{
+    response.sendRedirect("favorite_delete.jsp");
+  }
+%>

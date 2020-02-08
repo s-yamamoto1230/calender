@@ -250,7 +250,7 @@ try{	// ロードに失敗したときのための例外処理
   SQL = new StringBuffer();
 
   //SQL文の発行（選択クエリ）
-  SQL.append("select day,s_hour,s_mine,f_hour,f_mine,place,yotei_name from open_tbl,openyotei_tbl where open_tbl.yotei_id = openyotei_tbl.yotei_id and  openyotei_tbl.yotei_id = '");
+  SQL.append("select kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,yotei_name from open_tbl,openyotei_tbl where open_tbl.yotei_id = openyotei_tbl.yotei_id and openyotei_tbl.yotei_id = '");
   SQL.append(yotei_ids);
   SQL.append("'");
 
@@ -261,6 +261,7 @@ try{	// ロードに失敗したときのための例外処理
   while(rs.next()){
       //DBのデータをHashMapへ格納する
     map = new HashMap<String,String>();
+    map.put("kaiin_id",rs.getString("kaiin_id"));
     map.put("day",rs.getString("day"));
     map.put("s_hour",rs.getString("s_hour"));
     map.put("s_mine",rs.getString("s_mine"));
@@ -323,14 +324,14 @@ finally{
       if (favorite.equals("0")) {
   
       out.write("\r\n");
-      out.write("    <body onLoad=\"loadFavorite()\">\r\n");
+      out.write("    <body id=\"myag_main\" onLoad=\"loadFavorite()\">\r\n");
       out.write("  ");
 
       }
     }else{
   
       out.write("\r\n");
-      out.write("    <body>\r\n");
+      out.write("    <body id=\"myag_main\">\r\n");
       out.write("  ");
 
     }
@@ -340,37 +341,44 @@ finally{
       out.write("    <div id=\"contents\">\r\n");
       out.write("\r\n");
       out.write("      <ul id=\"nav\">\r\n");
-      out.write("        <li id=\"today\">");
+      out.write("        <li id=\"today\">\r\n");
+      out.write("          <a href=\"./myag_main.jsp?today=");
+      out.print( today );
+      out.write("\">\r\n");
+      out.write("            <span id=\"font1\">");
       out.print( show_year );
       out.write('/');
       out.print( show_month+1 );
       out.write('/');
       out.print( show_day );
-      out.write("</li>\r\n");
+      out.write("</span>\r\n");
+      out.write("            <span id=\"font2\">今月のカレンダーに戻る</span>\r\n");
+      out.write("          </a>\r\n");
+      out.write("        </li>\r\n");
       out.write("        ");
 
           if (user_hit == 1) {
         
       out.write("\r\n");
-      out.write("            <li id=\"info\"><a href=\"./main.jsp\">メインに戻る</a></li>\r\n");
+      out.write("            <li id=\"myag\"><a href=\"./main.jsp\">メインに戻る</a></li>\r\n");
       out.write("        ");
 
           }else if (user_hit == 0) {
             if (hit_flag == 1) {
         
       out.write("\r\n");
-      out.write("              <li id=\"info\">お気に入り登録済</li>\r\n");
-      out.write("              <li><a href=\"./main.jsp\">メインに戻る</a></li>\r\n");
+      out.write("              <li id=\"myag_info\">お気に入り登録済</li>\r\n");
+      out.write("              <li class=\"info\"><a href=\"./main.jsp\">メインに戻る</a></li>\r\n");
       out.write("        ");
 
             }else{
         
       out.write("\r\n");
-      out.write("            <li id=\"info\"><a href=\"#\" onclick=\"ShowFavorite();\">お気に入り登録</a></li>\r\n");
+      out.write("            <li id=\"favo_info\"><a href=\"#\" onclick=\"ShowFavorite();\">お気に入り登録</a></li>\r\n");
       out.write("            <form name=\"favorite_info\" action=\"./session_Issue.jsp\" method=\"post\">\r\n");
       out.write("              <input type=\"hidden\" name=\"favorite\" value=\"favorite\">\r\n");
       out.write("            </form>\r\n");
-      out.write("            <li><a href=\"./main.jsp\">メインに戻る</a></li>\r\n");
+      out.write("            <li class=\"info\"><a href=\"./main.jsp\">メインに戻る</a></li>\r\n");
       out.write("        ");
 
             }
@@ -661,7 +669,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -777,7 +785,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -893,7 +901,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -1005,7 +1013,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -1117,7 +1125,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -1218,7 +1226,7 @@ finally{
       out.write("                ");
 
                     }
-                  }if (writing == 1) {
+                  }if (writing == 1 || user_hit == 1) {
                 
       out.write("\r\n");
       out.write("                  <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -1317,7 +1325,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -1414,7 +1422,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -1511,7 +1519,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -1608,7 +1616,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -1705,7 +1713,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -1802,7 +1810,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -1899,7 +1907,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -1997,7 +2005,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -2094,7 +2102,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -2191,7 +2199,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -2288,7 +2296,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -2385,7 +2393,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -2482,7 +2490,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -2579,7 +2587,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -2678,7 +2686,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -2775,7 +2783,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -2872,7 +2880,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -2969,7 +2977,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -3066,7 +3074,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -3163,7 +3171,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -3260,7 +3268,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -3369,7 +3377,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -3481,7 +3489,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -3593,7 +3601,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -3705,7 +3713,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -3817,7 +3825,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -3929,7 +3937,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -4041,7 +4049,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -4155,7 +4163,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -4267,7 +4275,7 @@ finally{
       out.write("              ");
 
                   }
-                }if (writing == 1) {
+                }if (writing == 1 || user_hit == 1) {
               
       out.write("\r\n");
       out.write("                <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");

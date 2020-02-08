@@ -173,6 +173,11 @@ public final class agenda_005fdeletecheck_jsp extends org.apache.jasper.runtime.
     }
   }
 
+      out.write('\r');
+      out.write('\n');
+
+  if (yotei_idStr != null) {
+
       out.write("\r\n");
       out.write("<html>\r\n");
       out.write("\r\n");
@@ -256,9 +261,38 @@ if (list.get(i).get("open_set").equals("1")) {
       out.write("    </tr>\r\n");
       out.write("</table>\r\n");
       out.write("  <p id=\"back\"><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("  <ul class=\"circles\">\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("  </ul>\r\n");
       out.write("\r\n");
       out.write("</body>\r\n");
       out.write("</html>\r\n");
+
+}else{
+    response.sendRedirect("agenda_delete.jsp");
+  }
+
+      out.write('\r');
+      out.write('\n');
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

@@ -206,6 +206,28 @@ public final class openschedule_005fmakecheck_jsp extends org.apache.jasper.runt
       out.write("      </table>\r\n");
       out.write("\r\n");
       out.write("  </body>\r\n");
+      out.write("  <ul class=\"circles\">\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("  </ul>\r\n");
       out.write("\r\n");
       out.write("</html>\r\n");
     } catch (Throwable t) {

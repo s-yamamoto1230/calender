@@ -107,5 +107,27 @@
   <script type="text/javascript" src="./js/info.js"></script>
 
   </body>
+  <ul class="circles">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+  </ul>
 
 </html>

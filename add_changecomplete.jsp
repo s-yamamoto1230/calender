@@ -105,6 +105,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="./css/info.css">
 <title>『更新完了』</title>
 </head>
 <body>
@@ -116,19 +117,42 @@
 <%
 	}else{  //更新OK
 %>
-	更新OK<br>
+  <p class="mes">
+	   更新OK<br>
 	  <%= upd_count + "件　更新が完了しました" %>
+ </p>
 <%
 	}
 %>
 <br><br>
 <% if(ERMSG != null){ %>
-予期せぬエラーが発生しました<br />
-<%= ERMSG %>
+  予期せぬエラーが発生しました<br />
+  <%= ERMSG %>
 <% }else{ %>
 ※エラーは発生しませんでした<br/>
 <% } %>
 <p><a href="./main.jsp">ログインに戻る</a></p>
-
+<ul class="circles">
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+  <li class="right"></li>
+</ul>
 </body>
 </html>

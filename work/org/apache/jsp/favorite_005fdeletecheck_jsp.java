@@ -127,13 +127,6 @@ public final class favorite_005fdeletecheck_jsp extends org.apache.jasper.runtim
           list.add(map);
         }
       }
-      //入力したデータがデータベースに存在するか調べる
-      if(list.size() > 0){  //存在する
-            hit_flag = 1;
-      }else{  //存在しない
-        //ヒットフラグOFF
-        hit_flag = 0;
-      }
   } //tryブロック終了
   catch(ClassNotFoundException e){
     ERMSG = new StringBuffer();
@@ -168,6 +161,11 @@ public final class favorite_005fdeletecheck_jsp extends org.apache.jasper.runtim
   }
 
 
+      out.write('\r');
+      out.write('\n');
+
+  if (yotei_idStr != null) {
+
       out.write("\r\n");
       out.write("<html>\r\n");
       out.write("\r\n");
@@ -187,7 +185,7 @@ public final class favorite_005fdeletecheck_jsp extends org.apache.jasper.runtim
       out.write("      以下のお気に入りを削除しますか？\r\n");
       out.write("    </h1>\r\n");
       out.write("\r\n");
-      out.write("    <form method=\"post\" action=\"./agenda_deletecomplete.jsp\">\r\n");
+      out.write("    <form method=\"post\" action=\"./favorite_deletecomplete.jsp\">\r\n");
       out.write("      <table id=\"list\">\r\n");
       out.write("        ");
 
@@ -214,8 +212,37 @@ public final class favorite_005fdeletecheck_jsp extends org.apache.jasper.runtim
       out.write("      </table>\r\n");
       out.write("    </form>\r\n");
       out.write("  <p id=\"back\"><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("  <ul class=\"circles\">\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("    <li class=\"right\"></li>\r\n");
+      out.write("  </ul>\r\n");
       out.write("</body>\r\n");
       out.write("</html>\r\n");
+
+}else{
+    response.sendRedirect("favorite_delete.jsp");
+  }
+
+      out.write('\r');
+      out.write('\n');
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

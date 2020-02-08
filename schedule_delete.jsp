@@ -104,12 +104,12 @@
 <%
 	if(del_count == 0){  //処理失敗
 %>
-	削除NG<br>
+	<h1>削除NG</h1><br>
 	  <%= "削除処理が失敗しました" %>
 <%
 	}else{  //削除OK
 %>
-	削除OK<br>
+	<h1>削除OK</h1><br>
 	  <%= del_count + "件　削除が完了しました" %>
 <%
 	}
@@ -124,6 +124,27 @@
 
 <% } %>
 <p id="back"><a href="./main.jsp">メイン画面に戻る</a></p>
-
+<ul class="circles">
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+</ul>
 </body>
 </html>

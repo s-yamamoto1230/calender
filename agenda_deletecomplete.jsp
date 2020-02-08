@@ -102,13 +102,17 @@
 <%
 	if(del_count == 0){  //追加処理失敗
 %>
+<p class="mes">
 	削除NG<br>
 	  <%= "削除処理が失敗しました" %>
+</p>
 <%
 	}else{  //削除OK
 %>
+<p class="mes">
 	削除OK<br>
 	  <%= yotei_idStr.length + "件　削除が完了しました" %>
+</p>
 <%
 	}
 %>
@@ -120,6 +124,28 @@
 ※エラーは発生しませんでした<br/>
 <% } %>
 <p id="back"><a href="./main.jsp">メイン画面に戻る</a></p>
+<ul class="circles">
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+</ul>
 
 </body>
 </html>

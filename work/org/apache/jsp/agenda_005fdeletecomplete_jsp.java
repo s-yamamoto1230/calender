@@ -157,20 +157,22 @@ public final class agenda_005fdeletecomplete_jsp extends org.apache.jasper.runti
 	if(del_count == 0){  //追加処理失敗
 
       out.write("\r\n");
+      out.write("<p class=\"mes\">\r\n");
       out.write("\t削除NG<br>\r\n");
       out.write("\t  ");
       out.print( "削除処理が失敗しました" );
-      out.write('\r');
-      out.write('\n');
+      out.write("\r\n");
+      out.write("</p>\r\n");
 
 	}else{  //削除OK
 
       out.write("\r\n");
+      out.write("<p class=\"mes\">\r\n");
       out.write("\t削除OK<br>\r\n");
       out.write("\t  ");
       out.print( yotei_idStr.length + "件　削除が完了しました" );
-      out.write('\r');
-      out.write('\n');
+      out.write("\r\n");
+      out.write("</p>\r\n");
 
 	}
 
@@ -188,6 +190,28 @@ public final class agenda_005fdeletecomplete_jsp extends org.apache.jasper.runti
  } 
       out.write("\r\n");
       out.write("<p id=\"back\"><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("<ul class=\"circles\">\r\n");
+      out.write("\t<li></li>\r\n");
+      out.write("\t<li></li>\r\n");
+      out.write("\t<li></li>\r\n");
+      out.write("\t<li></li>\r\n");
+      out.write("\t<li></li>\r\n");
+      out.write("\t<li></li>\r\n");
+      out.write("\t<li></li>\r\n");
+      out.write("\t<li></li>\r\n");
+      out.write("\t<li></li>\r\n");
+      out.write("\t<li></li>\r\n");
+      out.write("\t<li class=\"right\"></li>\r\n");
+      out.write("\t<li class=\"right\"></li>\r\n");
+      out.write("\t<li class=\"right\"></li>\r\n");
+      out.write("\t<li class=\"right\"></li>\r\n");
+      out.write("\t<li class=\"right\"></li>\r\n");
+      out.write("\t<li class=\"right\"></li>\r\n");
+      out.write("\t<li class=\"right\"></li>\r\n");
+      out.write("\t<li class=\"right\"></li>\r\n");
+      out.write("\t<li class=\"right\"></li>\r\n");
+      out.write("\t<li class=\"right\"></li>\r\n");
+      out.write("</ul>\r\n");
       out.write("\r\n");
       out.write("</body>\r\n");
       out.write("</html>\r\n");

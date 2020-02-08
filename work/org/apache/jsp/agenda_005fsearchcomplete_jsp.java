@@ -229,6 +229,7 @@ public final class agenda_005fsearchcomplete_jsp extends org.apache.jasper.runti
       out.write("        <th></th>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">カレンダー名</td>\r\n");
       out.write("        <th class=\"no-line\" style=\"padding: 20px;\">作成者</td>\r\n");
+      out.write("        <th class=\"no-line\" style=\"padding: 20px;\">公開設定</td>\r\n");
       out.write("      </tr>\r\n");
       out.write("      ");
 
@@ -258,6 +259,17 @@ public final class agenda_005fsearchcomplete_jsp extends org.apache.jasper.runti
       out.write("              <td class=\"no-line\">");
       out.print( list.get(i).get("kaiin_name") );
       out.write("</td>\r\n");
+      out.write("              ");
+ if(list.get(i).get("open_set").equals("1")) { 
+      out.write("\r\n");
+      out.write("              <td class=\"no-line\">全員に公開</td>\r\n");
+      out.write("              ");
+}else{
+      out.write("\r\n");
+      out.write("              <td class=\"no-line\">特定の人にのみ公開</td>\r\n");
+      out.write("              ");
+ } 
+      out.write("\r\n");
       out.write("          </tr>\r\n");
       out.write("      ");
 
@@ -277,6 +289,28 @@ public final class agenda_005fsearchcomplete_jsp extends org.apache.jasper.runti
   
       out.write("\r\n");
       out.write("    <p id=\"back\"><a href=\"./agenda_search.jsp\">検索画面に戻る</a></p>\r\n");
+      out.write("    <ul class=\"circles\">\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("      <li class=\"right\"></li>\r\n");
+      out.write("    </ul>\r\n");
       out.write("</body>\r\n");
       out.write("</html>\r\n");
     } catch (Throwable t) {
