@@ -106,8 +106,6 @@ public final class monthcheck_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("  <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/main.css\">\r\n");
       out.write("\r\n");
-      out.write("  <body>\r\n");
-      out.write("\r\n");
       out.write("  </body>\r\n");
       out.write("</html>\r\n");
     } catch (Throwable t) {

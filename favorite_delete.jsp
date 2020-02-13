@@ -130,8 +130,7 @@
 
   <form action="./favorite_deletecheck.jsp" method="post">
 
-    <h1>
-    <%= session_name %>さんのお気に入り一覧
+    <h1><%= session_name %>さんのお気に入り一覧</h1>
     <% if (hit_flag == 1) {%>
     <table id="list">
       <tr class="no-line">

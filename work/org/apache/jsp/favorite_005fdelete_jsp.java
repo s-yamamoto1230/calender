@@ -186,10 +186,9 @@ public final class favorite_005fdelete_jsp extends org.apache.jasper.runtime.Htt
       out.write("\r\n");
       out.write("  <form action=\"./favorite_deletecheck.jsp\" method=\"post\">\r\n");
       out.write("\r\n");
-      out.write("    <h1>\r\n");
-      out.write("    ");
+      out.write("    <h1>");
       out.print( session_name );
-      out.write("さんのお気に入り一覧\r\n");
+      out.write("さんのお気に入り一覧</h1>\r\n");
       out.write("    ");
  if (hit_flag == 1) {
       out.write("\r\n");

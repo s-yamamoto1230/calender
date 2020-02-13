@@ -64,6 +64,7 @@ public final class openschedule_005fcheck_jsp extends org.apache.jasper.runtime.
 
   //入力データ受信
   String yotei_ids = (String)session.getAttribute("yotei_id");
+  String session_id = (String)session.getAttribute("login_id");
   String dayStr  = request.getParameter("day");
   String s_hourStr  = request.getParameter("s_hour");
   String s_mineStr  = request.getParameter("s_mine");
@@ -92,6 +93,7 @@ public final class openschedule_005fcheck_jsp extends org.apache.jasper.runtime.
 
   //ヒットフラグ
   int hit_flag = 0;
+  int user_hit = 0;
 
   //HashMap（1件分のデータを格納する連想配列）
   HashMap<String,String> map = null;
@@ -114,7 +116,7 @@ public final class openschedule_005fcheck_jsp extends org.apache.jasper.runtime.
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select * from openyotei_tbl where yotei_id = '");
+    SQL.append("select openyotei_tbl.yotei_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance,yotei_writing from openyotei_tbl,open_tbl where openyotei_tbl.yotei_id=open_tbl.yotei_id and openyotei_tbl.yotei_id = '");
     SQL.append(yotei_ids);
     SQL.append("' and day ='");
     SQL.append(dayStr);
@@ -144,6 +146,7 @@ public final class openschedule_005fcheck_jsp extends org.apache.jasper.runtime.
       map.put("place",rs.getString("place"));
       map.put("details",rs.getString("details"));
       map.put("importance",rs.getString("importance"));
+      map.put("yotei_writing",rs.getString("yotei_writing"));
 
       //1件分のデータ(HashMap)をArrayListへ追加
       list.add(map);
@@ -151,6 +154,23 @@ public final class openschedule_005fcheck_jsp extends org.apache.jasper.runtime.
       //ヒットフラグOFF
       hit_flag = 0;
     }
+
+    SQL = new StringBuffer();
+
+    SQL.append("select kaiin_id from open_tbl where yotei_id =  '");
+    SQL.append(yotei_ids);
+    SQL.append("'and kaiin_id = '");
+    SQL.append(session_id);
+    SQL.append("'");
+
+    rs = stmt.executeQuery(SQL.toString());
+    //入力したデータがデータベースに存在するか調べる
+    if(rs.next()){  //存在する
+      user_hit=1;
+    }else{  //存在しない
+      user_hit=0;
+    }
+
   } //tryブロック終了
   catch(ClassNotFoundException e){
     ERMSG = new StringBuffer();
@@ -294,6 +314,11 @@ public final class openschedule_005fcheck_jsp extends org.apache.jasper.runtime.
       out.write("\r\n");
       out.write("    </td>\r\n");
       out.write("  </tr>\r\n");
+      out.write("  ");
+
+    if (user_hit == 1 || list.get(0).get("yotei_writing").equals("1")) {
+  
+      out.write("\r\n");
       out.write("  <tr class=\"no-line\">\r\n");
       out.write("    <td class=\"no-line\" id=\"button\" colspan=\"2\">\r\n");
       out.write("      <div class=\"button\">\r\n");
@@ -318,6 +343,11 @@ public final class openschedule_005fcheck_jsp extends org.apache.jasper.runtime.
       out.write("        </p>\r\n");
       out.write("    </td>\r\n");
       out.write("  </tr>\r\n");
+      out.write("  ");
+
+    }
+  
+      out.write("\r\n");
       out.write("\r\n");
       out.write("    <tr class=\"no-line\">\r\n");
       out.write("      <td class=\"no-line\" colspan=\"2\">\r\n");

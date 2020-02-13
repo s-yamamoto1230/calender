@@ -189,12 +189,11 @@ public final class add_005fchangecomplete_jsp extends org.apache.jasper.runtime.
       out.write("<br><br>\r\n");
  if(ERMSG != null){ 
       out.write("\r\n");
-      out.write("<span class=\"mes\">\r\n");
       out.write("  予期せぬエラーが発生しました<br />\r\n");
       out.write("  ");
       out.print( ERMSG );
-      out.write("\r\n");
-      out.write("</span>\r\n");
+      out.write('\r');
+      out.write('\n');
  }else{ 
       out.write("\r\n");
       out.write("※エラーは発生しませんでした<br/>\r\n");
