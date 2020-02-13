@@ -63,6 +63,7 @@ String session_id = (String)session.getAttribute("login_id");
 if(session_id != null){
   response.sendRedirect("main.jsp");
 }
+String del = request.getParameter("del");
 
       out.write("\r\n");
       out.write("\r\n");
@@ -80,7 +81,30 @@ if(session_id != null){
       out.write("\r\n");
       out.write("  </head>\r\n");
       out.write("\r\n");
-      out.write("  <body>\r\n");
+      out.write("  ");
+
+    if (del != null){
+      if (del.equals("1")) {
+  
+      out.write("\r\n");
+      out.write("    <body onLoad=\"loadDelete()\">\r\n");
+      out.write("  ");
+
+      }
+    }else{
+  
+      out.write("\r\n");
+      out.write("    <body>\r\n");
+      out.write("  ");
+
+    }
+  
+      out.write("\r\n");
+      out.write("\r\n");
+      out.write("      <form name=\"all_del\" action=\"./all_del.jsp\" method=\"post\">\r\n");
+      out.write("        <input id=\"all_del\" type=\"button\" name=\"all_del\" value=\"ãã¼ãã«åé¤\" onclick=\"ShowAlldel();\">\r\n");
+      out.write("        <input type=\"hidden\" name=\"all_del\" value=\"all_del\">\r\n");
+      out.write("      </form>\r\n");
       out.write("\r\n");
       out.write("    <div class='background'>\r\n");
       out.write("      <div class='wave -one'></div>\r\n");
@@ -141,8 +165,7 @@ if(session_id != null){
       out.write("\r\n");
       out.write("\r\n");
       out.write("       </table>\r\n");
-      out.write("\r\n");
-      out.write("\r\n");
+      out.write("      <script type=\"text/javascript\" src=\"./js/main.js\"></script>\r\n");
       out.write("  </body>\r\n");
       out.write("\r\n");
       out.write("</html>\r\n");

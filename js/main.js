@@ -154,3 +154,16 @@ function ShowDel() {
     return true;
   }
 }
+
+function ShowAlldel() {
+  if(confirm("テーブル内を空にしますか？")){
+    var f = document.forms["all_del"];
+    f.method = "POST";
+    f.submit();
+    return true;
+  }
+}
+
+function loadDelete(){
+alert("テーブル内を空にしました！！！");
+}

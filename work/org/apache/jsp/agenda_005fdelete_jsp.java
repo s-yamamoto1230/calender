@@ -189,9 +189,10 @@ public final class agenda_005fdelete_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("  <form action=\"./agenda_deletecheck.jsp\" method=\"post\">\r\n");
       out.write("\r\n");
       out.write("    <h1>\r\n");
-      out.write("    ");
+      out.write("      ");
       out.print( session_name );
       out.write("さんの作成したカレンダー一覧\r\n");
+      out.write("    </h1>\r\n");
       out.write("    ");
  if (hit_flag == 1) {
       out.write("\r\n");

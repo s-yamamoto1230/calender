@@ -200,7 +200,7 @@
       </form>
     </div>
     <div class="button">
-      <form name="Del_info" action="openschedule_delete.jsp" method="post">
+      <form name="Del_info" action="schedule_delete.jsp" method="post">
         <input type="button" value="削除" onclick="ShowDel();">
         <input type="hidden" name="day" value="<%= dayStr %>">
         <input type="hidden" name="s_hour" value="<%= s_hourStr %>">

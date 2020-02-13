@@ -133,7 +133,8 @@
   <form action="./agenda_deletecheck.jsp" method="post">
 
     <h1>
-    <%= session_name %>さんの作成したカレンダー一覧
+      <%= session_name %>さんの作成したカレンダー一覧
+    </h1>
     <% if (hit_flag == 1) {%>
     <table id="list">
       <tr class="no-line">

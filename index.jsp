@@ -11,6 +11,7 @@ String session_id = (String)session.getAttribute("login_id");
 if(session_id != null){
   response.sendRedirect("main.jsp");
 }
+String del = request.getParameter("del");
 %>
 
 <!DOCTYPE html>
@@ -27,7 +28,24 @@ if(session_id != null){
 
   </head>
 
-  <body>
+  <%
+    if (del != null){
+      if (del.equals("1")) {
+  %>
+    <body onLoad="loadDelete()">
+  <%
+      }
+    }else{
+  %>
+    <body>
+  <%
+    }
+  %>
+
+      <form name="all_del" action="./all_del.jsp" method="post">
+        <input id="all_del" type="button" name="all_del" value="テーブル削除" onclick="ShowAlldel();">
+        <input type="hidden" name="all_del" value="all_del">
+      </form>
 
     <div class='background'>
       <div class='wave -one'></div>
@@ -88,8 +106,7 @@ if(session_id != null){
 
 
        </table>
-
-
+      <script type="text/javascript" src="./js/main.js"></script>
   </body>
 
 </html>

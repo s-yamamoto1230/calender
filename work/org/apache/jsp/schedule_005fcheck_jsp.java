@@ -297,7 +297,7 @@ public final class schedule_005fcheck_jsp extends org.apache.jasper.runtime.Http
       out.write("      </form>\r\n");
       out.write("    </div>\r\n");
       out.write("    <div class=\"button\">\r\n");
-      out.write("      <form name=\"Del_info\" action=\"openschedule_delete.jsp\" method=\"post\">\r\n");
+      out.write("      <form name=\"Del_info\" action=\"schedule_delete.jsp\" method=\"post\">\r\n");
       out.write("        <input type=\"button\" value=\"削除\" onclick=\"ShowDel();\">\r\n");
       out.write("        <input type=\"hidden\" name=\"day\" value=\"");
       out.print( dayStr );
