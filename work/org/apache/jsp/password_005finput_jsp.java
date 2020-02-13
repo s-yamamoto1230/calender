@@ -99,7 +99,7 @@ public final class password_005finput_jsp extends org.apache.jasper.runtime.Http
       out.write("        </td>\r\n");
       out.write("        <td>\r\n");
       out.write("          <br>\r\n");
-      out.write("            <p><input type=\"text\" name=\"password\" size=\"25\" pattern=\"^[0-9a-z]+$\"> </p>\r\n");
+      out.write("            <p><input type=\"password\" name=\"password\" size=\"25\" pattern=\"^[0-9a-z]+$\"> </p>\r\n");
       out.write("        </td>\r\n");
       out.write("      </tr>\r\n");
       out.write("\r\n");

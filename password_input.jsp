@@ -42,7 +42,7 @@
         </td>
         <td>
           <br>
-            <p><input type="text" name="password" size="25" pattern="^[0-9a-z]+$"> </p>
+            <p><input type="password" name="password" size="25" pattern="^[0-9a-z]+$"> </p>
         </td>
       </tr>
 
