@@ -59,8 +59,7 @@ public final class favorite_005fdeletecomplete_jsp extends org.apache.jasper.run
 	response.setCharacterEncoding("UTF-8");
 
 	//入力データ受信
-	String yotei_idStr[]  = request.getParameterValues("yotei_id");
-  String session_id = (String)session.getAttribute("login_id");
+	String yotei_id  = request.getParameter("yotei_id");
 
 	//データベースに接続するために使用する変数宣言
 	Connection con = null;
@@ -99,20 +98,18 @@ public final class favorite_005fdeletecomplete_jsp extends org.apache.jasper.run
 		//SQLステートメントの作成（選択クエリ）
 		SQL = new StringBuffer();
 
-		//SQL文の構築（DB複数削除）
-		for(int i = 0; i < yotei_idStr.length; i++){
+		//SQL文の構築
 		  //SQLステートメントの作成（選択クエリ）
 		  SQL = new StringBuffer();
 		  //delete実行
 		  SQL.append("delete from favorite_tbl where yotei_id = '");
-			SQL.append(yotei_idStr[i]);
-			SQL.append("' and kaiin_id = '");
-      SQL.append(session_id);
+			SQL.append(yotei_id);
       SQL.append("'");
       System.out.println(SQL.toString());
 	      del_count = stmt.executeUpdate(SQL.toString());
-	    }
 
+				//メインページへ遷移
+				response.sendRedirect("main.jsp?del=1");
 	}	//tryブロック終了
 	catch(ClassNotFoundException e){
 		ERMSG = new StringBuffer();
@@ -146,54 +143,8 @@ public final class favorite_005fdeletecomplete_jsp extends org.apache.jasper.run
 		}
 	}
 
-      out.write("\r\n");
-      out.write("\r\n");
-      out.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\r\n");
-      out.write("<html>\r\n");
-      out.write("<head>\r\n");
-      out.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\r\n");
-      out.write("<title>カレンダー削除</title>\r\n");
-      out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"./css/info.css\">\r\n");
-      out.write("</head>\r\n");
-      out.write("<body>\r\n");
-
-	if(del_count == 0){  //追加処理失敗
-
-      out.write("\r\n");
-      out.write("\t削除NG<br>\r\n");
-      out.write("\t  ");
-      out.print( "削除処理が失敗しました" );
       out.write('\r');
       out.write('\n');
-
-	}else{  //削除OK
-
-      out.write("\r\n");
-      out.write("\t削除OK<br>\r\n");
-      out.write("\t  ");
-      out.print( yotei_idStr.length + "件　削除が完了しました" );
-      out.write('\r');
-      out.write('\n');
-
-	}
-
-      out.write("\r\n");
-      out.write("<br><br>\r\n");
- if(ERMSG != null){ 
-      out.write("\r\n");
-      out.write("予期せぬエラーが発生しました<br />\r\n");
-      out.print( ERMSG );
-      out.write('\r');
-      out.write('\n');
- }else{ 
-      out.write("\r\n");
-      out.write("※エラーは発生しませんでした<br/>\r\n");
- } 
-      out.write("\r\n");
-      out.write("<p id=\"back\"><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
-      out.write("\r\n");
-      out.write("</body>\r\n");
-      out.write("</html>\r\n");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

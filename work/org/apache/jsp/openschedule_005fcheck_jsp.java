@@ -351,7 +351,7 @@ public final class openschedule_005fcheck_jsp extends org.apache.jasper.runtime.
       out.write("\r\n");
       out.write("    <tr class=\"no-line\">\r\n");
       out.write("      <td class=\"no-line\" colspan=\"2\">\r\n");
-      out.write("        <p><a href=\"./myag_main.jsp\">メイン画面に戻る</a></p>\r\n");
+      out.write("        <p><a href=\"./myag_main.jsp\">カレンダーに戻る</a></p>\r\n");
       out.write("      </td>\r\n");
       out.write("\r\n");
       out.write("    </tr>\r\n");

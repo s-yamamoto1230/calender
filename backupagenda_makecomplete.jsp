@@ -13,9 +13,7 @@
   String permissionStr = request.getParameter("permission");
   String session_id = (String)session.getAttribute("login_id");
 
-  if (passStr == null) {
-    passStr = "";
-  }
+
 
 
   //データベースに接続するために使用する変数宣言
@@ -70,9 +68,11 @@
 
     //入力したデータがデータベースに存在するか調べる
     if(rs.next()){  //存在する
-      //メインページへ遷移
-      response.sendRedirect("main.jsp?create=0&page_no=1");
+      //ヒットフラグON
+      hit_flag = 1;
     }else{  //存在しない(追加OK)
+      //ヒットフラグOFF
+      hit_flag = 0;
     //SQLステートメントの作成（選択クエリ）
     SQL=new StringBuffer();
 
@@ -97,8 +97,6 @@
 
     //SQL文の実行(DB追加)
     ins_count=stmt.executeUpdate(SQL.toString());
-    //メインページへ遷移
-    response.sendRedirect("main.jsp?create=1&page_no=1");
 
   } //tryブロック終了
   catch(ClassNotFoundException e){
@@ -133,3 +131,67 @@
     }
   }
 %>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>登録完了</title>
+  <link rel="stylesheet" type="text/css" href="./css/info.css">
+</head>
+<body>
+
+<%
+  if(hit_flag == 1){  //認証NG
+%>
+追加NG<br>
+<%= "入力された予定IDは既に存在しています" %>
+<%
+}else if(ins_count==0){//追加処理失敗
+%>
+追加NG<br>
+<%= "登録が失敗しました" %>
+
+<%
+  }else{  //認証OK
+%>
+    <h1>新規登録完了</h1><br>
+    <%= ins_count + "件登録が完了しました" %>
+<%
+  }
+%>
+<br><br>
+<% if(ERMSG != null){ %>
+予期せぬエラーが発生しました<br />
+<%= ERMSG %>
+<% }else{ %>
+※エラーは発生しませんでした<br/>
+<% } %>
+
+
+  <p><a href="./main.jsp">メイン画面に戻る</a></p>
+  <ul class="circles">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+    <li class="right"></li>
+  </ul>
+
+</body>
+</html>

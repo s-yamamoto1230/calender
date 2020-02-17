@@ -66,7 +66,9 @@ public final class agenda_005fmakecomplete_jsp extends org.apache.jasper.runtime
   String permissionStr = request.getParameter("permission");
   String session_id = (String)session.getAttribute("login_id");
 
-
+  if (passStr == null) {
+    passStr = "";
+  }
 
 
   //データベースに接続するために使用する変数宣言
@@ -121,11 +123,9 @@ public final class agenda_005fmakecomplete_jsp extends org.apache.jasper.runtime
 
     //入力したデータがデータベースに存在するか調べる
     if(rs.next()){  //存在する
-      //ヒットフラグON
-      hit_flag = 1;
+      //メインページへ遷移
+      response.sendRedirect("main.jsp?create=0&page_no=1");
     }else{  //存在しない(追加OK)
-      //ヒットフラグOFF
-      hit_flag = 0;
     //SQLステートメントの作成（選択クエリ）
     SQL=new StringBuffer();
 
@@ -150,6 +150,8 @@ public final class agenda_005fmakecomplete_jsp extends org.apache.jasper.runtime
 
     //SQL文の実行(DB追加)
     ins_count=stmt.executeUpdate(SQL.toString());
+    //メインページへ遷移
+    response.sendRedirect("main.jsp?create=1&page_no=1");
 
   } //tryブロック終了
   catch(ClassNotFoundException e){
@@ -184,86 +186,8 @@ public final class agenda_005fmakecomplete_jsp extends org.apache.jasper.runtime
     }
   }
 
-      out.write("\r\n");
-      out.write("\r\n");
-      out.write("<!DOCTYPE html>\r\n");
-      out.write("<html>\r\n");
-      out.write("<head>\r\n");
-      out.write("  <meta charset=\"utf-8\">\r\n");
-      out.write("  <title>登録完了</title>\r\n");
-      out.write("  <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/info.css\">\r\n");
-      out.write("</head>\r\n");
-      out.write("<body>\r\n");
-      out.write("\r\n");
-
-  if(hit_flag == 1){  //認証NG
-
-      out.write("\r\n");
-      out.write("追加NG<br>\r\n");
-      out.print( "入力された予定IDは既に存在しています" );
       out.write('\r');
       out.write('\n');
-
-}else if(ins_count==0){//追加処理失敗
-
-      out.write("\r\n");
-      out.write("追加NG<br>\r\n");
-      out.print( "登録が失敗しました" );
-      out.write("\r\n");
-      out.write("\r\n");
-
-  }else{  //認証OK
-
-      out.write("\r\n");
-      out.write("    <h1>新規登録完了</h1><br>\r\n");
-      out.write("    ");
-      out.print( ins_count + "件登録が完了しました" );
-      out.write('\r');
-      out.write('\n');
-
-  }
-
-      out.write("\r\n");
-      out.write("<br><br>\r\n");
- if(ERMSG != null){ 
-      out.write("\r\n");
-      out.write("予期せぬエラーが発生しました<br />\r\n");
-      out.print( ERMSG );
-      out.write('\r');
-      out.write('\n');
- }else{ 
-      out.write("\r\n");
-      out.write("※エラーは発生しませんでした<br/>\r\n");
- } 
-      out.write("\r\n");
-      out.write("\r\n");
-      out.write("\r\n");
-      out.write("  <p><a href=\"./main.jsp\">メイン画面に戻る</a></p>\r\n");
-      out.write("  <ul class=\"circles\">\r\n");
-      out.write("    <li></li>\r\n");
-      out.write("    <li></li>\r\n");
-      out.write("    <li></li>\r\n");
-      out.write("    <li></li>\r\n");
-      out.write("    <li></li>\r\n");
-      out.write("    <li></li>\r\n");
-      out.write("    <li></li>\r\n");
-      out.write("    <li></li>\r\n");
-      out.write("    <li></li>\r\n");
-      out.write("    <li></li>\r\n");
-      out.write("    <li class=\"right\"></li>\r\n");
-      out.write("    <li class=\"right\"></li>\r\n");
-      out.write("    <li class=\"right\"></li>\r\n");
-      out.write("    <li class=\"right\"></li>\r\n");
-      out.write("    <li class=\"right\"></li>\r\n");
-      out.write("    <li class=\"right\"></li>\r\n");
-      out.write("    <li class=\"right\"></li>\r\n");
-      out.write("    <li class=\"right\"></li>\r\n");
-      out.write("    <li class=\"right\"></li>\r\n");
-      out.write("    <li class=\"right\"></li>\r\n");
-      out.write("  </ul>\r\n");
-      out.write("\r\n");
-      out.write("</body>\r\n");
-      out.write("</html>\r\n");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

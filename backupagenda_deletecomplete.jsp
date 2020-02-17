@@ -6,7 +6,7 @@
 	response.setCharacterEncoding("UTF-8");
 
 	//入力データ受信
-	String yotei_id  = request.getParameter("yotei_id");
+	String yotei_idStr[]  = request.getParameterValues("yotei_id");
 
 	//データベースに接続するために使用する変数宣言
 	Connection con = null;
@@ -45,18 +45,18 @@
 		//SQLステートメントの作成（選択クエリ）
 		SQL = new StringBuffer();
 
-		//SQL文の構築
+		//SQL文の構築（DB複数削除）
+		for(int i = 0; i < yotei_idStr.length; i++){
 		  //SQLステートメントの作成（選択クエリ）
 		  SQL = new StringBuffer();
 		  //delete実行
-		  SQL.append("delete from favorite_tbl where yotei_id = '");
-			SQL.append(yotei_id);
+		  SQL.append("delete from open_tbl where yotei_id = '");
+      SQL.append(yotei_idStr[i]);
       SQL.append("'");
       System.out.println(SQL.toString());
 	      del_count = stmt.executeUpdate(SQL.toString());
+	    }
 
-				//メインページへ遷移
-				response.sendRedirect("main.jsp?del=1");
 	}	//tryブロック終了
 	catch(ClassNotFoundException e){
 		ERMSG = new StringBuffer();
@@ -90,3 +90,62 @@
 		}
 	}
 %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>カレンダー削除</title>
+<link rel="stylesheet" type="text/css" href="./css/info.css">
+</head>
+<body>
+<%
+	if(del_count == 0){  //追加処理失敗
+%>
+<p class="mes">
+	削除NG<br>
+	  <%= "削除処理が失敗しました" %>
+</p>
+<%
+	}else{  //削除OK
+%>
+<p class="mes">
+	削除OK<br>
+	  <%= yotei_idStr.length + "件　削除が完了しました" %>
+</p>
+<%
+	}
+%>
+<br><br>
+<% if(ERMSG != null){ %>
+予期せぬエラーが発生しました<br />
+<%= ERMSG %>
+<% }else{ %>
+※エラーは発生しませんでした<br/>
+<% } %>
+<p id="back"><a href="./main.jsp">メイン画面に戻る</a></p>
+<ul class="circles">
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+	<li class="right"></li>
+</ul>
+
+</body>
+</html>

@@ -66,6 +66,8 @@
 
       System.out.println(SQL.toString());
 		upd_count = stmt.executeUpdate(SQL.toString());
+    //メインページへ遷移
+    response.sendRedirect("main.jsp?change=1&page_no=3");
 
 	}	//tryブロック終了
 	catch(ClassNotFoundException e){
@@ -100,59 +102,3 @@
 		}
 	}
 %>
-
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="./css/info.css">
-<title>『更新完了』</title>
-</head>
-<body>
-<%
-	if(upd_count == 0){  //更新処理失敗
-%>
-	更新NG<br>
-	  <%= "更新処理が失敗しました" %>
-<%
-	}else{  //更新OK
-%>
-  <p class="mes">
-	   更新OK<br>
-	  <%= upd_count + "件　更新が完了しました" %>
- </p>
-<%
-	}
-%>
-<br><br>
-<% if(ERMSG != null){ %>
-  予期せぬエラーが発生しました<br />
-  <%= ERMSG %>
-<% }else{ %>
-※エラーは発生しませんでした<br/>
-<% } %>
-<p><a href="./main.jsp">ログインに戻る</a></p>
-<ul class="circles">
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li class="right"></li>
-  <li class="right"></li>
-  <li class="right"></li>
-  <li class="right"></li>
-  <li class="right"></li>
-  <li class="right"></li>
-  <li class="right"></li>
-  <li class="right"></li>
-  <li class="right"></li>
-  <li class="right"></li>
-</ul>
-</body>
-</html>

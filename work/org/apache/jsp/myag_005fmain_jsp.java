@@ -316,7 +316,7 @@ finally{
       out.write("    <title>メインページ</title>\r\n");
       out.write("  </head>\r\n");
       out.write("\r\n");
-      out.write("  <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/main.css\">\r\n");
+      out.write("  <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/open.css\">\r\n");
       out.write("\r\n");
       out.write("  ");
 

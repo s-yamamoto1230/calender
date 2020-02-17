@@ -242,7 +242,7 @@
 
     <tr class="no-line">
       <td class="no-line" colspan="2">
-        <p><a href="./myag_main.jsp">メイン画面に戻る</a></p>
+        <p><a href="./myag_main.jsp">カレンダーに戻る</a></p>
       </td>
 
     </tr>
