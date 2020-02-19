@@ -192,9 +192,9 @@ try{	// ロードに失敗したときのための例外処理
   SQL = new StringBuffer();
 
   //SQL文の発行（選択クエリ）
-  SQL.append("select kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,yotei_name from open_tbl,openyotei_tbl where open_tbl.yotei_id = openyotei_tbl.yotei_id and openyotei_tbl.yotei_id = '");
+  SQL.append("select open_tbl.kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,importance,yotei_name,kaiin_name from open_tbl,openyotei_tbl,kaiin_tbl where kaiin_tbl.kaiin_id = openyotei_tbl.kaiin_id and open_tbl.yotei_id = openyotei_tbl.yotei_id and openyotei_tbl.yotei_id = '");
   SQL.append(yotei_ids);
-  SQL.append("'");
+  SQL.append("' order by s_hour ASC");
 
   //SQL文の発行（選択クエリ）
   rs = stmt.executeQuery(SQL.toString());
@@ -210,7 +210,9 @@ try{	// ロードに失敗したときのための例外処理
     map.put("f_hour",rs.getString("f_hour"));
     map.put("f_mine",rs.getString("f_mine"));
     map.put("place",rs.getString("place"));
+    map.put("importance",rs.getString("importance"));
     map.put("yotei_name",rs.getString("yotei_name"));
+    map.put("kaiin_name",rs.getString("kaiin_name"));
 
     //1件分のデータ(HashMap)をArrayListへ追加
     list.add(map);
@@ -370,20 +372,34 @@ finally{
               String num0 = String.valueOf(num[0]);
               String day0 = year0+month0+num0;
               boolean flag0 = false;
+              boolean flag0_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day0.equals(list.get(j).get("day"))) {
                   flag0 = true;
                 }
+                if (day0.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag0_1 = true;
+                }
               }
             %>
             <%
-              if (flag0 == true) {
+              if (flag0 == true && flag0_1 != true)
+              {
             %>
-                <td align="center" bgcolor="#fef263" style="color: #FF0000;">
+                <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag0_1 == true)
+              {
             %>
-                <td align="center" bgcolor="#FFFFFF" style="color: #FF0000;">
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
+            %>
+                <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
               }
             %>
@@ -399,13 +415,41 @@ finally{
                     for(int j = 0; j < list.size(); j++){
                   %>
                   <%
-                    if (day0.equals(list.get(j).get("day"))) {
+                    if (day0.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                   %>
-                  <a href="openschedule_check.jsp?day=<%= day0 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num0 %>&year=<%= year %>&month=<%= month %>">
+                    <a class="plans1" href="openschedule_check.jsp?day=<%= day0 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num0 %>">
+                    <div class="yotei">
+                      <table>
+                        <tr class="no-line">
+                          <td class="no-line">
+                            <%= list.get(j).get("kaiin_name") %>
+                          </td>
+                          <td class="no-line2">
+                            <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                            <%= list.get(j).get("place") %>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </a>
+                  <%
+                    }
+                    else if(day0.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                    {
+                  %>
+                  <a class="plans" href="openschedule_check.jsp?day=<%= day0 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num0 %>&year=<%= year %>&month=<%= month %>">
                   <div class="yotei">
-                  <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                  <%= list.get(j).get("place") %>
-                  <br>
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
                   </div>
                 </a>
                 <%
@@ -439,18 +483,32 @@ finally{
               String num1 = String.valueOf(num[1]);
               String day1 = year1+month1+num1;
               boolean flag1 = false;
+              boolean flag1_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day1.equals(list.get(j).get("day"))) {
                   flag1 = true;
                 }
+                if (day1.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag1_1 = true;
+                }
               }
             %>
             <%
-              if (flag1 == true) {
+              if (flag1 == true && flag1_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag1_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -468,13 +526,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day1.equals(list.get(j).get("day"))) {
+                  if (day1.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day1 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num1 %>&year=<%= year %>&month=<%= month %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day1 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num1 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day1.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day1 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num1 %>&year=<%= year %>&month=<%= month %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -508,18 +594,32 @@ finally{
               String num2 = String.valueOf(num[2]);
               String day2 = year2+month2+num2;
               boolean flag2 = false;
+              boolean flag2_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day2.equals(list.get(j).get("day"))) {
                   flag2 = true;
                 }
+                if (day2.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag2_1 = true;
+                }
               }
             %>
             <%
-              if (flag2 == true) {
+              if (flag2 == true && flag2_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag2_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -537,13 +637,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day2.equals(list.get(j).get("day"))) {
+                  if (day2.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day2 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num2 %>&year=<%= year %>&month=<%= month %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day2 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num2 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day2.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day2 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num2 %>&year=<%= year %>&month=<%= month %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -577,18 +705,32 @@ finally{
               String num3 = String.valueOf(num[3]);
               String day3 = year3+month3+num3;
               boolean flag3 = false;
+              boolean flag3_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day3.equals(list.get(j).get("day"))) {
                   flag3 = true;
                 }
+                if (day3.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag3_1 = true;
+                }
               }
             %>
             <%
-              if (flag3 == true) {
+              if (flag3 == true && flag3_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag3_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -606,13 +748,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day3.equals(list.get(j).get("day"))) {
+                  if (day3.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day3 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num3 %>&year=<%= year %>&month=<%= month %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day3 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num3 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day3.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day3 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num3 %>&year=<%= year %>&month=<%= month %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -646,18 +816,32 @@ finally{
               String num4 = String.valueOf(num[4]);
               String day4 = year4+month4+num4;
               boolean flag4 = false;
+              boolean flag4_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day4.equals(list.get(j).get("day"))) {
                   flag4 = true;
                 }
+                if (day4.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag4_1 = true;
+                }
               }
             %>
             <%
-              if (flag4 == true) {
+              if (flag4 == true && flag4_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag4_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -675,13 +859,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day4.equals(list.get(j).get("day"))) {
+                  if (day4.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day4 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num4 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day4 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num4 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day4.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day4 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num4 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -715,18 +927,32 @@ finally{
               String num5 = String.valueOf(num[5]);
               String day5 = year5+month5+num5;
               boolean flag5 = false;
+              boolean flag5_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day5.equals(list.get(j).get("day"))) {
                   flag5 = true;
                 }
+                if (day5.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag5_1 = true;
+                }
               }
             %>
             <%
-              if (flag5 == true) {
+              if (flag5 == true && flag5_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag5_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -744,13 +970,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day5.equals(list.get(j).get("day"))) {
+                  if (day5.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day5 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num5 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day5 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num5 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day5.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day5 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num5 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -777,18 +1031,32 @@ finally{
               String num6 = String.valueOf(num[6]);
               String day6 = year6+month6+num6;
               boolean flag6 = false;
+              boolean flag6_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day6.equals(list.get(j).get("day"))) {
                   flag6 = true;
                 }
+                if (day6.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag6_1 = true;
+                }
               }
             %>
             <%
-              if (flag6 == true) {
+              if (flag6 == true && flag6_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag6_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -806,18 +1074,47 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day6.equals(list.get(j).get("day"))) {
+                  if (day6.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day6 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num6 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day6 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num6 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day6.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                  <a class="plans" href="openschedule_check.jsp?day=<%= day6 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num6 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
                 <%
                     }
-                  }if (writing == 1 || user_hit == 1) {
+                  }
+                  if (writing == 1 || user_hit == 1) {
                 %>
                   <form action="./openschedule_make.jsp" method="post">
                     <input type="hidden" name="day" value="<%= year %><%= month+1 %><%= num[6] %>">
@@ -838,20 +1135,34 @@ finally{
             String num7 = String.valueOf(num[7]);
             String day7 = year7+month7+num7;
             boolean flag7 = false;
+            boolean flag7_1 = false;
             for(int j = 0; j < list.size(); j++){
               if (day7.equals(list.get(j).get("day"))) {
                 flag7 = true;
               }
+              if (day7.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+              {
+                flag7_1 = true;
+              }
             }
           %>
           <%
-            if (flag7 == true) {
+            if (flag7 == true && flag7_1 != true)
+            {
           %>
-              <td align="center" bgcolor="#fef263" style="color: #FF0000;">
+              <td align="center" bgcolor="#fef263" style="color: #666666;">
           <%
-        }else{
+            }
+              else if(flag7_1 == true)
+            {
           %>
-              <td align="center" bgcolor="#FFFFFF" style="color: #FF0000;">
+              <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+          <%
+            }
+            else
+            {
+          %>
+              <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
           <%
             }
           %>
@@ -867,13 +1178,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day7.equals(list.get(j).get("day"))) {
+                  if (day7.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day7 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num7 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day7 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num7 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day7.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day7 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num7 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -897,18 +1236,32 @@ finally{
               String num8 = String.valueOf(num[8]);
               String day8 = year8+month8+num8;
               boolean flag8 = false;
+              boolean flag8_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day8.equals(list.get(j).get("day"))) {
                   flag8 = true;
                 }
+                if (day8.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag8_1 = true;
+                }
               }
             %>
             <%
-              if (flag8 == true) {
+              if (flag8 == true && flag8_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag8_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -926,13 +1279,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day8.equals(list.get(j).get("day"))) {
+                  if (day8.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day8 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num8 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day8 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num8 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day8.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day8 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num8 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -956,18 +1337,32 @@ finally{
               String num9 = String.valueOf(num[9]);
               String day9 = year9+month9+num9;
               boolean flag9 = false;
+              boolean flag9_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day9.equals(list.get(j).get("day"))) {
                   flag9 = true;
                 }
+                if (day9.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag9_1 = true;
+                }
               }
             %>
             <%
-              if (flag9 == true) {
+              if (flag9 == true && flag9_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag9_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -985,13 +1380,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day9.equals(list.get(j).get("day"))) {
+                  if (day9.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day9 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num9 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day9 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num9 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day9.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day9 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num9 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1015,18 +1438,32 @@ finally{
               String num10 = String.valueOf(num[10]);
               String day10 = year10+month10+num10;
               boolean flag10 = false;
+              boolean flag10_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day10.equals(list.get(j).get("day"))) {
                   flag10 = true;
                 }
+                if (day10.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag10_1 = true;
+                }
               }
             %>
             <%
-              if (flag10 == true) {
+              if (flag10 == true && flag10_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag10_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1044,13 +1481,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day10.equals(list.get(j).get("day"))) {
+                  if (day10.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day10 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num10 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day10 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num10 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day10.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day10 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num10 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1074,18 +1539,32 @@ finally{
               String num11 = String.valueOf(num[11]);
               String day11 = year11+month11+num11;
               boolean flag11 = false;
+              boolean flag11_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day11.equals(list.get(j).get("day"))) {
                   flag11 = true;
                 }
+                if (day11.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag11_1 = true;
+                }
               }
             %>
             <%
-              if (flag11 == true) {
+              if (flag11 == true && flag11_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag11_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1103,13 +1582,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day11.equals(list.get(j).get("day"))) {
+                  if (day11.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day11 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num11 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day11 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num11 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day11.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day11 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num11 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1133,18 +1640,32 @@ finally{
               String num12 = String.valueOf(num[12]);
               String day12 = year12+month12+num12;
               boolean flag12 = false;
+              boolean flag12_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day12.equals(list.get(j).get("day"))) {
                   flag12 = true;
                 }
+                if (day12.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag12_1 = true;
+                }
               }
             %>
             <%
-              if (flag12 == true) {
+              if (flag12 == true && flag12_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag12_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1162,13 +1683,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day12.equals(list.get(j).get("day"))) {
+                  if (day12.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day12 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num12 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day12 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num12 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day12.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day12 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num12 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1192,18 +1741,32 @@ finally{
               String num13 = String.valueOf(num[13]);
               String day13 = year13+month13+num13;
               boolean flag13 = false;
+              boolean flag13_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day13.equals(list.get(j).get("day"))) {
                   flag13 = true;
                 }
+                if (day13.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag13_1 = true;
+                }
               }
             %>
             <%
-              if (flag13 == true) {
+              if (flag13 == true && flag13_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag13_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1221,13 +1784,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day13.equals(list.get(j).get("day"))) {
+                  if (day13.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day13 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num13 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day13 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num13 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day13.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day13 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num13 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1252,20 +1843,34 @@ finally{
             String num14 = String.valueOf(num[14]);
             String day14 = year14+month14+num14;
             boolean flag14 = false;
+            boolean flag14_1 = false;
             for(int j = 0; j < list.size(); j++){
               if (day14.equals(list.get(j).get("day"))) {
                 flag14 = true;
               }
+              if (day14.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+              {
+                flag14_1 = true;
+              }
             }
           %>
           <%
-            if (flag14 == true) {
+            if (flag14 == true && flag14_1 != true)
+            {
           %>
-              <td align="center" bgcolor="#fef263" style="color: #FF0000;">
+              <td align="center" bgcolor="#fef263" style="color: #666666;">
           <%
-        }else{
+            }
+              else if(flag14_1 == true)
+            {
           %>
-              <td align="center" bgcolor="#FFFFFF" style="color: #FF0000;">
+              <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+          <%
+            }
+            else
+            {
+          %>
+              <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
           <%
             }
           %>
@@ -1281,13 +1886,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day14.equals(list.get(j).get("day"))) {
+                  if (day14.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day14 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num14 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day14 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num14 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day14.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day14 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num14 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1311,18 +1944,32 @@ finally{
               String num15 = String.valueOf(num[15]);
               String day15 = year15+month15+num15;
               boolean flag15 = false;
+              boolean flag15_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day15.equals(list.get(j).get("day"))) {
                   flag15 = true;
                 }
+                if (day15.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag15_1 = true;
+                }
               }
             %>
             <%
-              if (flag15 == true) {
+              if (flag15 == true && flag15_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag15_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1340,13 +1987,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day15.equals(list.get(j).get("day"))) {
+                  if (day15.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day15 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num15 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day15 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num15 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day15.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day15 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num15 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1370,18 +2045,32 @@ finally{
               String num16 = String.valueOf(num[16]);
               String day16 = year16+month16+num16;
               boolean flag16 = false;
+              boolean flag16_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day16.equals(list.get(j).get("day"))) {
                   flag16 = true;
                 }
+                if (day16.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag16_1 = true;
+                }
               }
             %>
             <%
-              if (flag16 == true) {
+              if (flag16 == true && flag16_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag16_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1399,13 +2088,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day16.equals(list.get(j).get("day"))) {
+                  if (day16.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day16 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num16 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day16 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num16 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day16.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day16 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num16 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1429,18 +2146,32 @@ finally{
               String num17 = String.valueOf(num[17]);
               String day17 = year17+month17+num17;
               boolean flag17 = false;
+              boolean flag17_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day17.equals(list.get(j).get("day"))) {
                   flag17 = true;
                 }
+                if (day17.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag17_1 = true;
+                }
               }
             %>
             <%
-              if (flag17 == true) {
+              if (flag17 == true && flag17_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag17_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1458,13 +2189,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day17.equals(list.get(j).get("day"))) {
+                  if (day17.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day17 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num17 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day17 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num17 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day17.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day17 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num17 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1488,18 +2247,32 @@ finally{
               String num18 = String.valueOf(num[18]);
               String day18 = year18+month18+num18;
               boolean flag18 = false;
+              boolean flag18_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day18.equals(list.get(j).get("day"))) {
                   flag18 = true;
                 }
+                if (day18.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag18_1 = true;
+                }
               }
             %>
             <%
-              if (flag18 == true) {
+              if (flag18 == true && flag18_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag18_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1517,13 +2290,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day18.equals(list.get(j).get("day"))) {
+                  if (day18.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day18 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num18 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day18 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num18 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day18.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day18 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num18 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1547,18 +2348,32 @@ finally{
               String num19 = String.valueOf(num[19]);
               String day19 = year19+month19+num19;
               boolean flag19 = false;
+              boolean flag19_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day19.equals(list.get(j).get("day"))) {
                   flag19 = true;
                 }
+                if (day19.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag19_1 = true;
+                }
               }
             %>
             <%
-              if (flag19 == true) {
+              if (flag19 == true && flag19_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag19_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1576,13 +2391,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day19.equals(list.get(j).get("day"))) {
+                  if (day19.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day19 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num19 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day19 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num19 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day19.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day19 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num19 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1606,18 +2449,32 @@ finally{
               String num20 = String.valueOf(num[20]);
               String day20 = year20+month20+num20;
               boolean flag20 = false;
+              boolean flag20_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day20.equals(list.get(j).get("day"))) {
                   flag20 = true;
                 }
+                if (day20.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag20_1 = true;
+                }
               }
             %>
             <%
-              if (flag20 == true) {
+              if (flag20 == true && flag20_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag20_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1635,13 +2492,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day20.equals(list.get(j).get("day"))) {
+                  if (day20.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day20 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num20 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day20 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num20 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day20.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day20 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num20 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1667,20 +2552,34 @@ finally{
             String num21 = String.valueOf(num[21]);
             String day21 = year21+month21+num21;
             boolean flag21 = false;
+            boolean flag21_1 = false;
             for(int j = 0; j < list.size(); j++){
               if (day21.equals(list.get(j).get("day"))) {
                 flag21 = true;
               }
+              if (day21.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+              {
+                flag21_1 = true;
+              }
             }
           %>
           <%
-            if (flag21 == true) {
+            if (flag21 == true && flag21_1 != true)
+            {
           %>
-              <td align="center" bgcolor="#fef263" style="color: #FF0000;">
+              <td align="center" bgcolor="#fef263" style="color: #666666;">
           <%
-        }else{
+            }
+              else if(flag21_1 == true)
+            {
           %>
-              <td align="center" bgcolor="#FFFFFF" style="color: #FF0000;">
+              <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+          <%
+            }
+            else
+            {
+          %>
+              <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
           <%
             }
           %>
@@ -1696,13 +2595,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day21.equals(list.get(j).get("day"))) {
+                  if (day21.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day21 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num21 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day21 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num21 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day21.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day21 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num21 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1726,18 +2653,32 @@ finally{
               String num22 = String.valueOf(num[22]);
               String day22 = year22+month22+num22;
               boolean flag22 = false;
+              boolean flag22_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day22.equals(list.get(j).get("day"))) {
                   flag22 = true;
                 }
+                if (day22.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag22_1 = true;
+                }
               }
             %>
             <%
-              if (flag22 == true) {
+              if (flag22 == true && flag22_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag22_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1755,13 +2696,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day22.equals(list.get(j).get("day"))) {
+                  if (day22.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day22 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num22 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day22 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num22 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day22.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day22 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num22 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1785,18 +2754,32 @@ finally{
               String num23 = String.valueOf(num[23]);
               String day23 = year23+month23+num23;
               boolean flag23 = false;
+              boolean flag23_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day23.equals(list.get(j).get("day"))) {
                   flag23 = true;
                 }
+                if (day23.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag23_1 = true;
+                }
               }
             %>
             <%
-              if (flag23 == true) {
+              if (flag23 == true && flag23_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag23_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1814,13 +2797,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day23.equals(list.get(j).get("day"))) {
+                  if (day23.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day23 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num23 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day23 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num23 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day23.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day23 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num23 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1844,18 +2855,32 @@ finally{
               String num24 = String.valueOf(num[24]);
               String day24 = year24+month24+num24;
               boolean flag24 = false;
+              boolean flag24_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day24.equals(list.get(j).get("day"))) {
                   flag24 = true;
                 }
+                if (day24.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag24_1 = true;
+                }
               }
             %>
             <%
-              if (flag24 == true) {
+              if (flag24 == true && flag24_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag24_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1873,13 +2898,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day24.equals(list.get(j).get("day"))) {
+                  if (day24.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day24 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num24 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day24 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num24 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day24.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day24 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num24 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1903,18 +2956,32 @@ finally{
               String num25 = String.valueOf(num[25]);
               String day25 = year25+month25+num25;
               boolean flag25 = false;
+              boolean flag25_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day25.equals(list.get(j).get("day"))) {
                   flag25 = true;
                 }
+                if (day25.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag25_1 = true;
+                }
               }
             %>
             <%
-              if (flag25 == true) {
+              if (flag25 == true && flag25_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag25_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1932,13 +2999,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day25.equals(list.get(j).get("day"))) {
+                  if (day25.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day25 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num25 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day25 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num25 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day25.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day25 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num25 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -1962,18 +3057,32 @@ finally{
               String num26 = String.valueOf(num[26]);
               String day26 = year26+month26+num26;
               boolean flag26 = false;
+              boolean flag26_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day26.equals(list.get(j).get("day"))) {
                   flag26 = true;
                 }
+                if (day26.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag26_1 = true;
+                }
               }
             %>
             <%
-              if (flag26 == true) {
+              if (flag26 == true && flag26_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag26_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -1991,13 +3100,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day26.equals(list.get(j).get("day"))) {
+                  if (day26.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day26 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num26 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day26 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num26 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day26.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day26 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num26 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -2021,18 +3158,32 @@ finally{
               String num27 = String.valueOf(num[27]);
               String day27 = year27+month27+num27;
               boolean flag27 = false;
+              boolean flag27_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day27.equals(list.get(j).get("day"))) {
                   flag27 = true;
                 }
+                if (day27.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag27_1 = true;
+                }
               }
             %>
             <%
-              if (flag27 == true) {
+              if (flag27 == true && flag27_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag27_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -2050,13 +3201,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day27.equals(list.get(j).get("day"))) {
+                  if (day27.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day27 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num27 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day27 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num27 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day27.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day27 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num27 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -2089,20 +3268,34 @@ finally{
                 String num28 = String.valueOf(num[28]);
                 String day28 = year28+month28+num28;
                 boolean flag28 = false;
+                boolean flag28_1 = false;
                 for(int j = 0; j < list.size(); j++){
                   if (day28.equals(list.get(j).get("day"))) {
                     flag28 = true;
                   }
+                  if (day28.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                  {
+                    flag28_1 = true;
+                  }
                 }
               %>
               <%
-                if (flag28 == true) {
+                if (flag28 == true && flag28_1 != true)
+                {
               %>
-                  <td align="center" bgcolor="#fef263" style="color: #FF0000;">
+                  <td align="center" bgcolor="#fef263" style="color: #666666;">
               <%
-            }else{
+                }
+                  else if(flag28_1 == true)
+                {
               %>
-                  <td align="center" bgcolor="#FFFFFF" style="color: #FF0000;">
+                  <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+              <%
+                }
+                else
+                {
+              %>
+                  <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
               <%
                 }
               %>
@@ -2118,13 +3311,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day28.equals(list.get(j).get("day"))) {
+                  if (day28.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day28 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num28 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day28 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num28 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day28.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day28 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num28 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -2158,18 +3379,32 @@ finally{
               String num29 = String.valueOf(num[29]);
               String day29 = year29+month29+num29;
               boolean flag29 = false;
+              boolean flag29_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day29.equals(list.get(j).get("day"))) {
                   flag29 = true;
                 }
+                if (day29.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag29_1 = true;
+                }
               }
             %>
             <%
-              if (flag29 == true) {
+              if (flag29 == true && flag29_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag29_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -2187,13 +3422,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day29.equals(list.get(j).get("day"))) {
+                  if (day29.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day29 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num29 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day29 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num29 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day29.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day29 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num29 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -2227,18 +3490,32 @@ finally{
               String num30 = String.valueOf(num[30]);
               String day30 = year30+month30+num30;
               boolean flag30 = false;
+              boolean flag30_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day30.equals(list.get(j).get("day"))) {
                   flag30 = true;
                 }
+                if (day30.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag30_1 = true;
+                }
               }
             %>
             <%
-              if (flag30 == true) {
+              if (flag30 == true && flag30_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag30_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -2256,13 +3533,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day30.equals(list.get(j).get("day"))) {
+                  if (day30.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day30 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num30 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day30 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num30 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day30.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day30 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num30 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -2296,18 +3601,32 @@ finally{
               String num31 = String.valueOf(num[31]);
               String day31 = year31+month31+num31;
               boolean flag31 = false;
+              boolean flag31_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day31.equals(list.get(j).get("day"))) {
                   flag31 = true;
                 }
+                if (day31.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag31_1 = true;
+                }
               }
             %>
             <%
-              if (flag31 == true) {
+              if (flag31 == true && flag31_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag31_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -2325,13 +3644,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day31.equals(list.get(j).get("day"))) {
+                  if (day31.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day31 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num31 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day31 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num31 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day31.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day31 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num31 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -2365,18 +3712,32 @@ finally{
               String num32 = String.valueOf(num[32]);
               String day32 = year32+month32+num32;
               boolean flag32 = false;
+              boolean flag32_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day32.equals(list.get(j).get("day"))) {
                   flag32 = true;
                 }
+                if (day32.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag32_1 = true;
+                }
               }
             %>
             <%
-              if (flag32 == true) {
+              if (flag32 == true && flag32_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag32_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -2394,13 +3755,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day32.equals(list.get(j).get("day"))) {
+                  if (day32.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day32 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num32 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day32 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num32 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day32.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day32 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num32 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -2434,18 +3823,32 @@ finally{
               String num33 = String.valueOf(num[33]);
               String day33 = year33+month33+num33;
               boolean flag33 = false;
+              boolean flag33_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day33.equals(list.get(j).get("day"))) {
                   flag33 = true;
                 }
+                if (day33.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag33_1 = true;
+                }
               }
             %>
             <%
-              if (flag33 == true) {
+              if (flag33 == true && flag33_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag33_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -2463,13 +3866,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day33.equals(list.get(j).get("day"))) {
+                  if (day33.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day33 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num33 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day33 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num33 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day33.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day33 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num33 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -2503,18 +3934,32 @@ finally{
               String num34 = String.valueOf(num[34]);
               String day34 = year34+month34+num34;
               boolean flag34 = false;
+              boolean flag34_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day34.equals(list.get(j).get("day"))) {
                   flag34 = true;
                 }
+                if (day34.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag34_1 = true;
+                }
               }
             %>
             <%
-              if (flag34 == true) {
+              if (flag34 == true && flag34_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag34_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -2531,14 +3976,42 @@ finally{
                 <%
                   for(int j = 0; j < list.size(); j++){
                 %>
-                <%
-                  if (day34.equals(list.get(j).get("day"))) {
+                <<%
+                  if (day34.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day34 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num34 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day34 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num34 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day34.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day34 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num34 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -2574,20 +4047,34 @@ finally{
               String num35 = String.valueOf(num[35]);
               String day35 = year35+month35+num35;
               boolean flag35 = false;
+              boolean flag35_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day35.equals(list.get(j).get("day"))) {
                   flag35 = true;
                 }
+                if (day35.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag35_1 = true;
+                }
               }
             %>
             <%
-              if (flag35 == true) {
+              if (flag35 == true && flag35_1 != true)
+              {
             %>
-                <td align="center" bgcolor="#fef263" style="color: #FF0000;">
+                <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag35_1 == true)
+              {
             %>
-                <td align="center" bgcolor="#FFFFFF" style="color: #FF0000;">
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
+            %>
+                <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
               }
             %>
@@ -2603,13 +4090,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day35.equals(list.get(j).get("day"))) {
+                  if (day35.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day35 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num35 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day35 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num35 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day35.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day35 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num35 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%
@@ -2643,18 +4158,32 @@ finally{
               String num36 = String.valueOf(num[36]);
               String day36 = year36+month36+num36;
               boolean flag36 = false;
+              boolean flag36_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day36.equals(list.get(j).get("day"))) {
                   flag36 = true;
                 }
+                if (day36.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag36_1 = true;
+                }
               }
             %>
             <%
-              if (flag36 == true) {
+              if (flag36 == true && flag36_1 != true)
+              {
             %>
                 <td align="center" bgcolor="#fef263" style="color: #666666;">
             <%
-          }else{
+              }
+                else if(flag36_1 == true)
+              {
+            %>
+                <td align="center" bgcolor="#ff7f50" style="color: #666666;">
+            <%
+              }
+              else
+              {
             %>
                 <td align="center" bgcolor="#FFFFFF" style="color: #666666;">
             <%
@@ -2672,13 +4201,41 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 %>
                 <%
-                  if (day36.equals(list.get(j).get("day"))) {
+                  if (day36.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 %>
-                <a href="openschedule_check.jsp?day=<%= day36 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num36 %>">
+                  <a class="plans1" href="openschedule_check.jsp?day=<%= day36 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num36 %>">
+                  <div class="yotei">
+                    <table>
+                      <tr class="no-line">
+                        <td class="no-line">
+                          <%= list.get(j).get("kaiin_name") %>
+                        </td>
+                        <td class="no-line2">
+                          <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                          <%= list.get(j).get("place") %>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+                <%
+                  }
+                  else if(day36.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                %>
+                <a class="plans" href="openschedule_check.jsp?day=<%= day36 %>&s_hour=<%= list.get(j).get("s_hour") %>&s_mine=<%= list.get(j).get("s_mine") %>&num=<%= num36 %>">
                 <div class="yotei">
-                <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
-                <%= list.get(j).get("place") %>
-                <br>
+                  <table>
+                    <tr class="no-line">
+                      <td class="no-line">
+                        <%= list.get(j).get("kaiin_name") %>
+                      </td>
+                      <td class="no-line2">
+                        <%= list.get(j).get("s_hour") %>時<%= list.get(j).get("s_mine") %>分～
+                        <%= list.get(j).get("place") %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </a>
               <%

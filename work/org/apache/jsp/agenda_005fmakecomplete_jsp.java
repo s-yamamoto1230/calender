@@ -62,7 +62,7 @@ public final class agenda_005fmakecomplete_jsp extends org.apache.jasper.runtime
   String idStr = request.getParameter("id");
   String titleStr = request.getParameter("title");
   String openStr = request.getParameter("open");
-  String passStr = request.getParameter("pass");
+  String passStr = request.getParameter("password");
   String permissionStr = request.getParameter("permission");
   String session_id = (String)session.getAttribute("login_id");
 

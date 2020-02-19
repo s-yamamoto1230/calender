@@ -59,6 +59,7 @@ public final class openschedule_005fmakecomplete_jsp extends org.apache.jasper.r
   response.setCharacterEncoding("UTF-8");
 
   //入力データ受信
+  String session_id = (String)session.getAttribute("login_id");
   String yotei_ids = (String)session.getAttribute("yotei_id");
   String dayStr = request.getParameter("day");
   String s_hourStr = request.getParameter("s_hour");
@@ -141,7 +142,7 @@ public final class openschedule_005fmakecomplete_jsp extends org.apache.jasper.r
     SQL=new StringBuffer();
 
     //SQL文の構築
-    SQL.append("insert into openyotei_tbl(yotei_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance)");
+    SQL.append("insert into openyotei_tbl(yotei_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance,kaiin_id)");
     SQL.append("values('");
     SQL.append(yotei_ids);
     SQL.append("','");
@@ -160,6 +161,8 @@ public final class openschedule_005fmakecomplete_jsp extends org.apache.jasper.r
     SQL.append(detailsStr);
     SQL.append("','");
     SQL.append(importanceStr);
+    SQL.append("','");
+    SQL.append(session_id);
     SQL.append("')");
     }
 

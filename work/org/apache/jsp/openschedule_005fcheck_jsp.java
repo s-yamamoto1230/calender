@@ -116,7 +116,7 @@ public final class openschedule_005fcheck_jsp extends org.apache.jasper.runtime.
     SQL = new StringBuffer();
 
     //SQL文の構築（選択クエリ）
-    SQL.append("select openyotei_tbl.yotei_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance,yotei_writing from openyotei_tbl,open_tbl where openyotei_tbl.yotei_id=open_tbl.yotei_id and openyotei_tbl.yotei_id = '");
+    SQL.append("select openyotei_tbl.yotei_id,day,s_hour,s_mine,f_hour,f_mine,place,details,importance,yotei_writing,kaiin_name from openyotei_tbl,open_tbl,kaiin_tbl  where kaiin_tbl.kaiin_id = openyotei_tbl.kaiin_id and openyotei_tbl.yotei_id=open_tbl.yotei_id and openyotei_tbl.yotei_id = '");
     SQL.append(yotei_ids);
     SQL.append("' and day ='");
     SQL.append(dayStr);
@@ -147,6 +147,7 @@ public final class openschedule_005fcheck_jsp extends org.apache.jasper.runtime.
       map.put("details",rs.getString("details"));
       map.put("importance",rs.getString("importance"));
       map.put("yotei_writing",rs.getString("yotei_writing"));
+      map.put("kaiin_name",rs.getString("kaiin_name"));
 
       //1件分のデータ(HashMap)をArrayListへ追加
       list.add(map);
@@ -256,8 +257,11 @@ public final class openschedule_005fcheck_jsp extends org.apache.jasper.runtime.
       out.print( list.get(0).get("s_hour") );
       out.write('時');
       out.print( list.get(0).get("s_mine") );
-      out.write("分からの予定詳細\r\n");
+      out.write("分からの");
+      out.print( list.get(0).get("kaiin_name") );
+      out.write("さんの予定詳細\r\n");
       out.write("</h1>\r\n");
+      out.write("\r\n");
       out.write("<table>\r\n");
       out.write("  <tr>\r\n");
       out.write("    <td>\r\n");

@@ -250,9 +250,9 @@ try{	// ロードに失敗したときのための例外処理
   SQL = new StringBuffer();
 
   //SQL文の発行（選択クエリ）
-  SQL.append("select kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,yotei_name from open_tbl,openyotei_tbl where open_tbl.yotei_id = openyotei_tbl.yotei_id and openyotei_tbl.yotei_id = '");
+  SQL.append("select open_tbl.kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,importance,yotei_name,kaiin_name from open_tbl,openyotei_tbl,kaiin_tbl where kaiin_tbl.kaiin_id = openyotei_tbl.kaiin_id and open_tbl.yotei_id = openyotei_tbl.yotei_id and openyotei_tbl.yotei_id = '");
   SQL.append(yotei_ids);
-  SQL.append("'");
+  SQL.append("' order by s_hour ASC");
 
   //SQL文の発行（選択クエリ）
   rs = stmt.executeQuery(SQL.toString());
@@ -268,7 +268,9 @@ try{	// ロードに失敗したときのための例外処理
     map.put("f_hour",rs.getString("f_hour"));
     map.put("f_mine",rs.getString("f_mine"));
     map.put("place",rs.getString("place"));
+    map.put("importance",rs.getString("importance"));
     map.put("yotei_name",rs.getString("yotei_name"));
+    map.put("kaiin_name",rs.getString("kaiin_name"));
 
     //1件分のデータ(HashMap)をArrayListへ追加
     list.add(map);
@@ -479,25 +481,41 @@ finally{
               String num0 = String.valueOf(num[0]);
               String day0 = year0+month0+num0;
               boolean flag0 = false;
+              boolean flag0_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day0.equals(list.get(j).get("day"))) {
                   flag0 = true;
+                }
+                if (day0.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag0_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag0 == true) {
+              if (flag0 == true && flag0_1 != true)
+              {
             
       out.write("\r\n");
-      out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #FF0000;\">\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag0_1 == true)
+              {
             
       out.write("\r\n");
-      out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #FF0000;\">\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
               }
@@ -522,10 +540,48 @@ finally{
       out.write("\r\n");
       out.write("                  ");
 
-                    if (day0.equals(list.get(j).get("day"))) {
+                    if (day0.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                   
       out.write("\r\n");
-      out.write("                  <a href=\"openschedule_check.jsp?day=");
+      out.write("                    <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day0 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num0 );
+      out.write("\">\r\n");
+      out.write("                    <div class=\"yotei\">\r\n");
+      out.write("                      <table>\r\n");
+      out.write("                        <tr class=\"no-line\">\r\n");
+      out.write("                          <td class=\"no-line\">\r\n");
+      out.write("                            ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                          </td>\r\n");
+      out.write("                          <td class=\"no-line2\">\r\n");
+      out.write("                            ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                            ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                          </td>\r\n");
+      out.write("                        </tr>\r\n");
+      out.write("                      </table>\r\n");
+      out.write("                    </div>\r\n");
+      out.write("                  </a>\r\n");
+      out.write("                  ");
+
+                    }
+                    else if(day0.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                    {
+                  
+      out.write("\r\n");
+      out.write("                  <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day0 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -539,15 +595,25 @@ finally{
       out.print( month );
       out.write("\">\r\n");
       out.write("                  <div class=\"yotei\">\r\n");
-      out.write("                  ");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                  ");
+      out.write("                          ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                  <br>\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
       out.write("                  </div>\r\n");
       out.write("                </a>\r\n");
       out.write("                ");
@@ -595,22 +661,38 @@ finally{
               String num1 = String.valueOf(num[1]);
               String day1 = year1+month1+num1;
               boolean flag1 = false;
+              boolean flag1_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day1.equals(list.get(j).get("day"))) {
                   flag1 = true;
+                }
+                if (day1.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag1_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag1 == true) {
+              if (flag1 == true && flag1_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag1_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -638,10 +720,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day1.equals(list.get(j).get("day"))) {
+                  if (day1.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day1 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num1 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day1.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day1 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -655,15 +775,25 @@ finally{
       out.print( month );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -711,22 +841,38 @@ finally{
               String num2 = String.valueOf(num[2]);
               String day2 = year2+month2+num2;
               boolean flag2 = false;
+              boolean flag2_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day2.equals(list.get(j).get("day"))) {
                   flag2 = true;
+                }
+                if (day2.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag2_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag2 == true) {
+              if (flag2 == true && flag2_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag2_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -754,10 +900,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day2.equals(list.get(j).get("day"))) {
+                  if (day2.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day2 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num2 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day2.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day2 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -771,15 +955,25 @@ finally{
       out.print( month );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -827,22 +1021,38 @@ finally{
               String num3 = String.valueOf(num[3]);
               String day3 = year3+month3+num3;
               boolean flag3 = false;
+              boolean flag3_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day3.equals(list.get(j).get("day"))) {
                   flag3 = true;
+                }
+                if (day3.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag3_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag3 == true) {
+              if (flag3 == true && flag3_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag3_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -870,10 +1080,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day3.equals(list.get(j).get("day"))) {
+                  if (day3.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day3 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num3 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day3.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day3 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -887,15 +1135,25 @@ finally{
       out.print( month );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -943,22 +1201,38 @@ finally{
               String num4 = String.valueOf(num[4]);
               String day4 = year4+month4+num4;
               boolean flag4 = false;
+              boolean flag4_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day4.equals(list.get(j).get("day"))) {
                   flag4 = true;
+                }
+                if (day4.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag4_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag4 == true) {
+              if (flag4 == true && flag4_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag4_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -986,10 +1260,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day4.equals(list.get(j).get("day"))) {
+                  if (day4.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day4 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num4 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day4.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day4 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -999,15 +1311,25 @@ finally{
       out.print( num4 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -1055,22 +1377,38 @@ finally{
               String num5 = String.valueOf(num[5]);
               String day5 = year5+month5+num5;
               boolean flag5 = false;
+              boolean flag5_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day5.equals(list.get(j).get("day"))) {
                   flag5 = true;
+                }
+                if (day5.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag5_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag5 == true) {
+              if (flag5 == true && flag5_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag5_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -1098,10 +1436,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day5.equals(list.get(j).get("day"))) {
+                  if (day5.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day5 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num5 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day5.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day5 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1111,15 +1487,25 @@ finally{
       out.print( num5 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -1156,22 +1542,38 @@ finally{
               String num6 = String.valueOf(num[6]);
               String day6 = year6+month6+num6;
               boolean flag6 = false;
+              boolean flag6_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day6.equals(list.get(j).get("day"))) {
                   flag6 = true;
+                }
+                if (day6.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag6_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag6 == true) {
+              if (flag6 == true && flag6_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag6_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -1199,10 +1601,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day6.equals(list.get(j).get("day"))) {
+                  if (day6.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day6 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num6 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day6.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                  <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day6 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1212,21 +1652,32 @@ finally{
       out.print( num6 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("                ");
 
                     }
-                  }if (writing == 1 || user_hit == 1) {
+                  }
+                  if (writing == 1 || user_hit == 1) {
                 
       out.write("\r\n");
       out.write("                  <form action=\"./openschedule_make.jsp\" method=\"post\">\r\n");
@@ -1255,25 +1706,41 @@ finally{
             String num7 = String.valueOf(num[7]);
             String day7 = year7+month7+num7;
             boolean flag7 = false;
+            boolean flag7_1 = false;
             for(int j = 0; j < list.size(); j++){
               if (day7.equals(list.get(j).get("day"))) {
                 flag7 = true;
+              }
+              if (day7.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+              {
+                flag7_1 = true;
               }
             }
           
       out.write("\r\n");
       out.write("          ");
 
-            if (flag7 == true) {
+            if (flag7 == true && flag7_1 != true)
+            {
           
       out.write("\r\n");
-      out.write("              <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #FF0000;\">\r\n");
+      out.write("              <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("          ");
 
-        }else{
+            }
+              else if(flag7_1 == true)
+            {
           
       out.write("\r\n");
-      out.write("              <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #FF0000;\">\r\n");
+      out.write("              <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("          ");
+
+            }
+            else
+            {
+          
+      out.write("\r\n");
+      out.write("              <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("          ");
 
             }
@@ -1298,10 +1765,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day7.equals(list.get(j).get("day"))) {
+                  if (day7.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day7 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num7 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day7.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day7 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1311,15 +1816,25 @@ finally{
       out.print( num7 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -1352,22 +1867,38 @@ finally{
               String num8 = String.valueOf(num[8]);
               String day8 = year8+month8+num8;
               boolean flag8 = false;
+              boolean flag8_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day8.equals(list.get(j).get("day"))) {
                   flag8 = true;
+                }
+                if (day8.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag8_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag8 == true) {
+              if (flag8 == true && flag8_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag8_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -1395,10 +1926,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day8.equals(list.get(j).get("day"))) {
+                  if (day8.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day8 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num8 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day8.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day8 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1408,15 +1977,25 @@ finally{
       out.print( num8 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -1449,22 +2028,38 @@ finally{
               String num9 = String.valueOf(num[9]);
               String day9 = year9+month9+num9;
               boolean flag9 = false;
+              boolean flag9_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day9.equals(list.get(j).get("day"))) {
                   flag9 = true;
+                }
+                if (day9.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag9_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag9 == true) {
+              if (flag9 == true && flag9_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag9_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -1492,10 +2087,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day9.equals(list.get(j).get("day"))) {
+                  if (day9.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day9 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num9 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day9.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day9 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1505,15 +2138,25 @@ finally{
       out.print( num9 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -1546,22 +2189,38 @@ finally{
               String num10 = String.valueOf(num[10]);
               String day10 = year10+month10+num10;
               boolean flag10 = false;
+              boolean flag10_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day10.equals(list.get(j).get("day"))) {
                   flag10 = true;
+                }
+                if (day10.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag10_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag10 == true) {
+              if (flag10 == true && flag10_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag10_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -1589,10 +2248,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day10.equals(list.get(j).get("day"))) {
+                  if (day10.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day10 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num10 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day10.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day10 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1602,15 +2299,25 @@ finally{
       out.print( num10 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -1643,22 +2350,38 @@ finally{
               String num11 = String.valueOf(num[11]);
               String day11 = year11+month11+num11;
               boolean flag11 = false;
+              boolean flag11_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day11.equals(list.get(j).get("day"))) {
                   flag11 = true;
+                }
+                if (day11.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag11_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag11 == true) {
+              if (flag11 == true && flag11_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag11_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -1686,10 +2409,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day11.equals(list.get(j).get("day"))) {
+                  if (day11.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day11 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num11 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day11.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day11 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1699,15 +2460,25 @@ finally{
       out.print( num11 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -1740,22 +2511,38 @@ finally{
               String num12 = String.valueOf(num[12]);
               String day12 = year12+month12+num12;
               boolean flag12 = false;
+              boolean flag12_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day12.equals(list.get(j).get("day"))) {
                   flag12 = true;
+                }
+                if (day12.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag12_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag12 == true) {
+              if (flag12 == true && flag12_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag12_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -1783,10 +2570,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day12.equals(list.get(j).get("day"))) {
+                  if (day12.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day12 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num12 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day12.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day12 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1796,15 +2621,25 @@ finally{
       out.print( num12 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -1837,22 +2672,38 @@ finally{
               String num13 = String.valueOf(num[13]);
               String day13 = year13+month13+num13;
               boolean flag13 = false;
+              boolean flag13_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day13.equals(list.get(j).get("day"))) {
                   flag13 = true;
+                }
+                if (day13.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag13_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag13 == true) {
+              if (flag13 == true && flag13_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag13_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -1880,10 +2731,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day13.equals(list.get(j).get("day"))) {
+                  if (day13.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day13 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num13 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day13.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day13 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1893,15 +2782,25 @@ finally{
       out.print( num13 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -1935,25 +2834,41 @@ finally{
             String num14 = String.valueOf(num[14]);
             String day14 = year14+month14+num14;
             boolean flag14 = false;
+            boolean flag14_1 = false;
             for(int j = 0; j < list.size(); j++){
               if (day14.equals(list.get(j).get("day"))) {
                 flag14 = true;
+              }
+              if (day14.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+              {
+                flag14_1 = true;
               }
             }
           
       out.write("\r\n");
       out.write("          ");
 
-            if (flag14 == true) {
+            if (flag14 == true && flag14_1 != true)
+            {
           
       out.write("\r\n");
-      out.write("              <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #FF0000;\">\r\n");
+      out.write("              <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("          ");
 
-        }else{
+            }
+              else if(flag14_1 == true)
+            {
           
       out.write("\r\n");
-      out.write("              <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #FF0000;\">\r\n");
+      out.write("              <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("          ");
+
+            }
+            else
+            {
+          
+      out.write("\r\n");
+      out.write("              <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("          ");
 
             }
@@ -1978,10 +2893,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day14.equals(list.get(j).get("day"))) {
+                  if (day14.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day14 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num14 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day14.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day14 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -1991,15 +2944,25 @@ finally{
       out.print( num14 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -2032,22 +2995,38 @@ finally{
               String num15 = String.valueOf(num[15]);
               String day15 = year15+month15+num15;
               boolean flag15 = false;
+              boolean flag15_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day15.equals(list.get(j).get("day"))) {
                   flag15 = true;
+                }
+                if (day15.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag15_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag15 == true) {
+              if (flag15 == true && flag15_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag15_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -2075,10 +3054,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day15.equals(list.get(j).get("day"))) {
+                  if (day15.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day15 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num15 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day15.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day15 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2088,15 +3105,25 @@ finally{
       out.print( num15 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -2129,22 +3156,38 @@ finally{
               String num16 = String.valueOf(num[16]);
               String day16 = year16+month16+num16;
               boolean flag16 = false;
+              boolean flag16_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day16.equals(list.get(j).get("day"))) {
                   flag16 = true;
+                }
+                if (day16.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag16_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag16 == true) {
+              if (flag16 == true && flag16_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag16_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -2172,10 +3215,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day16.equals(list.get(j).get("day"))) {
+                  if (day16.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day16 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num16 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day16.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day16 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2185,15 +3266,25 @@ finally{
       out.print( num16 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -2226,22 +3317,38 @@ finally{
               String num17 = String.valueOf(num[17]);
               String day17 = year17+month17+num17;
               boolean flag17 = false;
+              boolean flag17_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day17.equals(list.get(j).get("day"))) {
                   flag17 = true;
+                }
+                if (day17.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag17_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag17 == true) {
+              if (flag17 == true && flag17_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag17_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -2269,10 +3376,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day17.equals(list.get(j).get("day"))) {
+                  if (day17.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day17 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num17 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day17.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day17 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2282,15 +3427,25 @@ finally{
       out.print( num17 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -2323,22 +3478,38 @@ finally{
               String num18 = String.valueOf(num[18]);
               String day18 = year18+month18+num18;
               boolean flag18 = false;
+              boolean flag18_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day18.equals(list.get(j).get("day"))) {
                   flag18 = true;
+                }
+                if (day18.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag18_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag18 == true) {
+              if (flag18 == true && flag18_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag18_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -2366,10 +3537,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day18.equals(list.get(j).get("day"))) {
+                  if (day18.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day18 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num18 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day18.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day18 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2379,15 +3588,25 @@ finally{
       out.print( num18 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -2420,22 +3639,38 @@ finally{
               String num19 = String.valueOf(num[19]);
               String day19 = year19+month19+num19;
               boolean flag19 = false;
+              boolean flag19_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day19.equals(list.get(j).get("day"))) {
                   flag19 = true;
+                }
+                if (day19.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag19_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag19 == true) {
+              if (flag19 == true && flag19_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag19_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -2463,10 +3698,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day19.equals(list.get(j).get("day"))) {
+                  if (day19.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day19 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num19 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day19.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day19 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2476,15 +3749,25 @@ finally{
       out.print( num19 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -2517,22 +3800,38 @@ finally{
               String num20 = String.valueOf(num[20]);
               String day20 = year20+month20+num20;
               boolean flag20 = false;
+              boolean flag20_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day20.equals(list.get(j).get("day"))) {
                   flag20 = true;
+                }
+                if (day20.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag20_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag20 == true) {
+              if (flag20 == true && flag20_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag20_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -2560,10 +3859,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day20.equals(list.get(j).get("day"))) {
+                  if (day20.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day20 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num20 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day20.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day20 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2573,15 +3910,25 @@ finally{
       out.print( num20 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -2616,25 +3963,41 @@ finally{
             String num21 = String.valueOf(num[21]);
             String day21 = year21+month21+num21;
             boolean flag21 = false;
+            boolean flag21_1 = false;
             for(int j = 0; j < list.size(); j++){
               if (day21.equals(list.get(j).get("day"))) {
                 flag21 = true;
+              }
+              if (day21.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+              {
+                flag21_1 = true;
               }
             }
           
       out.write("\r\n");
       out.write("          ");
 
-            if (flag21 == true) {
+            if (flag21 == true && flag21_1 != true)
+            {
           
       out.write("\r\n");
-      out.write("              <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #FF0000;\">\r\n");
+      out.write("              <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("          ");
 
-        }else{
+            }
+              else if(flag21_1 == true)
+            {
           
       out.write("\r\n");
-      out.write("              <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #FF0000;\">\r\n");
+      out.write("              <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("          ");
+
+            }
+            else
+            {
+          
+      out.write("\r\n");
+      out.write("              <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("          ");
 
             }
@@ -2659,10 +4022,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day21.equals(list.get(j).get("day"))) {
+                  if (day21.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day21 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num21 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day21.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day21 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2672,15 +4073,25 @@ finally{
       out.print( num21 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -2713,22 +4124,38 @@ finally{
               String num22 = String.valueOf(num[22]);
               String day22 = year22+month22+num22;
               boolean flag22 = false;
+              boolean flag22_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day22.equals(list.get(j).get("day"))) {
                   flag22 = true;
+                }
+                if (day22.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag22_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag22 == true) {
+              if (flag22 == true && flag22_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag22_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -2756,10 +4183,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day22.equals(list.get(j).get("day"))) {
+                  if (day22.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day22 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num22 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day22.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day22 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2769,15 +4234,25 @@ finally{
       out.print( num22 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -2810,22 +4285,38 @@ finally{
               String num23 = String.valueOf(num[23]);
               String day23 = year23+month23+num23;
               boolean flag23 = false;
+              boolean flag23_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day23.equals(list.get(j).get("day"))) {
                   flag23 = true;
+                }
+                if (day23.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag23_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag23 == true) {
+              if (flag23 == true && flag23_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag23_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -2853,10 +4344,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day23.equals(list.get(j).get("day"))) {
+                  if (day23.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day23 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num23 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day23.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day23 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2866,15 +4395,25 @@ finally{
       out.print( num23 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -2907,22 +4446,38 @@ finally{
               String num24 = String.valueOf(num[24]);
               String day24 = year24+month24+num24;
               boolean flag24 = false;
+              boolean flag24_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day24.equals(list.get(j).get("day"))) {
                   flag24 = true;
+                }
+                if (day24.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag24_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag24 == true) {
+              if (flag24 == true && flag24_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag24_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -2950,10 +4505,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day24.equals(list.get(j).get("day"))) {
+                  if (day24.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day24 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num24 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day24.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day24 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -2963,15 +4556,25 @@ finally{
       out.print( num24 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -3004,22 +4607,38 @@ finally{
               String num25 = String.valueOf(num[25]);
               String day25 = year25+month25+num25;
               boolean flag25 = false;
+              boolean flag25_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day25.equals(list.get(j).get("day"))) {
                   flag25 = true;
+                }
+                if (day25.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag25_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag25 == true) {
+              if (flag25 == true && flag25_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag25_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -3047,10 +4666,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day25.equals(list.get(j).get("day"))) {
+                  if (day25.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day25 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num25 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day25.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day25 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3060,15 +4717,25 @@ finally{
       out.print( num25 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -3101,22 +4768,38 @@ finally{
               String num26 = String.valueOf(num[26]);
               String day26 = year26+month26+num26;
               boolean flag26 = false;
+              boolean flag26_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day26.equals(list.get(j).get("day"))) {
                   flag26 = true;
+                }
+                if (day26.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag26_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag26 == true) {
+              if (flag26 == true && flag26_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag26_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -3144,10 +4827,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day26.equals(list.get(j).get("day"))) {
+                  if (day26.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day26 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num26 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day26.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day26 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3157,15 +4878,25 @@ finally{
       out.print( num26 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -3198,22 +4929,38 @@ finally{
               String num27 = String.valueOf(num[27]);
               String day27 = year27+month27+num27;
               boolean flag27 = false;
+              boolean flag27_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day27.equals(list.get(j).get("day"))) {
                   flag27 = true;
+                }
+                if (day27.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag27_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag27 == true) {
+              if (flag27 == true && flag27_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag27_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -3241,10 +4988,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day27.equals(list.get(j).get("day"))) {
+                  if (day27.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day27 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num27 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day27.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day27 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3254,15 +5039,25 @@ finally{
       out.print( num27 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -3307,25 +5102,41 @@ finally{
                 String num28 = String.valueOf(num[28]);
                 String day28 = year28+month28+num28;
                 boolean flag28 = false;
+                boolean flag28_1 = false;
                 for(int j = 0; j < list.size(); j++){
                   if (day28.equals(list.get(j).get("day"))) {
                     flag28 = true;
+                  }
+                  if (day28.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                  {
+                    flag28_1 = true;
                   }
                 }
               
       out.write("\r\n");
       out.write("              ");
 
-                if (flag28 == true) {
+                if (flag28 == true && flag28_1 != true)
+                {
               
       out.write("\r\n");
-      out.write("                  <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #FF0000;\">\r\n");
+      out.write("                  <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("              ");
 
-            }else{
+                }
+                  else if(flag28_1 == true)
+                {
               
       out.write("\r\n");
-      out.write("                  <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #FF0000;\">\r\n");
+      out.write("                  <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("              ");
+
+                }
+                else
+                {
+              
+      out.write("\r\n");
+      out.write("                  <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("              ");
 
                 }
@@ -3350,10 +5161,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day28.equals(list.get(j).get("day"))) {
+                  if (day28.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day28 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num28 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day28.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day28 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3363,15 +5212,25 @@ finally{
       out.print( num28 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -3419,22 +5278,38 @@ finally{
               String num29 = String.valueOf(num[29]);
               String day29 = year29+month29+num29;
               boolean flag29 = false;
+              boolean flag29_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day29.equals(list.get(j).get("day"))) {
                   flag29 = true;
+                }
+                if (day29.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag29_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag29 == true) {
+              if (flag29 == true && flag29_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag29_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -3462,10 +5337,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day29.equals(list.get(j).get("day"))) {
+                  if (day29.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day29 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num29 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day29.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day29 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3475,15 +5388,25 @@ finally{
       out.print( num29 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -3531,22 +5454,38 @@ finally{
               String num30 = String.valueOf(num[30]);
               String day30 = year30+month30+num30;
               boolean flag30 = false;
+              boolean flag30_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day30.equals(list.get(j).get("day"))) {
                   flag30 = true;
+                }
+                if (day30.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag30_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag30 == true) {
+              if (flag30 == true && flag30_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag30_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -3574,10 +5513,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day30.equals(list.get(j).get("day"))) {
+                  if (day30.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day30 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num30 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day30.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day30 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3587,15 +5564,25 @@ finally{
       out.print( num30 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -3643,22 +5630,38 @@ finally{
               String num31 = String.valueOf(num[31]);
               String day31 = year31+month31+num31;
               boolean flag31 = false;
+              boolean flag31_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day31.equals(list.get(j).get("day"))) {
                   flag31 = true;
+                }
+                if (day31.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag31_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag31 == true) {
+              if (flag31 == true && flag31_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag31_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -3686,10 +5689,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day31.equals(list.get(j).get("day"))) {
+                  if (day31.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day31 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num31 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day31.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day31 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3699,15 +5740,25 @@ finally{
       out.print( num31 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -3755,22 +5806,38 @@ finally{
               String num32 = String.valueOf(num[32]);
               String day32 = year32+month32+num32;
               boolean flag32 = false;
+              boolean flag32_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day32.equals(list.get(j).get("day"))) {
                   flag32 = true;
+                }
+                if (day32.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag32_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag32 == true) {
+              if (flag32 == true && flag32_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag32_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -3798,10 +5865,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day32.equals(list.get(j).get("day"))) {
+                  if (day32.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day32 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num32 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day32.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day32 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3811,15 +5916,25 @@ finally{
       out.print( num32 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -3867,22 +5982,38 @@ finally{
               String num33 = String.valueOf(num[33]);
               String day33 = year33+month33+num33;
               boolean flag33 = false;
+              boolean flag33_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day33.equals(list.get(j).get("day"))) {
                   flag33 = true;
+                }
+                if (day33.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag33_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag33 == true) {
+              if (flag33 == true && flag33_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag33_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -3910,10 +6041,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day33.equals(list.get(j).get("day"))) {
+                  if (day33.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day33 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num33 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day33.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day33 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -3923,15 +6092,25 @@ finally{
       out.print( num33 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -3979,22 +6158,38 @@ finally{
               String num34 = String.valueOf(num[34]);
               String day34 = year34+month34+num34;
               boolean flag34 = false;
+              boolean flag34_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day34.equals(list.get(j).get("day"))) {
                   flag34 = true;
+                }
+                if (day34.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag34_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag34 == true) {
+              if (flag34 == true && flag34_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag34_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -4020,12 +6215,50 @@ finally{
                   for(int j = 0; j < list.size(); j++){
                 
       out.write("\r\n");
-      out.write("                ");
+      out.write("                <");
 
-                  if (day34.equals(list.get(j).get("day"))) {
+                  if (day34.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day34 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num34 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day34.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day34 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -4035,15 +6268,25 @@ finally{
       out.print( num34 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -4093,25 +6336,41 @@ finally{
               String num35 = String.valueOf(num[35]);
               String day35 = year35+month35+num35;
               boolean flag35 = false;
+              boolean flag35_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day35.equals(list.get(j).get("day"))) {
                   flag35 = true;
+                }
+                if (day35.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag35_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag35 == true) {
+              if (flag35 == true && flag35_1 != true)
+              {
             
       out.write("\r\n");
-      out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #FF0000;\">\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag35_1 == true)
+              {
             
       out.write("\r\n");
-      out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #FF0000;\">\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
               }
@@ -4136,10 +6395,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day35.equals(list.get(j).get("day"))) {
+                  if (day35.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day35 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num35 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day35.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day35 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -4149,15 +6446,25 @@ finally{
       out.print( num35 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");
@@ -4205,22 +6512,38 @@ finally{
               String num36 = String.valueOf(num[36]);
               String day36 = year36+month36+num36;
               boolean flag36 = false;
+              boolean flag36_1 = false;
               for(int j = 0; j < list.size(); j++){
                 if (day36.equals(list.get(j).get("day"))) {
                   flag36 = true;
+                }
+                if (day36.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1"))
+                {
+                  flag36_1 = true;
                 }
               }
             
       out.write("\r\n");
       out.write("            ");
 
-              if (flag36 == true) {
+              if (flag36 == true && flag36_1 != true)
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#fef263\" style=\"color: #666666;\">\r\n");
       out.write("            ");
 
-          }else{
+              }
+                else if(flag36_1 == true)
+              {
+            
+      out.write("\r\n");
+      out.write("                <td align=\"center\" bgcolor=\"#ff7f50\" style=\"color: #666666;\">\r\n");
+      out.write("            ");
+
+              }
+              else
+              {
             
       out.write("\r\n");
       out.write("                <td align=\"center\" bgcolor=\"#FFFFFF\" style=\"color: #666666;\">\r\n");
@@ -4248,10 +6571,48 @@ finally{
       out.write("\r\n");
       out.write("                ");
 
-                  if (day36.equals(list.get(j).get("day"))) {
+                  if (day36.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("1")) {
                 
       out.write("\r\n");
-      out.write("                <a href=\"openschedule_check.jsp?day=");
+      out.write("                  <a class=\"plans1\" href=\"openschedule_check.jsp?day=");
+      out.print( day36 );
+      out.write("&s_hour=");
+      out.print( list.get(j).get("s_hour") );
+      out.write("&s_mine=");
+      out.print( list.get(j).get("s_mine") );
+      out.write("&num=");
+      out.print( num36 );
+      out.write("\">\r\n");
+      out.write("                  <div class=\"yotei\">\r\n");
+      out.write("                    <table>\r\n");
+      out.write("                      <tr class=\"no-line\">\r\n");
+      out.write("                        <td class=\"no-line\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                        <td class=\"no-line2\">\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("s_hour") );
+      out.write('時');
+      out.print( list.get(j).get("s_mine") );
+      out.write("分～\r\n");
+      out.write("                          ");
+      out.print( list.get(j).get("place") );
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                      </tr>\r\n");
+      out.write("                    </table>\r\n");
+      out.write("                  </div>\r\n");
+      out.write("                </a>\r\n");
+      out.write("                ");
+
+                  }
+                  else if(day36.equals(list.get(j).get("day")) && list.get(j).get("importance").equals("0"))
+                  {
+                
+      out.write("\r\n");
+      out.write("                <a class=\"plans\" href=\"openschedule_check.jsp?day=");
       out.print( day36 );
       out.write("&s_hour=");
       out.print( list.get(j).get("s_hour") );
@@ -4261,15 +6622,25 @@ finally{
       out.print( num36 );
       out.write("\">\r\n");
       out.write("                <div class=\"yotei\">\r\n");
-      out.write("                ");
+      out.write("                  <table>\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        ");
+      out.print( list.get(j).get("kaiin_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line2\">\r\n");
+      out.write("                        ");
       out.print( list.get(j).get("s_hour") );
       out.write('時');
       out.print( list.get(j).get("s_mine") );
       out.write("分～\r\n");
-      out.write("                ");
+      out.write("                        ");
       out.print( list.get(j).get("place") );
       out.write("\r\n");
-      out.write("                <br>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                    </tr>\r\n");
+      out.write("                  </table>\r\n");
       out.write("                </div>\r\n");
       out.write("              </a>\r\n");
       out.write("              ");

@@ -234,7 +234,7 @@ main table{
 }
 
 table#cal{
-  margin: 60px auto auto auto;
+  margin: 70px auto auto auto;
 }
 
 .tuki{
@@ -263,7 +263,16 @@ table tr.no-line{
   border-style:none;
 }
 table tr td.no-line{
+  width: 120px;
   border-style:none;
+  font-size: 23px;
+  padding: 0 0 0 10px;
+}
+
+table tr td.no-line2{
+  border-style:none;
+  font-size: 25px;
+  padding: 0 0 0 10px;
 }
 
 td {
@@ -284,9 +293,31 @@ td a{
   font-size: 20px;
 }
 
-input{
+a.plans{
+  padding: 0;
+  text-align: left;
+}
+
+a.plans1{
+  padding: 0;
+  text-align: left;
+  color: #ff7f50;
+}
+
+a.plans:hover{
+  color: #ffd700;
+}
+
+a.plans1:hover{
+  color: #ffd700;
+}
+
+input[type=submit]{
+  margin-top: 50px;
+  width: 80px;
+  height: 40px;
   text-align: center;
-  font-size: 15px;
+  font-size: 20px;
 }
 
 .button{

@@ -59,7 +59,8 @@ public final class agenda_005fdeletecomplete_jsp extends org.apache.jasper.runti
 	response.setCharacterEncoding("UTF-8");
 
 	//入力データ受信
-	String yotei_id  = request.getParameter("yotei_id");
+	String yotei_idStr[]  = request.getParameterValues("yotei_id");
+
 
 	//データベースに接続するために使用する変数宣言
 	Connection con = null;
@@ -98,14 +99,17 @@ public final class agenda_005fdeletecomplete_jsp extends org.apache.jasper.runti
 		//SQLステートメントの作成（選択クエリ）
 		SQL = new StringBuffer();
 
+		//SQL文の構築（DB複数削除）
+		for(int i = 0; i < yotei_idStr.length; i++){
 		  //SQLステートメントの作成（選択クエリ）
 		  SQL = new StringBuffer();
-		  //delete実行
-		  SQL.append("delete from open_tbl where yotei_id = '");
-      SQL.append(yotei_id);
-      SQL.append("'");
-      System.out.println(SQL.toString());
+			  //delete実行
+			  SQL.append("delete from open_tbl where yotei_id = '");
+	      SQL.append(yotei_idStr[i]);
+	      SQL.append("'");
+	      System.out.println(SQL.toString());
 	      del_count = stmt.executeUpdate(SQL.toString());
+			}
 				//メインページへ遷移
 				response.sendRedirect("main.jsp?del=2&page_no=1");
 

@@ -75,6 +75,10 @@ public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
     String del = request.getParameter("del");
     String create = request.getParameter("create");
     String change = request.getParameter("change");
+    String check = request.getParameter("check");
+    String cal_idStr  = request.getParameter("cal_id");
+    String keywordStr  = request.getParameter("keyword");
+    String del_idStr[]  = request.getParameterValues("del_id");
 /*  	if (session_id == null) {
   		response.sendRedirect("index.jsp");
   	}*/
@@ -134,7 +138,7 @@ if(p != null){
       //SQL文の構築（選択クエリ）
       SQL.append("select yotei_id,yotei_name,open_set,yotei_pass,yotei_writing from open_tbl where kaiin_id = '");
       SQL.append(session_id);
-      SQL.append("' order by yotei_id ASC");
+      SQL.append("'");
   //      System.out.println(SQL.toString());
 
       //SQL文の実行（選択クエリ）
@@ -193,7 +197,114 @@ if(p != null){
       }
     }
   }
-  if (p.equals("2")) { }
+  if (p.equals("2-1")) {
+    try{  // ロードに失敗したときのための例外処理
+      // JDBCドライバのロード
+      Class.forName(DRIVER).newInstance();
+
+      // Connectionオブジェクトの作成
+      con = DriverManager.getConnection(URL,USER,PASSWORD);
+
+      //Statementオブジェクトの作成
+      stmt = con.createStatement();
+
+      //SQLステートメントの作成（選択クエリ）
+      SQL = new StringBuffer();
+
+      if (!(cal_idStr.equals(""))) {
+
+      //SQL文の構築（選択クエリ）
+      SQL.append("select yotei_id,yotei_name,open_set,kaiin_name from open_tbl,kaiin_tbl where open_tbl.kaiin_id = kaiin_tbl.kaiin_id and open_tbl.kaiin_id != '");
+      SQL.append(session_id);
+      SQL.append("'  and open_tbl.yotei_id = '");
+      SQL.append(cal_idStr);
+      SQL.append("'");
+  //      System.out.println(SQL.toString());
+
+      //SQL文の実行（選択クエリ）
+      rs = stmt.executeQuery(SQL.toString());
+
+          //検索データをHashMapへ格納する
+          while(rs.next()){
+        //DBのデータをHashMapへ格納する
+            map = new HashMap<String,String>();
+            map.put("yotei_id",rs.getString("yotei_id"));
+            map.put("yotei_name",rs.getString("yotei_name"));
+            map.put("open_set",rs.getString("open_set"));
+            map.put("kaiin_name",rs.getString("kaiin_name"));
+
+            //1件分のデータ(HashMap)をArrayListへ追加
+            list.add(map);
+          }
+      }else if (!(keywordStr.equals(""))) {
+
+      //SQL文の構築（選択クエリ）
+      SQL.append("select yotei_id,yotei_name,open_set,kaiin_name from open_tbl,kaiin_tbl where open_tbl.kaiin_id = kaiin_tbl.kaiin_id and open_tbl.kaiin_id != '");
+      SQL.append(session_id);
+      SQL.append("' and open_tbl.yotei_name like '%");
+      SQL.append(keywordStr);
+      SQL.append("%'");
+      System.out.println(SQL.toString());
+
+      //SQL文の実行（選択クエリ）
+      rs = stmt.executeQuery(SQL.toString());
+
+          //検索データをHashMapへ格納する
+          while(rs.next()){
+        //DBのデータをHashMapへ格納する
+            map = new HashMap<String,String>();
+            map.put("yotei_id",rs.getString("yotei_id"));
+            map.put("yotei_name",rs.getString("yotei_name"));
+            map.put("open_set",rs.getString("open_set"));
+            map.put("kaiin_name",rs.getString("kaiin_name"));
+
+            //1件分のデータ(HashMap)をArrayListへ追加
+            list.add(map);
+          }
+      }else if (keywordStr.equals("") && cal_idStr.equals("")) {
+        //メインページへ遷移
+				response.sendRedirect("main.jsp?page_no=2");
+      }
+      //入力したデータがデータベースに存在するか調べる
+      if(list.size() > 0){  //存在する
+            hit_flag = 1;
+      }else{  //存在しない
+        //ヒットフラグOFF
+        hit_flag = 0;
+      }
+    } //tryブロック終了
+    catch(ClassNotFoundException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+    catch(SQLException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+    catch(Exception e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+
+    finally{
+      //各種オブジェクトクローズ
+        try{
+          if(rs != null){
+            rs.close();
+          }
+          if(stmt != null){
+            stmt.close();
+        }
+          if(con != null){
+            con.close();
+        }
+        }
+      catch(SQLException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+      }
+    }
+   }
   if (p.equals("3")) {
     try{  // ロードに失敗したときのための例外処理
       // JDBCドライバのロード
@@ -331,6 +442,155 @@ if(p != null){
     }
   }
 }
+else if(check != null){
+  if (check.equals("1") && del_idStr != null) {
+    try{  // ロードに失敗したときのための例外処理
+      // JDBCドライバのロード
+      Class.forName(DRIVER).newInstance();
+
+      // Connectionオブジェクトの作成
+      con = DriverManager.getConnection(URL,USER,PASSWORD);
+
+      //Statementオブジェクトの作成
+      stmt = con.createStatement();
+
+      //SQLステートメントの作成（選択クエリ）
+      SQL = new StringBuffer();
+
+      //SQL文の構築（選択クエリ）
+      for(int i = 0; i < del_idStr.length; i++){
+        SQL = new StringBuffer();
+        SQL.append("select * from open_tbl where yotei_id = '");
+        SQL.append(del_idStr[i]);
+        SQL.append("'");
+  //      System.out.println(SQL.toString());
+        //SQL文の実行（選択クエリ）
+        rs = stmt.executeQuery(SQL.toString());
+
+          //検索データをHashMapへ格納する
+          while(rs.next()){
+        //DBのデータをHashMapへ格納する
+            map = new HashMap<String,String>();
+            map.put("yotei_id",rs.getString("yotei_id"));
+            map.put("yotei_name",rs.getString("yotei_name"));
+            map.put("open_set",rs.getString("open_set"));
+            map.put("yotei_pass",rs.getString("yotei_pass"));
+            map.put("yotei_writing",rs.getString("yotei_writing"));
+            map.put("kaiin_id",rs.getString("kaiin_id"));
+            //1件分のデータ(HashMap)をArrayListへ追加
+            list.add(map);
+          }
+        }
+    } //tryブロック終了
+    catch(ClassNotFoundException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+    catch(SQLException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+    catch(Exception e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+
+    finally{
+      //各種オブジェクトクローズ
+        try{
+          if(rs != null){
+            rs.close();
+          }
+          if(stmt != null){
+            stmt.close();
+        }
+          if(con != null){
+            con.close();
+        }
+        }
+      catch(SQLException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+      }
+    }
+  }
+  else if (check.equals("1") && del_idStr == null) {
+      //メインページへ遷移
+      response.sendRedirect("main.jsp?page_no=1");
+  }
+  if (check.equals("2") && del_idStr != null) {
+    try{  // ロードに失敗したときのための例外処理
+      // JDBCドライバのロード
+      Class.forName(DRIVER).newInstance();
+
+      // Connectionオブジェクトの作成
+      con = DriverManager.getConnection(URL,USER,PASSWORD);
+
+      //Statementオブジェクトの作成
+      stmt = con.createStatement();
+
+      //SQL文の構築（選択クエリ）
+      for (int i =0;del_idStr.length>i ;i++ ) {
+      //SQLステートメントの作成（選択クエリ）
+        SQL = new StringBuffer();
+        SQL.append("select yotei_name,yotei_writing,kaiin_name from open_tbl,kaiin_tbl where kaiin_tbl.kaiin_id = open_tbl.kaiin_id and yotei_id = '");
+        SQL.append(del_idStr[i]);
+        SQL.append("'");
+       System.out.println(SQL.toString());
+
+      //SQL文の実行（選択クエリ）
+      rs = stmt.executeQuery(SQL.toString());
+
+          //検索データをHashMapへ格納する
+          while(rs.next()){
+        //DBのデータをHashMapへ格納する
+            map = new HashMap<String,String>();
+            map.put("yotei_name",rs.getString("yotei_name"));
+            map.put("yotei_writing",rs.getString("yotei_writing"));
+            map.put("kaiin_name",rs.getString("kaiin_name"));
+
+            //1件分のデータ(HashMap)をArrayListへ追加
+            list.add(map);
+          }
+        }
+    } //tryブロック終了
+    catch(ClassNotFoundException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+    catch(SQLException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+    catch(Exception e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+
+    finally{
+      //各種オブジェクトクローズ
+        try{
+          if(rs != null){
+            rs.close();
+          }
+          if(stmt != null){
+            stmt.close();
+        }
+          if(con != null){
+            con.close();
+        }
+        }
+      catch(SQLException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+      }
+    }
+  }
+  else if (check.equals("2") && del_idStr == null) {
+      //メインページへ遷移
+      response.sendRedirect("main.jsp");
+  }
+}
 else{
 
   try{  // ロードに失敗したときのための例外処理
@@ -349,7 +609,7 @@ else{
   //SQL文の構築（選択クエリ）
   SQL.append("select favorite_tbl.yotei_id,yotei_name,yotei_writing,kaiin_name from favorite_tbl,open_tbl,kaiin_tbl where favorite_tbl.yotei_id = open_tbl.yotei_id and kaiin_tbl.kaiin_id = open_tbl.kaiin_id and favorite_tbl.kaiin_id = '");
   SQL.append(session_id);
-  SQL.append("' order by yotei_name ASC");
+  SQL.append("'");
 //      System.out.println(SQL.toString());
 
   //SQL文の実行（選択クエリ）
@@ -461,6 +721,15 @@ finally{
 
         }
       }
+      else if (check != null) {
+        if (check.equals("3")) {
+    
+      out.write("\r\n");
+      out.write("        <body onLoad=\"loadChange()\">\r\n");
+      out.write("    ");
+
+        }
+      }
       else
       {
     
@@ -501,15 +770,20 @@ finally{
       out.write("          <main>\r\n");
       out.write("            ");
 
-              if (p == null) {
+              if (p == null && check == null) {
             
       out.write("\r\n");
       out.write("              <h2>お気に入り一覧</h2>\r\n");
+      out.write("              <h3>\r\n");
+      out.write("                カレンダー名をクリックするとカレンダーが見られます。<br>\r\n");
+      out.write("                チェックを付けて下の削除を押すとお気に入りを削除できます。\r\n");
+      out.write("              </h3>\r\n");
       out.write("              ");
 
                if (hit_flag == 1) {
               
       out.write("\r\n");
+      out.write("              <form action=\"./main.jsp?check=2\" method=\"post\">\r\n");
       out.write("                <table id=\"list\">\r\n");
       out.write("                  <tr class=\"no-line\">\r\n");
       out.write("                    <th class=\"no-line\" style=\"padding: 20px;\">カレンダー名</td>\r\n");
@@ -524,9 +798,15 @@ finally{
       out.write("\r\n");
       out.write("                  <tr class=\"no-line\">\r\n");
       out.write("                    <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\">\r\n");
-      out.write("                      ");
+      out.write("                      <a href=\"session_Issue.jsp?yotei_id=");
+      out.print( list.get(i).get("yotei_id") );
+      out.write("&yotei_name=");
+      out.print( list.get(i).get("yotei_name") );
+      out.write("\">\r\n");
+      out.write("                        ");
       out.print( list.get(i).get("yotei_name") );
       out.write("\r\n");
+      out.write("                      </a>\r\n");
       out.write("                    </td>\r\n");
       out.write("                    <td class=\"no-line\">\r\n");
       out.write("                      ");
@@ -551,23 +831,9 @@ finally{
       out.print( list.get(i).get("kaiin_name") );
       out.write("</td>\r\n");
       out.write("                    <td class=\"no-line\">\r\n");
-      out.write("                      <form action=\"session_Issue.jsp\" method=\"post\">\r\n");
-      out.write("                        <input type=\"hidden\" name=\"yotei_id\" value=\"");
+      out.write("                        <input type=\"checkbox\" name=\"del_id\" value=\"");
       out.print( list.get(i).get("yotei_id") );
       out.write("\">\r\n");
-      out.write("                        <input type=\"hidden\" name=\"yotei_name\" value=\"");
-      out.print( list.get(i).get("yotei_name") );
-      out.write("\">\r\n");
-      out.write("                        <input type=\"submit\" value=\"確認する\">\r\n");
-      out.write("                      </form>\r\n");
-      out.write("                    </td>\r\n");
-      out.write("                    <td class=\"no-line\">\r\n");
-      out.write("                      <form name=\"favorite_del\" action=\"favorite_deletecomplete.jsp\" method=\"post\">\r\n");
-      out.write("                        <input type=\"button\" value=\"削除\" onclick=\"ShowFavodel();\">\r\n");
-      out.write("                        <input type=\"hidden\" name=\"yotei_id\" value=\"");
-      out.print( list.get(i).get("yotei_id") );
-      out.write("\">\r\n");
-      out.write("                      </form>\r\n");
       out.write("                    </td>\r\n");
       out.write("                  </tr>\r\n");
       out.write("                  ");
@@ -576,6 +842,8 @@ finally{
                   
       out.write("\r\n");
       out.write("                </table>\r\n");
+      out.write("                <input type=\"submit\" value=\"削除\">\r\n");
+      out.write("                </form>\r\n");
       out.write("                ");
 
                   }else if (hit_flag == 0) {
@@ -600,7 +868,7 @@ finally{
       out.write("\r\n");
       out.write("            <h2>カレンダー新規作成</h2>\r\n");
       out.write("            <table>\r\n");
-      out.write("              <form  name=\"form\" action=\"./agenda_makecomplete.jsp\" method=\"post\" onsubmit=\"return formChecksub()\">\r\n");
+      out.write("              <form  name=\"form\" action=\"./agenda_makecomplete.jsp\" method=\"post\" onsubmit=\"ShowCalendarmake()\">\r\n");
       out.write("                <tr>\r\n");
       out.write("                  <td class=\"title\">\r\n");
       out.write("                    <p>ID</p>\r\n");
@@ -679,102 +947,102 @@ finally{
               if (p != null && p.equals("1")) {
             
       out.write("\r\n");
+      out.write("            <form action=\"./main.jsp?check=1\" method=\"post\">\r\n");
+      out.write("\r\n");
       out.write("              <h2>作成したカレンダー一覧</h2>\r\n");
+      out.write("              <h3>\r\n");
+      out.write("                カレンダー名をクリックするとカレンダーが見られます。<br>\r\n");
+      out.write("                チェックを付けて下の削除を押すとお気に入りを削除できます。\r\n");
+      out.write("              </h3>\r\n");
       out.write("            ");
 
              if (hit_flag == 1) {
             
       out.write("\r\n");
-      out.write("            <table id=\"list\">\r\n");
-      out.write("              <tr class=\"no-line\">\r\n");
-      out.write("                <th class=\"no-line\" style=\"padding: 20px;\">カレンダーID</td>\r\n");
-      out.write("                <th class=\"no-line\" style=\"padding: 20px;\">カレンダー名</td>\r\n");
-      out.write("                <th class=\"no-line\" style=\"padding: 20px;\">公開設定</td>\r\n");
-      out.write("                <th class=\"no-line\" style=\"padding: 20px;\">パスワード</td>\r\n");
-      out.write("                <th class=\"no-line\" style=\"padding: 20px;\">書き込み設定</td>\r\n");
-      out.write("                <th></th>\r\n");
-      out.write("              </tr>\r\n");
-      out.write("            ");
+      out.write("              <table id=\"list\">\r\n");
+      out.write("                <tr class=\"no-line\">\r\n");
+      out.write("                  <th class=\"no-line\" style=\"padding: 20px;\">カレンダーID</td>\r\n");
+      out.write("                  <th class=\"no-line\" style=\"padding: 20px;\">カレンダー名</td>\r\n");
+      out.write("                  <th class=\"no-line\" style=\"padding: 20px;\">公開設定</td>\r\n");
+      out.write("                  <th class=\"no-line\" style=\"padding: 20px;\">パスワード</td>\r\n");
+      out.write("                  <th class=\"no-line\" style=\"padding: 20px;\">書き込み設定</td>\r\n");
+      out.write("                  <th></th>\r\n");
+      out.write("                </tr>\r\n");
+      out.write("              ");
 
-              for(int i=0; i<list.size();i++){
-            
+                for(int i=0; i<list.size();i++){
+              
       out.write("\r\n");
-      out.write("            <tr class=\"no-line\">\r\n");
-      out.write("              <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\">\r\n");
-      out.write("                ");
+      out.write("                <tr class=\"no-line\">\r\n");
+      out.write("                  <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\">\r\n");
+      out.write("                    <a href=\"session_Issue.jsp?yotei_id=");
+      out.print( list.get(i).get("yotei_id") );
+      out.write("&yotei_name=");
+      out.print( list.get(i).get("yotei_name") );
+      out.write("\">\r\n");
+      out.write("                      ");
       out.print( list.get(i).get("yotei_id") );
       out.write("\r\n");
-      out.write("              </td>\r\n");
-      out.write("              <td class=\"no-line\">");
+      out.write("                    </a>\r\n");
+      out.write("                  </td>\r\n");
+      out.write("                  <td class=\"no-line\">");
       out.print( list.get(i).get("yotei_name") );
       out.write("</td>\r\n");
-      out.write("              <td class=\"no-line\">\r\n");
-      out.write("                ");
+      out.write("                  <td class=\"no-line\">\r\n");
+      out.write("                    ");
 if (list.get(i).get("open_set").equals("1")) { 
       out.write("\r\n");
-      out.write("                公開\r\n");
-      out.write("                ");
+      out.write("                    公開\r\n");
+      out.write("                    ");
 
-                  }else{
-                
+                      }else{
+                    
       out.write("\r\n");
-      out.write("                  非公開\r\n");
-      out.write("                ");
+      out.write("                      非公開\r\n");
+      out.write("                    ");
 
-                  }
-                
+                      }
+                    
       out.write("\r\n");
-      out.write("              </td>\r\n");
-      out.write("              <td class=\"no-line\">\r\n");
-      out.write("                ");
+      out.write("                  </td>\r\n");
+      out.write("                  <td class=\"no-line\">\r\n");
+      out.write("                    ");
       out.print( list.get(i).get("yotei_pass") );
       out.write("\r\n");
-      out.write("              </td>\r\n");
-      out.write("              <td class=\"no-line\">\r\n");
-      out.write("                ");
+      out.write("                  </td>\r\n");
+      out.write("                  <td class=\"no-line\">\r\n");
+      out.write("                    ");
 
-                  if(list.get(i).get("yotei_writing").equals("1")) {
-                
+                      if(list.get(i).get("yotei_writing").equals("1")) {
+                    
       out.write("\r\n");
-      out.write("                  許可\r\n");
-      out.write("                ");
+      out.write("                      許可\r\n");
+      out.write("                    ");
 
-                  }else{
-                
+                      }else{
+                    
       out.write("\r\n");
-      out.write("                  禁止\r\n");
+      out.write("                      禁止\r\n");
+      out.write("                    ");
+
+                      }
+                    
+      out.write("\r\n");
+      out.write("                  </td>\r\n");
+      out.write("                    <td class=\"no-line\">\r\n");
+      out.write("                        <input type=\"checkbox\" name=\"del_id\" value=\"");
+      out.print( list.get(i).get("yotei_id") );
+      out.write("\">\r\n");
+      out.write("                    </td>\r\n");
+      out.write("                </tr>\r\n");
       out.write("                ");
 
                   }
                 
       out.write("\r\n");
-      out.write("              </td>\r\n");
-      out.write("              <td class=\"no-line\">\r\n");
-      out.write("                <form action=\"session_Issue.jsp\" method=\"post\">\r\n");
-      out.write("                  <input type=\"hidden\" name=\"yotei_id\" value=\"");
-      out.print( list.get(i).get("yotei_id") );
-      out.write("\">\r\n");
-      out.write("                  <input type=\"hidden\" name=\"yotei_name\" value=\"");
-      out.print( list.get(i).get("yotei_name") );
-      out.write("\">\r\n");
-      out.write("                  <input type=\"submit\" value=\"確認\">\r\n");
-      out.write("                </form>\r\n");
-      out.write("              </td>\r\n");
-      out.write("              <td class=\"no-line\">\r\n");
-      out.write("                <form name=\"calendar_del\" action=\"agenda_deletecomplete.jsp\" method=\"post\">\r\n");
-      out.write("                  <input type=\"button\" value=\"削除\" onclick=\"ShowCalendardel();\">\r\n");
-      out.write("                  <input type=\"hidden\" name=\"yotei_id\" value=\"");
-      out.print( list.get(i).get("yotei_id") );
-      out.write("\">\r\n");
-      out.write("                </form>\r\n");
-      out.write("              </td>\r\n");
-      out.write("            </tr>\r\n");
-      out.write("            ");
-
-              }
-            
-      out.write("\r\n");
-      out.write("          </table>\r\n");
+      out.write("              </table>\r\n");
+      out.write("              <input type=\"submit\" value=\"削除\">\r\n");
+      out.write("              </form>\r\n");
       out.write("          ");
 
             }else if (hit_flag == 0) {
@@ -797,18 +1065,18 @@ if (list.get(i).get("open_set").equals("1")) {
             if (p != null && p.equals("2")) {
           
       out.write("\r\n");
-      out.write("          <h2>作成したカレンダー一覧</h2>\r\n");
-      out.write("          <p>\r\n");
+      out.write("          <h2>カレンダー検索</h2>\r\n");
+      out.write("          <p id=\"Des\">\r\n");
       out.write("            カレンダーIDかキーワードを入力して検索ボタンを押してください。<br>カレンダーを検索します。<br>(両方入力するとカレンダーIDを優先して検索します)\r\n");
       out.write("          </p>\r\n");
-      out.write("           <form action=\"./agenda_searchcomplete.jsp\" method=\"post\">\r\n");
+      out.write("           <form action=\"./main.jsp?page_no=2-1\" method=\"post\">\r\n");
       out.write("            <table>\r\n");
       out.write("              <tr>\r\n");
       out.write("                <td  class=\"title\">\r\n");
       out.write("                  <p>カレンダーID</p>\r\n");
       out.write("                </td>\r\n");
       out.write("                <td class=\"no-line\">\r\n");
-      out.write("                  <input type=\"text\" name=\"id\" size=\"25\" class=\"text\">\r\n");
+      out.write("                  <input type=\"text\" name=\"cal_id\" size=\"25\" class=\"text\">\r\n");
       out.write("                </td>\r\n");
       out.write("              </tr>\r\n");
       out.write("              <tr>\r\n");
@@ -826,6 +1094,89 @@ if (list.get(i).get("open_set").equals("1")) {
       out.write("              </form>\r\n");
       out.write("              </tr>\r\n");
       out.write("            </table>\r\n");
+      out.write("          ");
+
+            }
+          
+      out.write("\r\n");
+      out.write("\r\n");
+      out.write("          ");
+
+            if (p != null && p.equals("2-1")) {
+          
+      out.write("\r\n");
+      out.write("          <h2>\r\n");
+      out.write("          カレンダー検索一覧\r\n");
+      out.write("          </h2>\r\n");
+      out.write("          ");
+
+           if (hit_flag == 1) {
+          
+      out.write("\r\n");
+      out.write("            <table id=\"list\">\r\n");
+      out.write("              <tr class=\"no-line\">\r\n");
+      out.write("                <th class=\"no-line\" style=\"padding: 20px;\">カレンダー名</td>\r\n");
+      out.write("                <th class=\"no-line\" style=\"padding: 20px;\">作成者</td>\r\n");
+      out.write("                <th class=\"no-line\" style=\"padding: 20px;\">公開設定</td>\r\n");
+      out.write("                <th></th>\r\n");
+      out.write("              </tr>\r\n");
+      out.write("              ");
+
+                for(int i=0; i<list.size();i++){
+              
+      out.write("\r\n");
+      out.write("                    <tr class=\"no-line\">\r\n");
+      out.write("                      <td class=\"no-line\" align=\"left\" style=\"font-size:25px; font-weight:bold;;\">\r\n");
+      out.write("                        ");
+      out.print( list.get(i).get("yotei_name") );
+      out.write("\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                      <td class=\"no-line\">");
+      out.print( list.get(i).get("kaiin_name") );
+      out.write("</td>\r\n");
+      out.write("                      ");
+ if(list.get(i).get("open_set").equals("1")) { 
+      out.write("\r\n");
+      out.write("                      <td class=\"no-line\">全員に公開</td>\r\n");
+      out.write("                      ");
+}else{
+      out.write("\r\n");
+      out.write("                      <td class=\"no-line\">特定の人にのみ公開</td>\r\n");
+      out.write("                      ");
+ } 
+      out.write("\r\n");
+      out.write("                      <td class=\"no-line\">\r\n");
+      out.write("                        <form action=\"session_Issue.jsp\" method=\"post\">\r\n");
+      out.write("                          <input type=\"hidden\" name=\"yotei_id\" value=\"");
+      out.print( list.get(i).get("yotei_id") );
+      out.write("\">\r\n");
+      out.write("                          <input type=\"hidden\" name=\"yotei_name\" value=\"");
+      out.print( list.get(i).get("yotei_name") );
+      out.write("\">\r\n");
+      out.write("                          <input type=\"hidden\" name=\"open_set\" value=\"");
+      out.print( list.get(i).get("open_set") );
+      out.write("\">\r\n");
+      out.write("                          <input id=\"non\" type=\"submit\" value=\"確認する\">\r\n");
+      out.write("                        </form>\r\n");
+      out.write("                      </td>\r\n");
+      out.write("                  </tr>\r\n");
+      out.write("              ");
+
+                }
+              
+      out.write("\r\n");
+      out.write("            </table>\r\n");
+      out.write("          ");
+
+            }else if (hit_flag == 0) {
+          
+      out.write("\r\n");
+      out.write("            該当するカレンダーはありません。\r\n");
+      out.write("            ");
+
+              }
+            
+      out.write("\r\n");
       out.write("          ");
 
             }
@@ -1204,12 +1555,146 @@ if (list.get(i).get("open_set").equals("1")) {
           
       out.write("\r\n");
       out.write("\r\n");
+      out.write("          ");
+
+            if (check !=null && check.equals("1")) {
+          
+      out.write("\r\n");
+      out.write("          <form method=\"post\" action=\"./agenda_deletecomplete.jsp\">\r\n");
+      out.write("            <h2>カレンダー削除(確認)</h2>\r\n");
+      out.write("            <h3>以下のカレンダーを削除しますか？</h3>\r\n");
+      out.write("            <table id=\"list\">\r\n");
+      out.write("              <tr class=\"no-line\">\r\n");
+      out.write("                <th class=\"no-line\" style=\"padding: 20px;\">カレンダーID</td>\r\n");
+      out.write("                <th class=\"no-line\" style=\"padding: 20px;\">カレンダー名</td>\r\n");
+      out.write("                <th class=\"no-line\" style=\"padding: 20px;\">公開設定</td>\r\n");
+      out.write("                <th class=\"no-line\" style=\"padding: 20px;\">パスワード</td>\r\n");
+      out.write("                <th class=\"no-line\" style=\"padding: 20px;\">書き込み設定</td>\r\n");
+      out.write("              </tr>\r\n");
+      out.write("              ");
+
+                for(int i = 0; i < list.size(); i++){
+              
+      out.write("\r\n");
+      out.write("                <tr class=\"no-line\">\r\n");
+      out.write("                  <td class=\"no-line\" align=\"center\" style=\"font-size:25px; font-weight:bold;;\">");
+      out.print( list.get(i).get("yotei_id") );
+      out.write("</td>\r\n");
+      out.write("                  <input type=\"hidden\" name=\"yotei_id\" value=\"");
+      out.print( del_idStr[i] );
+      out.write("\">\r\n");
+      out.write("                  <td class=\"no-line\">");
+      out.print( list.get(i).get("yotei_name") );
+      out.write("</td>\r\n");
+      out.write("                  <td class=\"no-line\">\r\n");
+      out.write("                    ");
+if (list.get(i).get("open_set").equals("1")) { 
+      out.write("\r\n");
+      out.write("                      全員に公開\r\n");
+      out.write("                    ");
+}else{
+      out.write("\r\n");
+      out.write("                      特定の人にのみ公開\r\n");
+      out.write("                    ");
+}
+      out.write("\r\n");
+      out.write("                  </td>\r\n");
+      out.write("                  <td class=\"no-line\">");
+      out.print( list.get(i).get("yotei_pass") );
+      out.write("</td>\r\n");
+      out.write("                  <td class=\"no-line\">\r\n");
+      out.write("                    ");
+ if(list.get(i).get("yotei_writing").equals("1")) { 
+      out.write("\r\n");
+      out.write("                      許可\r\n");
+      out.write("                    ");
+}else{
+      out.write("\r\n");
+      out.write("                      禁止\r\n");
+      out.write("                    ");
+ } 
+      out.write("\r\n");
+      out.write("                  </td>\r\n");
+      out.write("                </tr>\r\n");
+      out.write("              ");
+}
+      out.write("\r\n");
+      out.write("              <tr class=\"no-line\">\r\n");
+      out.write("                <td class=\"no-line\" colspan=\"5\">\r\n");
+      out.write("                  <input type=\"submit\" id=\"dbutton\" value=\"削除\">\r\n");
+      out.write("                    <button class=\"button\" type=\"button\" href=\"javascript:void(0)\" onclick=\"javascript:history.back()\">修正</button>\r\n");
+      out.write("                  </td>\r\n");
+      out.write("                </tr>\r\n");
+      out.write("            </table>\r\n");
+      out.write("          </form>\r\n");
+      out.write("          ");
+
+            }
+          
+      out.write("\r\n");
+      out.write("\r\n");
+      out.write("          ");
+
+            if (check !=null && check.equals("2") && del_idStr != null) {
+          
+      out.write("\r\n");
+      out.write("          <form method=\"post\" action=\"./favorite_deletecomplete.jsp\">\r\n");
+      out.write("          <h2>お気に入り削除(確認)</h2>\r\n");
+      out.write("          <h3>以下のお気に入りを削除しますか？</h3>\r\n");
+      out.write("          <table id=\"list\">\r\n");
+      out.write("            <tr class=\"no-line\">\r\n");
+      out.write("              <th class=\"no-line\" style=\"padding: 20px;\">カレンダー名</td>\r\n");
+      out.write("              <th class=\"no-line\" style=\"padding: 20px;\">書き込み</td>\r\n");
+      out.write("              <th class=\"no-line\" style=\"padding: 20px;\">作成者</td>\r\n");
+      out.write("              <th></th>\r\n");
+      out.write("            </tr>\r\n");
+      out.write("            ");
+
+        		for(int i = 0; i < del_idStr.length; i++){
+            
+      out.write("\r\n");
+      out.write("            <tr class=\"no-line\">\r\n");
+      out.write("              <input type=\"hidden\" name=\"yotei_id\" value=\"");
+      out.print( del_idStr[i] );
+      out.write("\">\r\n");
+      out.write("              <td class=\"no-line\">");
+      out.print( list.get(i).get("yotei_name") );
+      out.write("</td>\r\n");
+      out.write("              <td class=\"no-line\">\r\n");
+      out.write("                ");
+ if(list.get(i).get("yotei_writing").equals("1")) { 
+      out.write("\r\n");
+      out.write("                  許可\r\n");
+      out.write("                ");
+}else{
+      out.write("\r\n");
+      out.write("                  禁止\r\n");
+      out.write("                ");
+ } 
+      out.write("\r\n");
+      out.write("              </td>\r\n");
+      out.write("              <td class=\"no-line\">");
+      out.print( list.get(i).get("kaiin_name") );
+      out.write("</td>\r\n");
+      out.write("            ");
+}
+      out.write("\r\n");
+      out.write("            </tr>\r\n");
+      out.write("            <tr class=\"no-line\">\r\n");
+      out.write("              <td class=\"no-line\" colspan=\"5\">\r\n");
+      out.write("                <input type=\"submit\" id=\"dbutton\" value=\"削除\">\r\n");
+      out.write("                <button class=\"button\" type=\"button\" href=\"javascript:void(0)\" onclick=\"javascript:history.back()\">修正</button>\r\n");
+      out.write("              </td>\r\n");
+      out.write("            </tr>\r\n");
+      out.write("          </table>\r\n");
+      out.write("          ");
+
+            }
+          
+      out.write("\r\n");
+      out.write("\r\n");
       out.write("          </main>\r\n");
       out.write("        </div>\r\n");
-      out.write("\r\n");
-      out.write("        <footer>\r\n");
-      out.write("          footer\r\n");
-      out.write("        </footer>\r\n");
       out.write("\r\n");
       out.write("      </div>\r\n");
       out.write("\r\n");

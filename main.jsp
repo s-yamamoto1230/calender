@@ -17,6 +17,10 @@
     String del = request.getParameter("del");
     String create = request.getParameter("create");
     String change = request.getParameter("change");
+    String check = request.getParameter("check");
+    String cal_idStr  = request.getParameter("cal_id");
+    String keywordStr  = request.getParameter("keyword");
+    String del_idStr[]  = request.getParameterValues("del_id");
 /*  	if (session_id == null) {
   		response.sendRedirect("index.jsp");
   	}*/
@@ -76,7 +80,7 @@ if(p != null){
       //SQL文の構築（選択クエリ）
       SQL.append("select yotei_id,yotei_name,open_set,yotei_pass,yotei_writing from open_tbl where kaiin_id = '");
       SQL.append(session_id);
-      SQL.append("' order by yotei_id ASC");
+      SQL.append("'");
   //      System.out.println(SQL.toString());
 
       //SQL文の実行（選択クエリ）
@@ -135,7 +139,114 @@ if(p != null){
       }
     }
   }
-  if (p.equals("2")) { }
+  if (p.equals("2-1")) {
+    try{  // ロードに失敗したときのための例外処理
+      // JDBCドライバのロード
+      Class.forName(DRIVER).newInstance();
+
+      // Connectionオブジェクトの作成
+      con = DriverManager.getConnection(URL,USER,PASSWORD);
+
+      //Statementオブジェクトの作成
+      stmt = con.createStatement();
+
+      //SQLステートメントの作成（選択クエリ）
+      SQL = new StringBuffer();
+
+      if (!(cal_idStr.equals(""))) {
+
+      //SQL文の構築（選択クエリ）
+      SQL.append("select yotei_id,yotei_name,open_set,kaiin_name from open_tbl,kaiin_tbl where open_tbl.kaiin_id = kaiin_tbl.kaiin_id and open_tbl.kaiin_id != '");
+      SQL.append(session_id);
+      SQL.append("'  and open_tbl.yotei_id = '");
+      SQL.append(cal_idStr);
+      SQL.append("'");
+  //      System.out.println(SQL.toString());
+
+      //SQL文の実行（選択クエリ）
+      rs = stmt.executeQuery(SQL.toString());
+
+          //検索データをHashMapへ格納する
+          while(rs.next()){
+        //DBのデータをHashMapへ格納する
+            map = new HashMap<String,String>();
+            map.put("yotei_id",rs.getString("yotei_id"));
+            map.put("yotei_name",rs.getString("yotei_name"));
+            map.put("open_set",rs.getString("open_set"));
+            map.put("kaiin_name",rs.getString("kaiin_name"));
+
+            //1件分のデータ(HashMap)をArrayListへ追加
+            list.add(map);
+          }
+      }else if (!(keywordStr.equals(""))) {
+
+      //SQL文の構築（選択クエリ）
+      SQL.append("select yotei_id,yotei_name,open_set,kaiin_name from open_tbl,kaiin_tbl where open_tbl.kaiin_id = kaiin_tbl.kaiin_id and open_tbl.kaiin_id != '");
+      SQL.append(session_id);
+      SQL.append("' and open_tbl.yotei_name like '%");
+      SQL.append(keywordStr);
+      SQL.append("%'");
+      System.out.println(SQL.toString());
+
+      //SQL文の実行（選択クエリ）
+      rs = stmt.executeQuery(SQL.toString());
+
+          //検索データをHashMapへ格納する
+          while(rs.next()){
+        //DBのデータをHashMapへ格納する
+            map = new HashMap<String,String>();
+            map.put("yotei_id",rs.getString("yotei_id"));
+            map.put("yotei_name",rs.getString("yotei_name"));
+            map.put("open_set",rs.getString("open_set"));
+            map.put("kaiin_name",rs.getString("kaiin_name"));
+
+            //1件分のデータ(HashMap)をArrayListへ追加
+            list.add(map);
+          }
+      }else if (keywordStr.equals("") && cal_idStr.equals("")) {
+        //メインページへ遷移
+				response.sendRedirect("main.jsp?page_no=2");
+      }
+      //入力したデータがデータベースに存在するか調べる
+      if(list.size() > 0){  //存在する
+            hit_flag = 1;
+      }else{  //存在しない
+        //ヒットフラグOFF
+        hit_flag = 0;
+      }
+    } //tryブロック終了
+    catch(ClassNotFoundException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+    catch(SQLException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+    catch(Exception e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+
+    finally{
+      //各種オブジェクトクローズ
+        try{
+          if(rs != null){
+            rs.close();
+          }
+          if(stmt != null){
+            stmt.close();
+        }
+          if(con != null){
+            con.close();
+        }
+        }
+      catch(SQLException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+      }
+    }
+   }
   if (p.equals("3")) {
     try{  // ロードに失敗したときのための例外処理
       // JDBCドライバのロード
@@ -273,6 +384,155 @@ if(p != null){
     }
   }
 }
+else if(check != null){
+  if (check.equals("1") && del_idStr != null) {
+    try{  // ロードに失敗したときのための例外処理
+      // JDBCドライバのロード
+      Class.forName(DRIVER).newInstance();
+
+      // Connectionオブジェクトの作成
+      con = DriverManager.getConnection(URL,USER,PASSWORD);
+
+      //Statementオブジェクトの作成
+      stmt = con.createStatement();
+
+      //SQLステートメントの作成（選択クエリ）
+      SQL = new StringBuffer();
+
+      //SQL文の構築（選択クエリ）
+      for(int i = 0; i < del_idStr.length; i++){
+        SQL = new StringBuffer();
+        SQL.append("select * from open_tbl where yotei_id = '");
+        SQL.append(del_idStr[i]);
+        SQL.append("'");
+  //      System.out.println(SQL.toString());
+        //SQL文の実行（選択クエリ）
+        rs = stmt.executeQuery(SQL.toString());
+
+          //検索データをHashMapへ格納する
+          while(rs.next()){
+        //DBのデータをHashMapへ格納する
+            map = new HashMap<String,String>();
+            map.put("yotei_id",rs.getString("yotei_id"));
+            map.put("yotei_name",rs.getString("yotei_name"));
+            map.put("open_set",rs.getString("open_set"));
+            map.put("yotei_pass",rs.getString("yotei_pass"));
+            map.put("yotei_writing",rs.getString("yotei_writing"));
+            map.put("kaiin_id",rs.getString("kaiin_id"));
+            //1件分のデータ(HashMap)をArrayListへ追加
+            list.add(map);
+          }
+        }
+    } //tryブロック終了
+    catch(ClassNotFoundException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+    catch(SQLException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+    catch(Exception e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+
+    finally{
+      //各種オブジェクトクローズ
+        try{
+          if(rs != null){
+            rs.close();
+          }
+          if(stmt != null){
+            stmt.close();
+        }
+          if(con != null){
+            con.close();
+        }
+        }
+      catch(SQLException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+      }
+    }
+  }
+  else if (check.equals("1") && del_idStr == null) {
+      //メインページへ遷移
+      response.sendRedirect("main.jsp?page_no=1");
+  }
+  if (check.equals("2") && del_idStr != null) {
+    try{  // ロードに失敗したときのための例外処理
+      // JDBCドライバのロード
+      Class.forName(DRIVER).newInstance();
+
+      // Connectionオブジェクトの作成
+      con = DriverManager.getConnection(URL,USER,PASSWORD);
+
+      //Statementオブジェクトの作成
+      stmt = con.createStatement();
+
+      //SQL文の構築（選択クエリ）
+      for (int i =0;del_idStr.length>i ;i++ ) {
+      //SQLステートメントの作成（選択クエリ）
+        SQL = new StringBuffer();
+        SQL.append("select yotei_name,yotei_writing,kaiin_name from open_tbl,kaiin_tbl where kaiin_tbl.kaiin_id = open_tbl.kaiin_id and yotei_id = '");
+        SQL.append(del_idStr[i]);
+        SQL.append("'");
+       System.out.println(SQL.toString());
+
+      //SQL文の実行（選択クエリ）
+      rs = stmt.executeQuery(SQL.toString());
+
+          //検索データをHashMapへ格納する
+          while(rs.next()){
+        //DBのデータをHashMapへ格納する
+            map = new HashMap<String,String>();
+            map.put("yotei_name",rs.getString("yotei_name"));
+            map.put("yotei_writing",rs.getString("yotei_writing"));
+            map.put("kaiin_name",rs.getString("kaiin_name"));
+
+            //1件分のデータ(HashMap)をArrayListへ追加
+            list.add(map);
+          }
+        }
+    } //tryブロック終了
+    catch(ClassNotFoundException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+    catch(SQLException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+    catch(Exception e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+    }
+
+    finally{
+      //各種オブジェクトクローズ
+        try{
+          if(rs != null){
+            rs.close();
+          }
+          if(stmt != null){
+            stmt.close();
+        }
+          if(con != null){
+            con.close();
+        }
+        }
+      catch(SQLException e){
+      ERMSG = new StringBuffer();
+      ERMSG.append(e.getMessage());
+      }
+    }
+  }
+  else if (check.equals("2") && del_idStr == null) {
+      //メインページへ遷移
+      response.sendRedirect("main.jsp");
+  }
+}
 else{
 
   try{  // ロードに失敗したときのための例外処理
@@ -291,7 +551,7 @@ else{
   //SQL文の構築（選択クエリ）
   SQL.append("select favorite_tbl.yotei_id,yotei_name,yotei_writing,kaiin_name from favorite_tbl,open_tbl,kaiin_tbl where favorite_tbl.yotei_id = open_tbl.yotei_id and kaiin_tbl.kaiin_id = open_tbl.kaiin_id and favorite_tbl.kaiin_id = '");
   SQL.append(session_id);
-  SQL.append("' order by yotei_name ASC");
+  SQL.append("'");
 //      System.out.println(SQL.toString());
 
   //SQL文の実行（選択クエリ）
@@ -391,6 +651,13 @@ finally{
     <%
         }
       }
+      else if (check != null) {
+        if (check.equals("3")) {
+    %>
+        <body onLoad="loadChange()">
+    <%
+        }
+      }
       else
       {
     %>
@@ -425,12 +692,17 @@ finally{
         <div id="panel">
           <main>
             <%
-              if (p == null) {
+              if (p == null && check == null) {
             %>
               <h2>お気に入り一覧</h2>
+              <h3>
+                カレンダー名をクリックするとカレンダーが見られます。<br>
+                チェックを付けて下の削除を押すとお気に入りを削除できます。
+              </h3>
               <%
                if (hit_flag == 1) {
               %>
+              <form action="./main.jsp?check=2" method="post">
                 <table id="list">
                   <tr class="no-line">
                     <th class="no-line" style="padding: 20px;">カレンダー名</td>
@@ -443,7 +715,9 @@ finally{
                 %>
                   <tr class="no-line">
                     <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;">
-                      <%= list.get(i).get("yotei_name") %>
+                      <a href="session_Issue.jsp?yotei_id=<%= list.get(i).get("yotei_id") %>&yotei_name=<%= list.get(i).get("yotei_name") %>">
+                        <%= list.get(i).get("yotei_name") %>
+                      </a>
                     </td>
                     <td class="no-line">
                       <%
@@ -460,23 +734,15 @@ finally{
                     </td>
                     <td class="no-line"><%= list.get(i).get("kaiin_name") %></td>
                     <td class="no-line">
-                      <form action="session_Issue.jsp" method="post">
-                        <input type="hidden" name="yotei_id" value="<%= list.get(i).get("yotei_id") %>">
-                        <input type="hidden" name="yotei_name" value="<%= list.get(i).get("yotei_name") %>">
-                        <input type="submit" value="確認する">
-                      </form>
-                    </td>
-                    <td class="no-line">
-                      <form name="favorite_del" action="favorite_deletecomplete.jsp" method="post">
-                        <input type="button" value="削除" onclick="ShowFavodel();">
-                        <input type="hidden" name="yotei_id" value="<%= list.get(i).get("yotei_id") %>">
-                      </form>
+                        <input type="checkbox" name="del_id" value="<%= list.get(i).get("yotei_id") %>">
                     </td>
                   </tr>
                   <%
                     }
                   %>
                 </table>
+                <input type="submit" value="削除">
+                </form>
                 <%
                   }else if (hit_flag == 0) {
                 %>
@@ -493,7 +759,7 @@ finally{
             %>
             <h2>カレンダー新規作成</h2>
             <table>
-              <form  name="form" action="./agenda_makecomplete.jsp" method="post" onsubmit="return formChecksub()">
+              <form  name="form" action="./agenda_makecomplete.jsp" method="post" onsubmit="ShowCalendarmake()">
                 <tr>
                   <td class="title">
                     <p>ID</p>
@@ -568,72 +834,72 @@ finally{
             <%
               if (p != null && p.equals("1")) {
             %>
+            <form action="./main.jsp?check=1" method="post">
+
               <h2>作成したカレンダー一覧</h2>
+              <h3>
+                カレンダー名をクリックするとカレンダーが見られます。<br>
+                チェックを付けて下の削除を押すとお気に入りを削除できます。
+              </h3>
             <%
              if (hit_flag == 1) {
             %>
-            <table id="list">
-              <tr class="no-line">
-                <th class="no-line" style="padding: 20px;">カレンダーID</td>
-                <th class="no-line" style="padding: 20px;">カレンダー名</td>
-                <th class="no-line" style="padding: 20px;">公開設定</td>
-                <th class="no-line" style="padding: 20px;">パスワード</td>
-                <th class="no-line" style="padding: 20px;">書き込み設定</td>
-                <th></th>
-              </tr>
-            <%
-              for(int i=0; i<list.size();i++){
-            %>
-            <tr class="no-line">
-              <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;">
-                <%= list.get(i).get("yotei_id") %>
-              </td>
-              <td class="no-line"><%= list.get(i).get("yotei_name") %></td>
-              <td class="no-line">
-                <%if (list.get(i).get("open_set").equals("1")) { %>
-                公開
-                <%
-                  }else{
-                %>
-                  非公開
+              <table id="list">
+                <tr class="no-line">
+                  <th class="no-line" style="padding: 20px;">カレンダーID</td>
+                  <th class="no-line" style="padding: 20px;">カレンダー名</td>
+                  <th class="no-line" style="padding: 20px;">公開設定</td>
+                  <th class="no-line" style="padding: 20px;">パスワード</td>
+                  <th class="no-line" style="padding: 20px;">書き込み設定</td>
+                  <th></th>
+                </tr>
+              <%
+                for(int i=0; i<list.size();i++){
+              %>
+                <tr class="no-line">
+                  <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;">
+                    <a href="session_Issue.jsp?yotei_id=<%= list.get(i).get("yotei_id") %>&yotei_name=<%= list.get(i).get("yotei_name") %>">
+                      <%= list.get(i).get("yotei_id") %>
+                    </a>
+                  </td>
+                  <td class="no-line"><%= list.get(i).get("yotei_name") %></td>
+                  <td class="no-line">
+                    <%if (list.get(i).get("open_set").equals("1")) { %>
+                    公開
+                    <%
+                      }else{
+                    %>
+                      非公開
+                    <%
+                      }
+                    %>
+                  </td>
+                  <td class="no-line">
+                    <%= list.get(i).get("yotei_pass") %>
+                  </td>
+                  <td class="no-line">
+                    <%
+                      if(list.get(i).get("yotei_writing").equals("1")) {
+                    %>
+                      許可
+                    <%
+                      }else{
+                    %>
+                      禁止
+                    <%
+                      }
+                    %>
+                  </td>
+                    <td class="no-line">
+                        <input type="checkbox" name="del_id" value="<%= list.get(i).get("yotei_id") %>">
+                    </td>
+                </tr>
                 <%
                   }
                 %>
-              </td>
-              <td class="no-line">
-                <%= list.get(i).get("yotei_pass") %>
-              </td>
-              <td class="no-line">
-                <%
-                  if(list.get(i).get("yotei_writing").equals("1")) {
-                %>
-                  許可
-                <%
-                  }else{
-                %>
-                  禁止
-                <%
-                  }
-                %>
-              </td>
-              <td class="no-line">
-                <form action="session_Issue.jsp" method="post">
-                  <input type="hidden" name="yotei_id" value="<%= list.get(i).get("yotei_id") %>">
-                  <input type="hidden" name="yotei_name" value="<%= list.get(i).get("yotei_name") %>">
-                  <input type="submit" value="確認">
-                </form>
-              </td>
-              <td class="no-line">
-                <form name="calendar_del" action="agenda_deletecomplete.jsp" method="post">
-                  <input type="button" value="削除" onclick="ShowCalendardel();">
-                  <input type="hidden" name="yotei_id" value="<%= list.get(i).get("yotei_id") %>">
-                </form>
-              </td>
-            </tr>
-            <%
-              }
-            %>
-          </table>
+              </table>
+              <input type="submit" value="削除">
+              </form>
           <%
             }else if (hit_flag == 0) {
           %>
@@ -648,18 +914,18 @@ finally{
           <%
             if (p != null && p.equals("2")) {
           %>
-          <h2>作成したカレンダー一覧</h2>
-          <p>
+          <h2>カレンダー検索</h2>
+          <p id="Des">
             カレンダーIDかキーワードを入力して検索ボタンを押してください。<br>カレンダーを検索します。<br>(両方入力するとカレンダーIDを優先して検索します)
           </p>
-           <form action="./agenda_searchcomplete.jsp" method="post">
+           <form action="./main.jsp?page_no=2-1" method="post">
             <table>
               <tr>
                 <td  class="title">
                   <p>カレンダーID</p>
                 </td>
                 <td class="no-line">
-                  <input type="text" name="id" size="25" class="text">
+                  <input type="text" name="cal_id" size="25" class="text">
                 </td>
               </tr>
               <tr>
@@ -677,6 +943,59 @@ finally{
               </form>
               </tr>
             </table>
+          <%
+            }
+          %>
+
+          <%
+            if (p != null && p.equals("2-1")) {
+          %>
+          <h2>
+          カレンダー検索一覧
+          </h2>
+          <%
+           if (hit_flag == 1) {
+          %>
+            <table id="list">
+              <tr class="no-line">
+                <th class="no-line" style="padding: 20px;">カレンダー名</td>
+                <th class="no-line" style="padding: 20px;">作成者</td>
+                <th class="no-line" style="padding: 20px;">公開設定</td>
+                <th></th>
+              </tr>
+              <%
+                for(int i=0; i<list.size();i++){
+              %>
+                    <tr class="no-line">
+                      <td class="no-line" align="left" style="font-size:25px; font-weight:bold;;">
+                        <%= list.get(i).get("yotei_name") %>
+                      </td>
+                      <td class="no-line"><%= list.get(i).get("kaiin_name") %></td>
+                      <% if(list.get(i).get("open_set").equals("1")) { %>
+                      <td class="no-line">全員に公開</td>
+                      <%}else{%>
+                      <td class="no-line">特定の人にのみ公開</td>
+                      <% } %>
+                      <td class="no-line">
+                        <form action="session_Issue.jsp" method="post">
+                          <input type="hidden" name="yotei_id" value="<%= list.get(i).get("yotei_id") %>">
+                          <input type="hidden" name="yotei_name" value="<%= list.get(i).get("yotei_name") %>">
+                          <input type="hidden" name="open_set" value="<%= list.get(i).get("open_set") %>">
+                          <input id="non" type="submit" value="確認する">
+                        </form>
+                      </td>
+                  </tr>
+              <%
+                }
+              %>
+            </table>
+          <%
+            }else if (hit_flag == 0) {
+          %>
+            該当するカレンダーはありません。
+            <%
+              }
+            %>
           <%
             }
           %>
@@ -999,12 +1318,98 @@ finally{
             }
           %>
 
+          <%
+            if (check !=null && check.equals("1")) {
+          %>
+          <form method="post" action="./agenda_deletecomplete.jsp">
+            <h2>カレンダー削除(確認)</h2>
+            <h3>以下のカレンダーを削除しますか？</h3>
+            <table id="list">
+              <tr class="no-line">
+                <th class="no-line" style="padding: 20px;">カレンダーID</td>
+                <th class="no-line" style="padding: 20px;">カレンダー名</td>
+                <th class="no-line" style="padding: 20px;">公開設定</td>
+                <th class="no-line" style="padding: 20px;">パスワード</td>
+                <th class="no-line" style="padding: 20px;">書き込み設定</td>
+              </tr>
+              <%
+                for(int i = 0; i < list.size(); i++){
+              %>
+                <tr class="no-line">
+                  <td class="no-line" align="center" style="font-size:25px; font-weight:bold;;"><%= list.get(i).get("yotei_id") %></td>
+                  <input type="hidden" name="yotei_id" value="<%= del_idStr[i] %>">
+                  <td class="no-line"><%= list.get(i).get("yotei_name") %></td>
+                  <td class="no-line">
+                    <%if (list.get(i).get("open_set").equals("1")) { %>
+                      全員に公開
+                    <%}else{%>
+                      特定の人にのみ公開
+                    <%}%>
+                  </td>
+                  <td class="no-line"><%= list.get(i).get("yotei_pass") %></td>
+                  <td class="no-line">
+                    <% if(list.get(i).get("yotei_writing").equals("1")) { %>
+                      許可
+                    <%}else{%>
+                      禁止
+                    <% } %>
+                  </td>
+                </tr>
+              <%}%>
+              <tr class="no-line">
+                <td class="no-line" colspan="5">
+                  <input type="submit" id="dbutton" value="削除">
+                    <button class="button" type="button" href="javascript:void(0)" onclick="javascript:history.back()">修正</button>
+                  </td>
+                </tr>
+            </table>
+          </form>
+          <%
+            }
+          %>
+
+          <%
+            if (check !=null && check.equals("2") && del_idStr != null) {
+          %>
+          <form method="post" action="./favorite_deletecomplete.jsp">
+          <h2>お気に入り削除(確認)</h2>
+          <h3>以下のお気に入りを削除しますか？</h3>
+          <table id="list">
+            <tr class="no-line">
+              <th class="no-line" style="padding: 20px;">カレンダー名</td>
+              <th class="no-line" style="padding: 20px;">書き込み</td>
+              <th class="no-line" style="padding: 20px;">作成者</td>
+              <th></th>
+            </tr>
+            <%
+        		for(int i = 0; i < del_idStr.length; i++){
+            %>
+            <tr class="no-line">
+              <input type="hidden" name="yotei_id" value="<%= del_idStr[i] %>">
+              <td class="no-line"><%= list.get(i).get("yotei_name") %></td>
+              <td class="no-line">
+                <% if(list.get(i).get("yotei_writing").equals("1")) { %>
+                  許可
+                <%}else{%>
+                  禁止
+                <% } %>
+              </td>
+              <td class="no-line"><%= list.get(i).get("kaiin_name") %></td>
+            <%}%>
+            </tr>
+            <tr class="no-line">
+              <td class="no-line" colspan="5">
+                <input type="submit" id="dbutton" value="削除">
+                <button class="button" type="button" href="javascript:void(0)" onclick="javascript:history.back()">修正</button>
+              </td>
+            </tr>
+          </table>
+          <%
+            }
+          %>
+
           </main>
         </div>
-
-        <footer>
-          footer
-        </footer>
 
       </div>
 

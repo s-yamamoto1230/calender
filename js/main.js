@@ -280,7 +280,7 @@ function ShowFavodel() {
 }
 
 function loadFavodel(){
-alert("お気に入りを１件しました！！！");
+alert("お気に入りを削除しました！！！");
 }
 
 function ShowCalendardel() {
@@ -298,7 +298,7 @@ alert("カレンダーを１件削除しました！！！");
 
 function ShowCalendarmake() {
   if(confirm("以下の内容でカレンダーを作成しますか？")){
-    var f = document.forms["calendar_del"];
+    var f = document.forms["form"];
     f.method = "POST";
     f.submit();
     return true;

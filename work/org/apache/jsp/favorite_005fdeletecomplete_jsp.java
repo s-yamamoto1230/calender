@@ -60,6 +60,7 @@ public final class favorite_005fdeletecomplete_jsp extends org.apache.jasper.run
 
 	//入力データ受信
 	String yotei_id  = request.getParameter("yotei_id");
+	System.out.println(yotei_id);
 
 	//データベースに接続するために使用する変数宣言
 	Connection con = null;
