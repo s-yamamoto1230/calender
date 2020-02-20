@@ -854,7 +854,7 @@ finally{
                   }else if (hit_flag == 0) {
                 
       out.write("\r\n");
-      out.write("                  お気に入りはありません。\r\n");
+      out.write("                  <p class=\"not\">お気に入りはありません。</p>\r\n");
       out.write("                ");
 
                   }
@@ -1053,7 +1053,7 @@ if (list.get(i).get("open_set").equals("1")) {
             }else if (hit_flag == 0) {
           
       out.write("\r\n");
-      out.write("            作成した予定はありません。\r\n");
+      out.write("            <p class=\"not\">作成した予定はありません。</p>\r\n");
       out.write("          ");
 
             }

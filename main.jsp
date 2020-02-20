@@ -751,7 +751,7 @@ finally{
                 <%
                   }else if (hit_flag == 0) {
                 %>
-                  お気に入りはありません。
+                  <p class="not">お気に入りはありません。</p>
                 <%
                   }
                 %>
@@ -908,7 +908,7 @@ finally{
           <%
             }else if (hit_flag == 0) {
           %>
-            作成した予定はありません。
+            <p class="not">作成した予定はありません。</p>
           <%
             }
           %>
