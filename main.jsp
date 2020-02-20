@@ -29,6 +29,11 @@
       session.removeAttribute("yotei_name");
     }
 
+    if(session_id == null){
+      response.sendRedirect("index.jsp");
+
+    }
+
 
 //--データベース--
 Connection con = null;
@@ -1002,9 +1007,23 @@ finally{
 
           <%
             if (p != null && p.equals("3")) {
+              String kaiin_bday = (String)list.get(0).get("kaiin_bday");
+              int bday =Integer.parseInt(kaiin_bday);
+              int y = bday /10000;
+              int m =(bday-y*10000)/100;
+              int d = (bday-(y*10000+m*100));
+              String my_year = String.valueOf(y-1919);
+              String my_month = String.valueOf(m);
+              String my_day = String.valueOf(d);
+              if (my_month.equals("1") || my_month.equals("2") || my_month.equals("3") || my_month.equals("4") || my_month.equals("5") || my_month.equals("6") || my_month.equals("7") || my_month.equals("8") || my_month.equals("9")) {
+                my_month = "0"+my_month;
+              }
+              if (my_day.equals("1") || my_day.equals("2") || my_day.equals("3") || my_day.equals("4") || my_day.equals("5") || my_day.equals("6") || my_day.equals("7") || my_day.equals("8") || my_day.equals("9")) {
+                my_day = "0"+my_day;
+              }
           %>
           <h2>登録情報変更</h2>
-          <form class="" action="main.jsp?page_no=4" method="post">
+          <form name="frm" action="main.jsp?page_no=4" method="post">
             <table id="change">
               <tr class="no-line">
                 <td class="no-line">
@@ -1157,30 +1176,30 @@ finally{
                   </select>年
                   <select name="month" onchange="dateCheck('year', 'month', 'day')" required>
                       <option value="">--</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
+                      <option value="1">01</option>
+                      <option value="2">02</option>
+                      <option value="3">03</option>
+                      <option value="4">04</option>
+                      <option value="5">05</option>
+                      <option value="6">06</option>
+                      <option value="7">07</option>
+                      <option value="8">08</option>
+                      <option value="9">09</option>
                       <option value="10">10</option>
                       <option value="11">11</option>
                       <option value="12">12</option>
                   </select>月
                   <select name="day" required>
                             <option value="">--</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
+                            <option value="1">01</option>
+                            <option value="2">02</option>
+                            <option value="3">03</option>
+                            <option value="4">04</option>
+                            <option value="5">05</option>
+                            <option value="6">06</option>
+                            <option value="7">07</option>
+                            <option value="8">08</option>
+                            <option value="9">09</option>
                             <option value="10">10</option>
                             <option value="11">11</option>
                             <option value="12">12</option>
@@ -1209,9 +1228,15 @@ finally{
             </table>
             <input type="submit" name="" value="更新">
           </form>
+          <script>
+            document.frm.year.selectedIndex=<%=my_year%>;
+            document.frm.month.selectedIndex=<%=my_month%>;
+            document.frm.day.selectedIndex=<%=my_day%>;
+          </script>
           <%
             }
           %>
+
 
           <%
             if (p != null && p.equals("4")) {
@@ -1222,6 +1247,12 @@ finally{
               String yearStr = request.getParameter("year");
               String monthStr = request.getParameter("month");
               String dayStr = request.getParameter("day");
+              if (monthStr.equals("1") || monthStr.equals("2") || monthStr.equals("3") || monthStr.equals("4") || monthStr.equals("5") || monthStr.equals("6") || monthStr.equals("7") || monthStr.equals("8") || monthStr.equals("9")) {
+                monthStr = "0"+monthStr;
+              }
+              if (dayStr.equals("1") || dayStr.equals("2") || dayStr.equals("3") || dayStr.equals("4") || dayStr.equals("5") || dayStr.equals("6") || dayStr.equals("7") || dayStr.equals("8") || dayStr.equals("9")) {
+                dayStr = "0"+dayStr;
+              }
               String bday = yearStr+monthStr+dayStr;
           %>
           <h2>登録情報変更(確認)</h2>
@@ -1294,7 +1325,17 @@ finally{
                 <p>生年月日</p>
               </td>
               <td class="check">
+                <%
+                  if (list.get(0).get("kaiin_bday").equals(bday)) {
+                %>
+                    変更なし
+                <%
+                  }else{
+                %>
                 <%= yearStr+"年"+monthStr+"月"+dayStr+"日" %>
+                <%
+                  }
+                %>
               </td>
 
             <tr class="no-line">
@@ -1429,8 +1470,6 @@ finally{
           </ul>
 
   <script type="text/javascript" src="./js/main.js"></script>
-
-
 
   </body>
 </html>

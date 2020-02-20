@@ -9,15 +9,14 @@
   String yearStr = request.getParameter("year");
   String monthStr = request.getParameter("month");
   String dayStr = request.getParameter("day");
+
+  if (monthStr.equals("1") || monthStr.equals("2") || monthStr.equals("3") || monthStr.equals("4") || monthStr.equals("5") || monthStr.equals("6") || monthStr.equals("7") || monthStr.equals("8") || monthStr.equals("9")) {
+    monthStr = "0"+monthStr;
+  }
+  if (dayStr.equals("1") || dayStr.equals("2") || dayStr.equals("3") || dayStr.equals("4") || dayStr.equals("5") || dayStr.equals("6") || dayStr.equals("7") || dayStr.equals("8") || dayStr.equals("9")) {
+    dayStr = "0"+dayStr;
+  }
   String bday = yearStr+monthStr+dayStr;
-
-//   String message = passStr;
-//   int num = message.length();
-//   String password="";
-//   for (int i=1; i<=num; i++) {
-//       password=password+"*";
-//   }
-
 %>
 
 <html>

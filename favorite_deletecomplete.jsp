@@ -6,8 +6,8 @@
 	response.setCharacterEncoding("UTF-8");
 
 	//入力データ受信
-	String yotei_id  = request.getParameter("yotei_id");
-	System.out.println(yotei_id);
+	String yotei_idStr[]  = request.getParameterValues("yotei_id");
+  String session_id = (String)session.getAttribute("login_id");
 
 	//データベースに接続するために使用する変数宣言
 	Connection con = null;
@@ -46,15 +46,19 @@
 		//SQLステートメントの作成（選択クエリ）
 		SQL = new StringBuffer();
 
-		//SQL文の構築
-		  //SQLステートメントの作成（選択クエリ）
-		  SQL = new StringBuffer();
-		  //delete実行
-		  SQL.append("delete from favorite_tbl where yotei_id = '");
-			SQL.append(yotei_id);
-      SQL.append("'");
-      System.out.println(SQL.toString());
-	      del_count = stmt.executeUpdate(SQL.toString());
+				//SQL文の構築（DB複数削除）
+				for(int i = 0; i < yotei_idStr.length; i++){
+				  //SQLステートメントの作成（選択クエリ）
+				  SQL = new StringBuffer();
+				  //delete実行
+				  SQL.append("delete from favorite_tbl where yotei_id = '");
+					SQL.append(yotei_idStr[i]);
+					SQL.append("' and kaiin_id = '");
+		      SQL.append(session_id);
+		      SQL.append("'");
+		      System.out.println(SQL.toString());
+			      del_count = stmt.executeUpdate(SQL.toString());
+			    }
 
 				//メインページへ遷移
 				response.sendRedirect("main.jsp?del=1");

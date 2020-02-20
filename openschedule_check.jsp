@@ -176,7 +176,7 @@
       <input type="hidden" name="details" value="<%= list.get(0).get("details") %>">
       <input type="hidden" name="importance" value="<%= list.get(0).get("importance") %>">
 
-<h1>
+<h1 id="title_name">
 <%= numStr %>日の<%= list.get(0).get("s_hour") %>時<%= list.get(0).get("s_mine") %>分からの<%= list.get(0).get("kaiin_name") %>さんの予定詳細
 </h1>
 
@@ -244,7 +244,7 @@
 
     <tr class="no-line">
       <td class="no-line" colspan="2">
-        <p><a href="./myag_main.jsp">カレンダーに戻る</a></p>
+        <p id="back"><a href="./myag_main.jsp">カレンダーに戻る</a></p>
       </td>
 
     </tr>

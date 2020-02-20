@@ -87,6 +87,11 @@ public final class main_jsp extends org.apache.jasper.runtime.HttpJspBase
       session.removeAttribute("yotei_name");
     }
 
+    if(session_id == null){
+      response.sendRedirect("index.jsp");
+
+    }
+
 
 //--データベース--
 Connection con = null;
@@ -1186,10 +1191,24 @@ if (list.get(i).get("open_set").equals("1")) {
       out.write("          ");
 
             if (p != null && p.equals("3")) {
+              String kaiin_bday = (String)list.get(0).get("kaiin_bday");
+              int bday =Integer.parseInt(kaiin_bday);
+              int y = bday /10000;
+              int m =(bday-y*10000)/100;
+              int d = (bday-(y*10000+m*100));
+              String my_year = String.valueOf(y-1919);
+              String my_month = String.valueOf(m);
+              String my_day = String.valueOf(d);
+              if (my_month.equals("1") || my_month.equals("2") || my_month.equals("3") || my_month.equals("4") || my_month.equals("5") || my_month.equals("6") || my_month.equals("7") || my_month.equals("8") || my_month.equals("9")) {
+                my_month = "0"+my_month;
+              }
+              if (my_day.equals("1") || my_day.equals("2") || my_day.equals("3") || my_day.equals("4") || my_day.equals("5") || my_day.equals("6") || my_day.equals("7") || my_day.equals("8") || my_day.equals("9")) {
+                my_day = "0"+my_day;
+              }
           
       out.write("\r\n");
       out.write("          <h2>登録情報変更</h2>\r\n");
-      out.write("          <form class=\"\" action=\"main.jsp?page_no=4\" method=\"post\">\r\n");
+      out.write("          <form name=\"frm\" action=\"main.jsp?page_no=4\" method=\"post\">\r\n");
       out.write("            <table id=\"change\">\r\n");
       out.write("              <tr class=\"no-line\">\r\n");
       out.write("                <td class=\"no-line\">\r\n");
@@ -1352,30 +1371,30 @@ if (list.get(i).get("open_set").equals("1")) {
       out.write("                  </select>年\r\n");
       out.write("                  <select name=\"month\" onchange=\"dateCheck('year', 'month', 'day')\" required>\r\n");
       out.write("                      <option value=\"\">--</option>\r\n");
-      out.write("                      <option value=\"1\">1</option>\r\n");
-      out.write("                      <option value=\"2\">2</option>\r\n");
-      out.write("                      <option value=\"3\">3</option>\r\n");
-      out.write("                      <option value=\"4\">4</option>\r\n");
-      out.write("                      <option value=\"5\">5</option>\r\n");
-      out.write("                      <option value=\"6\">6</option>\r\n");
-      out.write("                      <option value=\"7\">7</option>\r\n");
-      out.write("                      <option value=\"8\">8</option>\r\n");
-      out.write("                      <option value=\"9\">9</option>\r\n");
+      out.write("                      <option value=\"1\">01</option>\r\n");
+      out.write("                      <option value=\"2\">02</option>\r\n");
+      out.write("                      <option value=\"3\">03</option>\r\n");
+      out.write("                      <option value=\"4\">04</option>\r\n");
+      out.write("                      <option value=\"5\">05</option>\r\n");
+      out.write("                      <option value=\"6\">06</option>\r\n");
+      out.write("                      <option value=\"7\">07</option>\r\n");
+      out.write("                      <option value=\"8\">08</option>\r\n");
+      out.write("                      <option value=\"9\">09</option>\r\n");
       out.write("                      <option value=\"10\">10</option>\r\n");
       out.write("                      <option value=\"11\">11</option>\r\n");
       out.write("                      <option value=\"12\">12</option>\r\n");
       out.write("                  </select>月\r\n");
       out.write("                  <select name=\"day\" required>\r\n");
       out.write("                            <option value=\"\">--</option>\r\n");
-      out.write("                            <option value=\"1\">1</option>\r\n");
-      out.write("                            <option value=\"2\">2</option>\r\n");
-      out.write("                            <option value=\"3\">3</option>\r\n");
-      out.write("                            <option value=\"4\">4</option>\r\n");
-      out.write("                            <option value=\"5\">5</option>\r\n");
-      out.write("                            <option value=\"6\">6</option>\r\n");
-      out.write("                            <option value=\"7\">7</option>\r\n");
-      out.write("                            <option value=\"8\">8</option>\r\n");
-      out.write("                            <option value=\"9\">9</option>\r\n");
+      out.write("                            <option value=\"1\">01</option>\r\n");
+      out.write("                            <option value=\"2\">02</option>\r\n");
+      out.write("                            <option value=\"3\">03</option>\r\n");
+      out.write("                            <option value=\"4\">04</option>\r\n");
+      out.write("                            <option value=\"5\">05</option>\r\n");
+      out.write("                            <option value=\"6\">06</option>\r\n");
+      out.write("                            <option value=\"7\">07</option>\r\n");
+      out.write("                            <option value=\"8\">08</option>\r\n");
+      out.write("                            <option value=\"9\">09</option>\r\n");
       out.write("                            <option value=\"10\">10</option>\r\n");
       out.write("                            <option value=\"11\">11</option>\r\n");
       out.write("                            <option value=\"12\">12</option>\r\n");
@@ -1404,10 +1423,22 @@ if (list.get(i).get("open_set").equals("1")) {
       out.write("            </table>\r\n");
       out.write("            <input type=\"submit\" name=\"\" value=\"更新\">\r\n");
       out.write("          </form>\r\n");
+      out.write("          <script>\r\n");
+      out.write("            document.frm.year.selectedIndex=");
+      out.print(my_year);
+      out.write(";\r\n");
+      out.write("            document.frm.month.selectedIndex=");
+      out.print(my_month);
+      out.write(";\r\n");
+      out.write("            document.frm.day.selectedIndex=");
+      out.print(my_day);
+      out.write(";\r\n");
+      out.write("          </script>\r\n");
       out.write("          ");
 
             }
           
+      out.write("\r\n");
       out.write("\r\n");
       out.write("\r\n");
       out.write("          ");
@@ -1420,6 +1451,12 @@ if (list.get(i).get("open_set").equals("1")) {
               String yearStr = request.getParameter("year");
               String monthStr = request.getParameter("month");
               String dayStr = request.getParameter("day");
+              if (monthStr.equals("1") || monthStr.equals("2") || monthStr.equals("3") || monthStr.equals("4") || monthStr.equals("5") || monthStr.equals("6") || monthStr.equals("7") || monthStr.equals("8") || monthStr.equals("9")) {
+                monthStr = "0"+monthStr;
+              }
+              if (dayStr.equals("1") || dayStr.equals("2") || dayStr.equals("3") || dayStr.equals("4") || dayStr.equals("5") || dayStr.equals("6") || dayStr.equals("7") || dayStr.equals("8") || dayStr.equals("9")) {
+                dayStr = "0"+dayStr;
+              }
               String bday = yearStr+monthStr+dayStr;
           
       out.write("\r\n");
@@ -1528,7 +1565,23 @@ if (list.get(i).get("open_set").equals("1")) {
       out.write("              </td>\r\n");
       out.write("              <td class=\"check\">\r\n");
       out.write("                ");
+
+                  if (list.get(0).get("kaiin_bday").equals(bday)) {
+                
+      out.write("\r\n");
+      out.write("                    変更なし\r\n");
+      out.write("                ");
+
+                  }else{
+                
+      out.write("\r\n");
+      out.write("                ");
       out.print( yearStr+"年"+monthStr+"月"+dayStr+"日" );
+      out.write("\r\n");
+      out.write("                ");
+
+                  }
+                
       out.write("\r\n");
       out.write("              </td>\r\n");
       out.write("\r\n");
@@ -1714,8 +1767,6 @@ if (list.get(i).get("open_set").equals("1")) {
       out.write("          </ul>\r\n");
       out.write("\r\n");
       out.write("  <script type=\"text/javascript\" src=\"./js/main.js\"></script>\r\n");
-      out.write("\r\n");
-      out.write("\r\n");
       out.write("\r\n");
       out.write("  </body>\r\n");
       out.write("</html>\r\n");

@@ -252,7 +252,7 @@ try{	// ロードに失敗したときのための例外処理
   //SQL文の発行（選択クエリ）
   SQL.append("select open_tbl.kaiin_id,day,s_hour,s_mine,f_hour,f_mine,place,importance,yotei_name,kaiin_name from open_tbl,openyotei_tbl,kaiin_tbl where kaiin_tbl.kaiin_id = openyotei_tbl.kaiin_id and open_tbl.yotei_id = openyotei_tbl.yotei_id and openyotei_tbl.yotei_id = '");
   SQL.append(yotei_ids);
-  SQL.append("' order by s_hour ASC");
+  SQL.append("' order by s_hour ASC,s_mine ASC");
 
   //SQL文の発行（選択クエリ）
   rs = stmt.executeQuery(SQL.toString());

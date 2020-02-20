@@ -14,6 +14,12 @@ h1{
   font-size: 50px;
 }
 
+h1#title_name{
+  margin-top: 200px;
+  margin-bottom: 50;
+  font-size: 40px;
+}
+
 h2#error{
   color: red;
 }
@@ -99,6 +105,14 @@ p.alert{
 
 p#link{
   padding: 20px;
+}
+
+p#back{
+  margin-top: 20px;
+}
+
+p#back:hover{
+  color: #ffa500;
 }
 
 button#correction{
