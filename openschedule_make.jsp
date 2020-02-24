@@ -153,7 +153,7 @@
 
         <tr class="no-line">
           <td class="no-line" colspan="2">
-            <p><a href="./monthcheck.jsp">予定に戻る</a></p>
+            <p id="a_link"><a id="link" href="./monthcheck.jsp">予定に戻る</a></p>
           </td>
 
         </tr>

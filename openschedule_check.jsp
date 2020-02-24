@@ -244,7 +244,7 @@
 
     <tr class="no-line">
       <td class="no-line" colspan="2">
-        <p id="back"><a href="./myag_main.jsp">カレンダーに戻る</a></p>
+        <p id="a_link"><a id="link" href="./myag_main.jsp">カレンダーに戻る</a></p>
       </td>
 
     </tr>

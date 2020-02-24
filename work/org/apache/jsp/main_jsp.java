@@ -1176,7 +1176,8 @@ if (list.get(i).get("open_set").equals("1")) {
             }else if (hit_flag == 0) {
           
       out.write("\r\n");
-      out.write("            該当するカレンダーはありません。\r\n");
+      out.write("            <p class=\"not\">該当するカレンダーはありません。</p>\r\n");
+      out.write("            <p id=\"a_link\"><a id=\"link\" href=\"./main.jsp?page_no=2\">メイン画面に戻る</a></p>\r\n");
       out.write("            ");
 
               }

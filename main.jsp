@@ -997,7 +997,8 @@ finally{
           <%
             }else if (hit_flag == 0) {
           %>
-            該当するカレンダーはありません。
+            <p class="not">該当するカレンダーはありません。</p>
+            <p id="a_link"><a id="link" href="./main.jsp?page_no=2">メイン画面に戻る</a></p>
             <%
               }
             %>

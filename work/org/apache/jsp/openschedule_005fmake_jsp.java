@@ -212,7 +212,7 @@ public final class openschedule_005fmake_jsp extends org.apache.jasper.runtime.H
       out.write("\r\n");
       out.write("        <tr class=\"no-line\">\r\n");
       out.write("          <td class=\"no-line\" colspan=\"2\">\r\n");
-      out.write("            <p><a href=\"./monthcheck.jsp\">予定に戻る</a></p>\r\n");
+      out.write("            <p id=\"a_link\"><a id=\"link\" href=\"./monthcheck.jsp\">予定に戻る</a></p>\r\n");
       out.write("          </td>\r\n");
       out.write("\r\n");
       out.write("        </tr>\r\n");

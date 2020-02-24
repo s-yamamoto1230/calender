@@ -112,7 +112,7 @@ String del = request.getParameter("del");
       out.write("      <div class='wave -three'></div>\r\n");
       out.write("      <div class='wave -four'></div>\r\n");
       out.write("      <div class='wave -five'></div>\r\n");
-      out.write("      <div class='concept'>èªåã®äºå®ãç®¡çã<br>äºå®ãå±æãã·ã§ã¢ã§ãã</div>\r\n");
+      out.write("      <div class='concept'><br>äºå®ãå±æãã·ã§ã¢ã§ãã</div>\r\n");
       out.write("    </div>\r\n");
       out.write("      <h1 id=\"title\">\r\n");
       out.write("        sharedule<br>\r\n");
@@ -135,7 +135,7 @@ String del = request.getParameter("del");
       out.write("              <p>ï¼©ï¼¤</p>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td>\r\n");
-      out.write("              <input type=\"text\" name=\"id\" size=\"50\" class=\"text\" autofocus>\r\n");
+      out.write("              <input type=\"text\" name=\"id\" pattern=\"^[0-9a-z]+$\" size=\"50\" class=\"text\" autofocus>\r\n");
       out.write("            </td>\r\n");
       out.write("          </tr>\r\n");
       out.write("          <tr>\r\n");
@@ -143,7 +143,7 @@ String del = request.getParameter("del");
       out.write("              <p>ãã¹ã¯ã¼ã</p>\r\n");
       out.write("            </td>\r\n");
       out.write("            <td>\r\n");
-      out.write("              <input type=\"password\" name=\"pass\" size=\"50\" class=\"text\">\r\n");
+      out.write("              <input type=\"password\" name=\"pass\" pattern=\"^[0-9a-z]+$\" size=\"50\" class=\"text\">\r\n");
       out.write("            </td>\r\n");
       out.write("\r\n");
       out.write("          <tr>\r\n");

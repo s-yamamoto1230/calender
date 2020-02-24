@@ -53,7 +53,7 @@ String del = request.getParameter("del");
       <div class='wave -three'></div>
       <div class='wave -four'></div>
       <div class='wave -five'></div>
-      <div class='concept'>自分の予定を管理。<br>予定を共有、シェアできる</div>
+      <div class='concept'><br>予定を共有、シェアできる</div>
     </div>
       <h1 id="title">
         sharedule<br>
@@ -76,7 +76,7 @@ String del = request.getParameter("del");
               <p>ＩＤ</p>
             </td>
             <td>
-              <input type="text" name="id" size="50" class="text" autofocus>
+              <input type="text" name="id" pattern="^[0-9a-z]+$" size="50" class="text" autofocus>
             </td>
           </tr>
           <tr>
@@ -84,7 +84,7 @@ String del = request.getParameter("del");
               <p>パスワード</p>
             </td>
             <td>
-              <input type="password" name="pass" size="50" class="text">
+              <input type="password" name="pass" pattern="^[0-9a-z]+$" size="50" class="text">
             </td>
 
           <tr>

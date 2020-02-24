@@ -135,12 +135,6 @@ public final class all_005fdel_jsp extends org.apache.jasper.runtime.HttpJspBase
 						System.out.println(SQL.toString());
 						del_count = stmt.executeUpdate(SQL.toString());
 
-				//SQL文の構築（選択クエリ）
-				SQL = new StringBuffer();
-						SQL.append("truncate table yotei_tbl");
-							System.out.println(SQL.toString());
-							del_count = stmt.executeUpdate(SQL.toString());
-
 				//メインページへ遷移
 				response.sendRedirect("index.jsp?del=1");
 		} //tryブロック終了

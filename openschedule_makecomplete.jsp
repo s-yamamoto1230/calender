@@ -164,7 +164,9 @@
 <%
   if(hit_flag == 1){  //認証NG
 %>
+<p id="link">
 追加NG<br>
+</p>
 <%= "入力された予定時刻は既に登録してあります" %>
 <%
 }else if(ins_count==0){//追加処理失敗
@@ -188,7 +190,7 @@
 <% } %>
 
 
-  <p><a href="./myag_main.jsp">予定に戻る</a></p>
+  <p id="a_link"><a id="link" href="./myag_main.jsp">予定に戻る</a></p>
   <ul class="circles">
     <li></li>
     <li></li>

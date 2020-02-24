@@ -219,7 +219,9 @@ public final class openschedule_005fmakecomplete_jsp extends org.apache.jasper.r
   if(hit_flag == 1){  //認証NG
 
       out.write("\r\n");
+      out.write("<p id=\"link\">\r\n");
       out.write("追加NG<br>\r\n");
+      out.write("</p>\r\n");
       out.print( "入力された予定時刻は既に登録してあります" );
       out.write('\r');
       out.write('\n');
@@ -258,7 +260,7 @@ public final class openschedule_005fmakecomplete_jsp extends org.apache.jasper.r
       out.write("\r\n");
       out.write("\r\n");
       out.write("\r\n");
-      out.write("  <p><a href=\"./myag_main.jsp\">予定に戻る</a></p>\r\n");
+      out.write("  <p id=\"a_link\"><a id=\"link\" href=\"./myag_main.jsp\">予定に戻る</a></p>\r\n");
       out.write("  <ul class=\"circles\">\r\n");
       out.write("    <li></li>\r\n");
       out.write("    <li></li>\r\n");
