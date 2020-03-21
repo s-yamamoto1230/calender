@@ -10,6 +10,7 @@
     request.setCharacterEncoding("UTF-8");
     response.setCharacterEncoding("UTF-8");
 
+    //取得
     String session_id = (String)session.getAttribute("login_id");
     String session_name = (String)session.getAttribute("login_name");
     String yotei_ids = (String)session.getAttribute("yotei_id");
