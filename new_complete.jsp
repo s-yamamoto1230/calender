@@ -1,10 +1,11 @@
+<%-- ユーザーID新規登録完了画面 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
   //文字コードの指定
   request.setCharacterEncoding("UTF-8");
   response.setCharacterEncoding("UTF-8");
-  
+
   //入力データ受信
   String idStr = request.getParameter("id");
   String usernameStr = request.getParameter("username");
@@ -34,13 +35,13 @@
 
   //確認メッセージ
   StringBuffer ERMSG = null;
-  
+
   //ヒットフラグ
   int hit_flag = 0;
-  
+
   //追加件数
   int ins_count=0;
-   
+
   try{  // ロードに失敗したときのための例外処理
     // JDBCドライバのロード
     Class.forName(DRIVER).newInstance();
