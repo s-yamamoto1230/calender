@@ -1,3 +1,4 @@
+<%-- パスワード再設定完了画面 --%>
 <!DOCTYPE html>
 <html>
 <head>
