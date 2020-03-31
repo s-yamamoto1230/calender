@@ -226,6 +226,7 @@ document.addEventListener("click", function(e) {
 
 showCalendar(year, month)
 
+  // アラート
     function ShowAlert() {
       if(confirm("ログアウトしますか？")){
         var f = document.forms["logout_info"];
