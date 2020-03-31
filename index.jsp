@@ -1,3 +1,4 @@
+<%-- ログイン画面 --%>
 <%
 String logout = request.getParameter("logout");
 if(logout != null){
